@@ -2,3 +2,5 @@
 .VSCodeCounter
 *.vtk
 *.EX
+*.gif
+*.png
