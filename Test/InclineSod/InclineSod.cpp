@@ -89,7 +89,7 @@ int main(int argc,char** argv)
     Initialize(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, rho_L, u_L, v_L, p_L, rho_R, u_R, v_R, p_R, gamma, U_OLD, U_NEW, XYCOORD);
     Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
     //Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
-    WriteData(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD);
+    WriteData(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);
 
 #pragma acc data copy(U_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq]) \
                  copy(F_L[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
@@ -118,7 +118,7 @@ int main(int argc,char** argv)
         if (iter % plot_per == 0)
         {
         cout <<" ==== Writing Data Wait ===="<<endl;
-        WriteData(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter,now_t, gamma, U_OLD);
+        WriteData(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
         }
         cout.precision(6);
         cout << "iter : "<<iter<<".   dt :"<<dt<<".   time :"<<now_t<<endl;

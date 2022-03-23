@@ -6,4 +6,5 @@ void WriteData(const double Psy_L,
                int iter,
                double now_t,
                const double gamma,
-               double *U_OLD);
+               double *U_OLD,
+               double *XYCOORD);
