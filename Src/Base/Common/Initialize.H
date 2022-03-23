@@ -1,0 +1,18 @@
+
+void Initialize(const double Psy_L,
+                const double Psy_H,
+                const int N_x,
+                const int N_y,
+                const int num_ghost_cell,
+                const double rho_L,
+                const double u_L,
+                const double v_L,
+                const double p_L,
+                const double rho_R,
+                const double u_R,
+                const double v_R,
+                const double p_R,
+                const double gamma,
+                double *U_OLD,
+                double *U_NEW,
+                double *XYCOORD);

@@ -1,0 +1,8 @@
+"filename", "language", "Makefile", "C++", "Markdown", "comment", "blank", "total"
+"/home/ubuntu/FDDDM/Test/Sod/Makefile", "Makefile", 12, 0, 0, 0, 4, 16
+"/home/ubuntu/FDDDM/Test/Sod/SimpleParamReader-master/ParamReader.cpp", "C++", 0, 67, 0, 8, 10, 85
+"/home/ubuntu/FDDDM/Test/Sod/SimpleParamReader-master/ParamReader.h", "C++", 0, 46, 0, 7, 8, 61
+"/home/ubuntu/FDDDM/Test/Sod/SimpleParamReader-master/README.md", "Markdown", 0, 0, 5, 0, 3, 8
+"/home/ubuntu/FDDDM/Test/Sod/SimpleParamReader-master/test_main.cpp", "C++", 0, 14, 0, 0, 2, 16
+"/home/ubuntu/FDDDM/Test/Sod/Sod.cpp", "C++", 0, 88, 0, 2, 17, 107
+"Total", "-", 12, 215, 5, 17, 44, 293

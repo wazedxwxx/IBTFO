@@ -1,0 +1,37 @@
+Date : 2022-03-17 11:24:25
+Directory : /home/ubuntu/FDDDM/FDDDM_Base/Sod
+Total : 12 files,  628 codes, 8 comments, 61 blanks, all 697 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C++      |         11 |        617 |          8 |         58 |        683 |
+| Makefile |          1 |         11 |          0 |          3 |         14 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                 | files      | code       | comment    | blank      | total      |
++------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                    |         12 |        628 |          8 |         61 |        697 |
++------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                             | language | code       | comment    | blank      | total      |
++------------------------------------------------------+----------+------------+------------+------------+------------+
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/ComputeDt.cpp      | C++      |         37 |          0 |          3 |         40 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/Conserve2Flux.cpp  | C++      |         32 |          0 |          2 |         34 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/Initialize.cpp     | C++      |         44 |          0 |          0 |         44 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/Lax_Scheme.cpp     | C++      |         52 |          0 |          4 |         56 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/MUSCL_Scheme.cpp   | C++      |        118 |          0 |          8 |        126 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/Makefile           | Makefile |         11 |          0 |          3 |         14 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/Psy_coord.cpp      | C++      |         23 |          0 |          2 |         25 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/RegularBound.cpp   | C++      |         59 |          3 |         11 |         73 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/Riemann_solver.cpp | C++      |        117 |          0 |         12 |        129 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/Slope_limiter.cpp  | C++      |         15 |          0 |          0 |         15 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/Sod.cpp            | C++      |         81 |          5 |         15 |        101 |
+| /home/ubuntu/FDDDM/FDDDM_Base/Sod/WriteData.cpp      | C++      |         39 |          0 |          1 |         40 |
+| Total                                                |          |        628 |          8 |         61 |        697 |
++------------------------------------------------------+----------+------------+------------+------------+------------+
