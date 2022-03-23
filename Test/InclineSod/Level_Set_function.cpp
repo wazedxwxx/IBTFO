@@ -26,8 +26,8 @@ double Level_Set_function(double a, double b)
     const double yaxisD = p.get("yaxisD", 0.4);                   // The y-intercept of the shock tube > 0
 
     double phi, phi1, phi2;
-    phi1 = line(a, b, 1/tan(angle), 0, 1);
-    phi2 = line(a, b, 1/tan(angle), yaxisD, -1);
+    phi1 = line(a, b, tan(angle), 0, 1);
+    phi2 = line(a, b, tan(angle), yaxisD, -1);
     // cout << " x " << a << " y " << b << " phi1 " << phi1 << " phi2 " << phi2 << endl;
     phi = ((phi1 < phi2) ? phi1 : phi2);
     return phi;

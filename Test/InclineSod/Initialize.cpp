@@ -36,7 +36,7 @@ void Initialize(const double Psy_L,
             if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5 || XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] > 1.5)
             {
                 if (XYCOORD[Index_Coord(i, j, 1, N_x + 2 * num_ghost_cell)] <
-                    -(1/tan(angle)) * XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)] + cos(angle) + 0.5)
+                    -(1 / tan(angle)) * XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)] + 0.5 * (1 / tan(angle)) + 0.5)
                 {
                     U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho_L;
                     U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho_L * u_L;
