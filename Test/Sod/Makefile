@@ -3,7 +3,7 @@ Riemann = HLL #HLL or PVRS
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = Regular #Regular or BaseGFM or SimpleBound
 
-PROM = REGULAR_SOD
+PROM = REGULAR_SOD.EX
 CC = nvc++
 GeometrySRC=../../Src/Geometry/
 UtilsSRC=../../Src/Utils/

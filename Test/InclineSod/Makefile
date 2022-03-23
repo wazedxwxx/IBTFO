@@ -4,7 +4,7 @@ Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = BaseGFM #Regular or BaseGFM or SimpleBound
 
 
-PROM = INCLINE_SOD
+PROM = INCLINE_SOD.EX
 CC = nvc++
 GeometrySRC=../../Src/Geometry/
 UtilsSRC=../../Src/Utils/
