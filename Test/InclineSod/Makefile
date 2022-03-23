@@ -1,4 +1,4 @@
-Scheme = MUSCL #Lax or MUSCL
+Scheme = MHM #Lax or MUSCL or MHM
 Riemann = HLL #HLL or PVRS
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = BaseGFM #Regular or BaseGFM or SimpleBound
