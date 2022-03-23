@@ -89,10 +89,10 @@ void Boundary(const int N_x,
                 double p_weight = (a1 * p1 + a2 * p2 + a3 * p3 + a4 * p4) / (a1 + a2 + a3 + a4);
 
                 double u_n = u_weight * n_x + v_weight * n_y;
-                double u_t = u_weight * n_y + v_weight * n_x;
+                double u_t = u_weight * n_y - v_weight * n_x;
                 u_n = -u_n;
                 u_weight = u_n * n_x + u_t * n_y;
-                v_weight = u_n * n_y + u_t * n_x;
+                v_weight = u_n * n_y - u_t * n_x;
 
                 U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho_weight;
                 U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho_weight * u_weight;
@@ -127,6 +127,8 @@ void Boundary(const int N_x,
                           << " u4 " << u4
                           << " v4 " << v4
                           << " p4 " << p4
+                          << " u_n " << u_n
+                          << " u_t " << u_t
                           << " rhow " << rho_weight
                           << " uw " << u_weight
                           << " vw " << v_weight
