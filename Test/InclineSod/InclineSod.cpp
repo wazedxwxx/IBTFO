@@ -87,6 +87,7 @@ int main(int argc,char** argv)
     Scheme_Index(N_x, N_y, num_ghost_cell, XYCOORD, SCHEME_IDX);
     // WriteIDX2TXT(N_x, N_y, num_ghost_cell, SCHEME_IDX);
     Initialize(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, rho_L, u_L, v_L, p_L, rho_R, u_R, v_R, p_R, gamma, U_OLD, U_NEW, XYCOORD);
+    Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
     //Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
     WriteData(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD);
 

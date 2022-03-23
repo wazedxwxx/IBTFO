@@ -1,6 +1,6 @@
 Scheme = MUSCL #Lax or MUSCL
 Riemann = HLL #HLL or PVRS
-Limiter = minmod #minmod
+Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = BaseGFM #Regular or BaseGFM or SimpleBound
 
 
