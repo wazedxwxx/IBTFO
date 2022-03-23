@@ -6,14 +6,13 @@ double Slope_limiter(double a,
 {
     double r = (a + 1e-7) / (b + 1e-7);
     double c;
-    if (r <= 0)
+    if (r > 0)
     {
-        c = 0;
+        c = (r + std::abs(r)) * b / (1.0 + std::abs(r));
     }
     else
     {
-
-        c = (r + std::abs(r)) * b / (1.0 + std::abs(r));
+        c = 0;
     }
 
     return c;

@@ -6,14 +6,13 @@ double Slope_limiter(double a,
 {
     double r = (a + 1e-7) / (b + 1e-7);
     double c;
-    if (r <= 0)
+    if (r > 0)
     {
-        c = 0;
+        c = (r * r + r) * b / (r * r + 1);
     }
     else
     {
-
-        c = (r * r + r) * b / (r * r + 1);
+        c = 0;
     }
 
     return c;

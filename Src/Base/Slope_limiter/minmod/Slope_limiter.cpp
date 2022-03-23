@@ -6,13 +6,9 @@ double Slope_limiter(double a,
 {
 
     double c;
-    if (a * b <= 0)
+    if (a * b > 0)
     {
-        c  = 0;
-    }
-    else
-    {
-        double r = a  / b ;
+        double r = a / b;
 
         if (r > 1)
         {
@@ -22,6 +18,10 @@ double Slope_limiter(double a,
         {
             c = r * b;
         }
+    }
+    else
+    {
+        c = 0;
     }
 
     return c;
