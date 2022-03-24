@@ -1,10 +1,10 @@
 #do not add space in params!!!
 max_iter=3000
-N_x=800                # x direction grid number in computational domain
-N_y=800                # y direction grid number in computational domain
+N_x=1000               # x direction grid number in computational domain
+N_y=1000               # y direction grid number in computational domain
 Psy_time=0.4           # physical time
-lo_x=0
-lo_y=0
+lo_x=-1
+lo_y=-1
 hi_x=1
 hi_y=1
 CFL_number=0.35        # CFL_number

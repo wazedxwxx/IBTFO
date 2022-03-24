@@ -2,11 +2,11 @@ Scheme = MUSCL #Lax or MUSCL or MHM
 Riemann = HLL #HLL or PVRS
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = BaseGFM #Regular or BaseGFM or SimpleBound
-Time = RK2 #SingleStep or RK2
+Time = SingleStep #SingleStep or RK2
 
 
 
-PROM = INCLINE_SOD.EX
+PROM = VORTEX.EX
 CC = nvc++
 GeometrySRC=../../Src/Geometry/
 UtilsSRC=../../Src/Utils/

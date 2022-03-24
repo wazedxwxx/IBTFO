@@ -5,7 +5,9 @@
 #define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
 #define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
 using namespace std;
-void WriteData(const double Psy_L,
+void WriteData(const double lo_x,
+               const double lo_y,
+               const double Psy_L,
                const double Psy_H,
                const int N_x,
                const int N_y,
@@ -26,7 +28,7 @@ void WriteData(const double Psy_L,
             << " " << N_x << " "
             << " " << N_y << " " << 1 << endl;
     outfile << "ASPECT_RATIO 1 1 1" << endl;
-    outfile << "ORIGIN 0 0 0" << endl;
+    outfile << "ORIGIN "<< lo_x << " " << lo_y << " 0 " << endl ;
     outfile << "SPACING " << Psy_L / N_x << " " << Psy_H / N_y << " " << Psy_H / N_y << " " << endl;
     outfile << "FIELD FieldData 1" << endl;
     outfile << "TIME 1 1 double " << endl;
@@ -38,10 +40,10 @@ void WriteData(const double Psy_L,
     {
         for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] <0.5)
-            outfile << U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] << endl;
+            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5)
+                outfile << U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] << endl;
             else
-            outfile << -1.0 << endl;
+                outfile << -1.0 << endl;
         }
     }
 

@@ -1,4 +1,6 @@
-void WriteData(const double Psy_L,
+void WriteData(const double lo_x,
+               const double lo_y,
+               const double Psy_L,
                const double Psy_H,
                const int N_x,
                const int N_y,

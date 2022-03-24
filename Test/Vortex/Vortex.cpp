@@ -42,6 +42,9 @@ int main(int argc,char** argv)
     const double CFL_number = p.get("CFL_number", 0.3);//CFL_number
     const int num_ghost_cell = int(p.get("num_ghost_cell", 2));
     const int plot_per = int(p.get("plot_per", 100));
+
+
+    
     const double gamma = p.get("gamma", 1.4);//Gas parameters
 
 
@@ -79,7 +82,7 @@ int main(int argc,char** argv)
     //Write_LS(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
     Scheme_Index(N_x, N_y, num_ghost_cell, XYCOORD, SCHEME_IDX);
     // WriteIDX2TXT(N_x, N_y, num_ghost_cell, SCHEME_IDX);
-    Initialize(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD);
+    Initialize(Psy_L, Psy_H, N_x, N_y, num_ghost_cell,gamma, U_OLD, U_NEW, XYCOORD);
     Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
     //Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
     WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);

@@ -42,14 +42,6 @@ int main(int argc,char** argv)
     const int num_ghost_cell = int(p.get("num_ghost_cell", 2));
     const int plot_per = int(p.get("plot_per", 100));
     const double gamma = p.get("gamma", 1.4);//Gas parameters
-    const double rho_L = p.get("rho_L", 1); //left side density
-    const double u_L = p.get("u_L", 0); //left side x-vel
-    const double v_L = p.get("v_L", 0);//left side y-vel
-    const double p_L = p.get("p_L", 1);//left side pressure
-    const double rho_R = p.get("rho_R", 0.125);//right side density
-    const double u_R = p.get("u_R", 0);//right side x-vel
-    const double v_R = p.get("v_R", 0);//right side y-vel
-    const double p_R = p.get("p_R", 0.1);//right side pressure
 
     cout <<" ==== parameters are read ===="<<endl;
 
@@ -82,8 +74,8 @@ int main(int argc,char** argv)
 
     Psy_coord(lo_x,lo_y,Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
     Level_Set(N_x,N_y, num_ghost_cell,XYCOORD);
-    Initialize(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, rho_L, u_L, v_L, p_L, rho_R, u_R, v_R, p_R, gamma, U_OLD, U_NEW, XYCOORD);
-    WriteData(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);
+    Initialize(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD);
+    WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
 
 #pragma acc data copy(U_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq]) \
                  copy(F_L[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
@@ -111,7 +103,7 @@ int main(int argc,char** argv)
         if (iter % plot_per == 0)
         {
         cout <<" ==== Writing Data Wait ===="<<endl;
-        WriteData(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter,now_t, gamma, U_OLD,XYCOORD);
+        WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter,now_t, gamma, U_OLD,XYCOORD);
         }
         cout.precision(6);
         cout << "iter : "<<iter<<".   dt :"<<dt<<".   time :"<<now_t<<endl;

@@ -1,4 +1,5 @@
 #include "Initialize.H"
+#include "ParamReader.H"
 #include <math.h>
 #define num_eq 4
 #define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
@@ -22,6 +23,16 @@ void Initialize(const double Psy_L,
                 double *U_NEW,
                 double *XYCOORD)
 {
+    ParamReader DetectParams;
+    Params<double> p(DetectParams.open("sod.inp").numbers());
+    const double rho_L = p.get("rho_L", 1);     // left side density
+    const double u_L = p.get("u_L", 0);         // left side x-vel
+    const double v_L = p.get("v_L", 0);         // left side y-vel
+    const double p_L = p.get("p_L", 1);         // left side pressure
+    const double rho_R = p.get("rho_R", 0.125); // right side density
+    const double u_R = p.get("u_R", 0);         // right side x-vel
+    const double v_R = p.get("v_R", 0);         // right side y-vel
+    const double p_R = p.get("p_R", 0.1);       // right side pressure
 #pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
     {
