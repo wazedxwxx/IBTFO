@@ -10,6 +10,7 @@
 #include "Write_LS.H"
 #include "Level_Set.H"
 #include "Advance.H"
+#include "TimeAdvance.H"
 #include "ComputeDt.H"
 #include "Boundary.H"
 #include "ParamReader.H"
@@ -64,6 +65,7 @@ int main(int argc,char** argv)
     double *XYCOORD = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * 6];
     double *U_TMP = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_NEW = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
+     double *U_TMPRK = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_L = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_R = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_D = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
@@ -100,7 +102,7 @@ int main(int argc,char** argv)
     while (now_t < Psy_time && iter < max_iter)
     {    
         ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, &dt);
-        Advance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, F_OLD, G_OLD, U_TMP, U_NEW, F_L, F_R, G_D, G_U, U_L, U_R, U_D, U_U,XYCOORD);
+        TimeAdvance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, F_OLD, G_OLD, U_TMP, U_NEW, U_TMPRK, F_L, F_R, G_D, G_U, U_L, U_R, U_D, U_U,XYCOORD);
         Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
 
         now_t = now_t + dt;
