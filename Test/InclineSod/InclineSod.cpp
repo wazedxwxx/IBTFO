@@ -6,14 +6,13 @@
 #include "Initialize.H"
 #include "Psy_coord.H"
 #include "WriteData.H"
-#include "Write_LS.H"
-#include "WriteIDX2TXT.H"
 #include "Scheme_Index.H"
 #include "Boundary.H"
 #include "Level_Set.H"
 #include "Conserve2Flux.H"
 #include "Scheme_Index.H"
 #include "Advance.H"
+#include "TimeAdvance.H"
 #include "ComputeDt.H"
 #include "ParamReader.H"
 
@@ -109,7 +108,7 @@ int main(int argc,char** argv)
     while (now_t < Psy_time && iter < max_iter)
     {    
         ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, &dt);
-        Advance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, F_OLD, G_OLD, U_TMP, U_NEW, F_L, F_R, G_D, G_U, U_L, U_R, U_D, U_U,XYCOORD);
+        TimeAdvance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, F_OLD, G_OLD, U_TMP, U_NEW, F_L, F_R, G_D, G_U, U_L, U_R, U_D, U_U,XYCOORD);
         Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
 
         now_t = now_t + dt;

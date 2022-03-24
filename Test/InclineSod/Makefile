@@ -1,7 +1,9 @@
-Scheme = MUSCL #Lax or MUSCL or MHM
+Scheme = MHM #Lax or MUSCL or MHM
 Riemann = HLL #HLL or PVRS
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = BaseGFM #Regular or BaseGFM or SimpleBound
+Time = SingleStep #SingleStep
+
 
 
 PROM = INCLINE_SOD.EX
@@ -13,7 +15,7 @@ AdvanceSRC=../../Src/Base/Advance/
 CommonSRC=../../Src/Base/Common/
 RiemannSRC=../../Src/Base/Riemann/
 SlopelimiterSRC=../../Src/Base/Slope_limiter/
-
+TimeSRC=../../Src/Base/TimeAdvance/
 
 
 GeometryFILES = $(foreach dir,$(GeometrySRC),$(wildcard $(dir)/*.cpp))
@@ -23,17 +25,18 @@ AdvanceFILES = $(foreach dir,$(AdvanceSRC)$(Scheme),$(wildcard $(dir)/*.cpp))
 CommonFILES = $(foreach dir,$(CommonSRC),$(wildcard $(dir)/*.cpp))
 RiemannFILES = $(foreach dir,$(RiemannSRC)$(Riemann),$(wildcard $(dir)/*.cpp))
 SlopelimiterFILES = $(foreach dir,$(SlopelimiterSRC)$(Limiter),$(wildcard $(dir)/*.cpp))
+TimeSFILES = $(foreach dir,$(TimeSRC)$(Time),$(wildcard $(dir)/*.cpp))
 $(shell rm -f $(PROM))
 
 
 CFLAGS = -fast -ta=multicore -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
-                 -I$(SlopelimiterSRC)
+                 -I$(SlopelimiterSRC) -I$(TimeSRC)
 
 
 $(PROM) : $(OBJ)
 	$(CC) $(CFLAGS) -o $(PROM) $(GeometryFILES) $(UtilsFILES) \
-	$(BoundFILES) $(AdvanceFILES) $(CommonFILES) $(RiemannFILES) $(SlopelimiterFILES) \
+	$(BoundFILES) $(AdvanceFILES) $(CommonFILES) $(RiemannFILES) $(SlopelimiterFILES) $(TimeFILES) \
 	$(wildcard ./*.cpp)
 	$(RM) *.o *.vtk
 
