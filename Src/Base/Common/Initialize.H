@@ -1,5 +1,6 @@
 
-void Initialize(const double Psy_L,
+void Initialize(const char *filename,
+                const double Psy_L,
                 const double Psy_H,
                 const int N_x,
                 const int N_y,

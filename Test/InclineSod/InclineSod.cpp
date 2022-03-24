@@ -26,7 +26,7 @@ int main(int argc,char** argv)
 
     ParamReader DetectParams;
     //parameter settings model
-
+    char* filename = argv[1];
     Params<double> para(DetectParams.open("sod.inp").numbers());
     const int max_iter = int(para.get("max_iter", 100000));//max time steps
 
@@ -75,12 +75,12 @@ int main(int argc,char** argv)
     cout <<" ====  memory allocation complete ===="<<endl;
 
     Psy_coord(lo_x,lo_y,Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
-    Level_Set(N_x,N_y, num_ghost_cell,XYCOORD);
-    //Write_LS(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
+    Level_Set(filename, N_x, N_y, num_ghost_cell, XYCOORD);
+    // Write_LS(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
     Scheme_Index(N_x, N_y, num_ghost_cell, XYCOORD, SCHEME_IDX);
     // WriteIDX2TXT(N_x, N_y, num_ghost_cell, SCHEME_IDX);
-    Initialize(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD);
-    Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
+    Initialize(filename, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD);
+    Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
     //Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
     WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);
 

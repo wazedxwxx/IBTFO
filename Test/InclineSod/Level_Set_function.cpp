@@ -18,10 +18,10 @@ inline double line(double x, double y, double k, double b, int dir) // dist for 
     return phi;
 }
 
-double Level_Set_function(double a, double b)
+double Level_Set_function(char* filename,double a, double b)
 {
     ParamReader DetectParams;
-    Params<double> p(DetectParams.open("sod.inp").numbers());
+    Params<double> p(DetectParams.open(filename).numbers());
     const double angle = 3.1415926535 * p.get("angle", 30) / 180; // tube angle
     const double yaxisD = p.get("yaxisD", 0.4);                   // The y-intercept of the shock tube > 0
 

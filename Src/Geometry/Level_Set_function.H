@@ -1,1 +1,1 @@
-double Level_Set_function(double a,double b);
+double Level_Set_function(char*filename,double a,double b);

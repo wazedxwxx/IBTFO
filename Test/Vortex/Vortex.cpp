@@ -17,8 +17,8 @@
 #include "ParamReader.H"
 
 using namespace std;
-
 #define num_eq 4
+
 
 int main(int argc,char** argv)
 {
@@ -27,7 +27,8 @@ int main(int argc,char** argv)
     ParamReader DetectParams;
     //parameter settings model
 
-    Params<double> para(DetectParams.open("sod.inp").numbers());
+    char* filename = argv[1];
+    Params<double> para(DetectParams.open(filename).numbers());
     const int max_iter = int(para.get("max_iter", 100000));//max time steps
 
     const double lo_x = para.get("lo_x", 0);//x direction grid number in computational domain
@@ -37,7 +38,7 @@ int main(int argc,char** argv)
     const double hi_y = para.get("hi_y", 1);//y direction grid number in computational domain
 
     const int N_x = int(para.get("N_x", 500));//x direction grid number in computational domain
-    const int N_y = int(para.get("N_y", 200));//y direction grid number in computational domain
+    const int N_y = int(para.get("N_y", 500));//y direction grid number in computational domain
     const double Psy_time = para.get("Psy_time", 1.0); // physical time
     const double CFL_number = para.get("CFL_number", 0.3);//CFL_number
     const int num_ghost_cell = int(para.get("num_ghost_cell", 2));
@@ -75,11 +76,11 @@ int main(int argc,char** argv)
     cout <<" ====  memory allocation complete ===="<<endl;
 
     Psy_coord(lo_x,lo_y,Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
-    Level_Set(N_x,N_y, num_ghost_cell,XYCOORD);
+    Level_Set(filename,N_x,N_y, num_ghost_cell,XYCOORD);
     //Write_LS(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
     Scheme_Index(N_x, N_y, num_ghost_cell, XYCOORD, SCHEME_IDX);
     // WriteIDX2TXT(N_x, N_y, num_ghost_cell, SCHEME_IDX);
-    Initialize(Psy_L, Psy_H, N_x, N_y, num_ghost_cell,gamma, U_OLD, U_NEW, XYCOORD);
+    Initialize(filename,Psy_L, Psy_H, N_x, N_y, num_ghost_cell,gamma, U_OLD, U_NEW, XYCOORD);
     Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
     //Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
     WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);

@@ -3,32 +3,31 @@
 #include "ParamReader.H"
 #include <iostream>
 using namespace std;
-
-inline double line(double x, double y, double k, double b, int dir) // dist for y= k x + b
-{
-    double phi;
-    if (y > k * x + b)
-    {
-        phi = dir * abs(k * x - y + b) / pow(1 + k * k, 0.5);
-    }
-    else
-    {
-        phi = -dir * abs(k * x - y + b) / pow(1 + k * k, 0.5);
-    }
-    return phi;
-}
-
-double Level_Set_function(double a, double b)
+double Level_Set_function(char*filename,double a, double b)
 {
     ParamReader DetectParams;
-    Params<double> p(DetectParams.open("sod.inp").numbers());
-    const double angle = 3.1415926535 * p.get("angle", 30) / 180; // tube angle
-    const double yaxisD = p.get("yaxisD", 0.4);                   // The y-intercept of the shock tube > 0
+    Params<double> para(DetectParams.open(filename).numbers());
+    const double f0 = para.get("f0", 0);
+    const double f1 = para.get("f1", 1);
+    const double rvortex = 0.40;
+    const double rl0 = f0 * rvortex;
+    const double rl1 = f1 * rvortex;
+
+    const double xlc = 0.50;
+    const double ylc = 0.50;
+    const double xp = a;
+    const double yp = b;
+    double r = 0;
 
     double phi, phi1, phi2;
-    phi1 = line(a, b, tan(angle), 0, 1);
-    phi2 = line(a, b, tan(angle), yaxisD, -1);
-    // cout << " x " << a << " y " << b << " phi1 " << phi1 << " phi2 " << phi2 << endl;
+
+    r = sqrt((xp - xlc) * (xp - xlc) + (yp - ylc) * (yp - ylc));
+
+    phi1 = rl1 - r;
+    phi2 = r - rl0;
+
     phi = ((phi1 < phi2) ? phi1 : phi2);
+
+    cout << " x " << a << " y "<<b<<" r "<<r <<endl;
     return phi;
 }

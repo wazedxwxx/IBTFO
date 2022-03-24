@@ -5,7 +5,9 @@
 #define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
 #define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
 using namespace std;
-void Initialize(const double Psy_L,
+extern char *filename;
+void Initialize(char *filename,
+                const double Psy_L,
                 const double Psy_H,
                 const int N_x,
                 const int N_y,
@@ -16,11 +18,10 @@ void Initialize(const double Psy_L,
                 double *XYCOORD)
 {
     ParamReader DetectParams;
-    Params<double> para(DetectParams.open("vortex.inp").numbers());
+    Params<double> para(DetectParams.open(filename).numbers());
     const double fa = para.get("fa", 0);
     const double fw = para.get("fw", 0);
-    const double f0 = para.get("f0", 0);
-    const double f1 = para.get("f1", 1);
+
     const double rho0 = 1.0;
     const double p0 = 2.0;
     const double xlc = 0.50;
@@ -29,8 +30,7 @@ void Initialize(const double Psy_L,
     const double pi = 3.1415926535;
     const double ua = fa * rvortex * pi;
     const double uw = fw * rvortex * pi;
-    const double rl0 = f0 * rvortex;
-    const double rl1 = f1 * rvortex;
+
     double ur = 0;
     double p = 0;
     double u = 0;
@@ -80,7 +80,8 @@ void Initialize(const double Psy_L,
                 U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho0;
                 U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho0 * u;
                 U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = rho0 * v;
-                U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = p / (gamma - 1) + 0.5 * rho0 * (u * u + v * v);
+                U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = (p0 + 2.0 * rho0 * ua * ua * p) / (gamma - 1) + 0.5 * rho0 * (u * u + v * v);
             }
         }
     }
+}

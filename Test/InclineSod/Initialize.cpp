@@ -5,26 +5,19 @@
 #define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
 #define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
 using namespace std;
-void Initialize(const double Psy_L,
+void Initialize(char *filename,
+                const double Psy_L,
                 const double Psy_H,
                 const int N_x,
                 const int N_y,
                 const int num_ghost_cell,
-                const double rho_L,
-                const double u_L,
-                const double v_L,
-                const double p_L,
-                const double rho_R,
-                const double u_R,
-                const double v_R,
-                const double p_R,
                 const double gamma,
                 double *U_OLD,
                 double *U_NEW,
                 double *XYCOORD)
 {
     ParamReader DetectParams;
-    Params<double> para(DetectParams.open("sod.inp").numbers());
+    Params<double> para(DetectParams.open(filename).numbers());
     const double angle = 3.1415926535 * para.get("angle", 30) / 180; // tube angle
     const double rho_L = para.get("rho_L", 1);                       // left side density
     const double u_L = para.get("u_L", 0);                           // left side x-vel

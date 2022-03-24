@@ -1,7 +1,7 @@
 #do not add space in params!!!
-max_iter=3000
-N_x=1000               # x direction grid number in computational domain
-N_y=1000               # y direction grid number in computational domain
+max_iter=3
+N_x=200              # x direction grid number in computational domain
+N_y=200              # y direction grid number in computational domain
 Psy_time=0.4           # physical time
 lo_x=0
 lo_y=0
@@ -16,5 +16,5 @@ plot_per=100           # write data to vtk
 fa=0
 fw=0
 f0=0
-f1=1
+f1=0.5
 

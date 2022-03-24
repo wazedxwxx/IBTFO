@@ -2,7 +2,8 @@
 #define Index(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
 #include <iostream>
 // 0 x_coord 1 y_coord 2 phi 3 n_x 4 n_y 5 cell type
-void Level_Set(const int N_x,
+void Level_Set(char *filename,
+               const int N_x,
                const int N_y,
                const int num_ghost_cell,
                double *XYCOORD)
@@ -13,7 +14,7 @@ void Level_Set(const int N_x,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = Level_Set_function(XYCOORD[Index(i, j, 0, N_x + 2 * num_ghost_cell)],
+            XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = Level_Set_function(filename, XYCOORD[Index(i, j, 0, N_x + 2 * num_ghost_cell)],
                                                                                    XYCOORD[Index(i, j, 1, N_x + 2 * num_ghost_cell)]); // Phi
         }
     }
@@ -129,5 +130,4 @@ void Level_Set(const int N_x,
             XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
         }
     }
-
 }
