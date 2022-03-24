@@ -24,16 +24,16 @@ void Initialize(const double Psy_L,
                 double *XYCOORD)
 {
     ParamReader DetectParams;
-    Params<double> p(DetectParams.open("sod.inp").numbers());
-    const double angle = 3.1415926535 * p.get("angle", 30) / 180; // tube angle
-    const double rho_L = p.get("rho_L", 1);                       // left side density
-    const double u_L = p.get("u_L", 0);                           // left side x-vel
-    const double v_L = p.get("v_L", 0);                           // left side y-vel
-    const double p_L = p.get("p_L", 1);                           // left side pressure
-    const double rho_R = p.get("rho_R", 0.125);                   // right side density
-    const double u_R = p.get("u_R", 0);                           // right side x-vel
-    const double v_R = p.get("v_R", 0);                           // right side y-vel
-    const double p_R = p.get("p_R", 0.1);                         // right side pressure
+    Params<double> para(DetectParams.open("sod.inp").numbers());
+    const double angle = 3.1415926535 * para.get("angle", 30) / 180; // tube angle
+    const double rho_L = para.get("rho_L", 1);                       // left side density
+    const double u_L = para.get("u_L", 0);                           // left side x-vel
+    const double v_L = para.get("v_L", 0);                           // left side y-vel
+    const double p_L = para.get("p_L", 1);                           // left side pressure
+    const double rho_R = para.get("rho_R", 0.125);                   // right side density
+    const double u_R = para.get("u_R", 0);                           // right side x-vel
+    const double v_R = para.get("v_R", 0);                           // right side y-vel
+    const double p_R = para.get("p_R", 0.1);                         // right side pressure
 
 #pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)

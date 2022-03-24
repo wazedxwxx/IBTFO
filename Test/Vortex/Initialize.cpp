@@ -16,16 +16,25 @@ void Initialize(const double Psy_L,
                 double *XYCOORD)
 {
     ParamReader DetectParams;
-    Params<double> p(DetectParams.open("sod.inp").numbers());
-    const double angle = 3.1415926535 * p.get("angle", 30) / 180; // tube angle
-    const double rho_L = p.get("rho_L", 1); //left side density
-    const double u_L = p.get("u_L", 0); //left side x-vel
-    const double v_L = p.get("v_L", 0);//left side y-vel
-    const double p_L = p.get("p_L", 1);//left side pressure
-    const double rho_R = p.get("rho_R", 0.125);//right side density
-    const double u_R = p.get("u_R", 0);//right side x-vel
-    const double v_R = p.get("v_R", 0);//right side y-vel
-    const double p_R = p.get("p_R", 0.1);//right side pressure
+    Params<double> para(DetectParams.open("vortex.inp").numbers());
+    const double fa = para.get("fa", 0);
+    const double fw = para.get("fw", 0);
+    const double f0 = para.get("f0", 0);
+    const double f1 = para.get("f1", 1);
+    const double rho0 = 1.0;
+    const double p0 = 2.0;
+    const double xlc = 0.50;
+    const double ylc = 0.50;
+    const double rvortex = 0.40;
+    const double pi = 3.1415926535;
+    const double ua = fa * rvortex * pi;
+    const double uw = fw * rvortex * pi;
+    const double rl0 = f0 * rvortex;
+    const double rl1 = f1 * rvortex;
+    double ur = 0;
+    double p = 0;
+    double u = 0;
+    double v = 0;
 
 #pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
@@ -33,35 +42,45 @@ void Initialize(const double Psy_L,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
+            U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = -1;
+            U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = 0;
+            U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = 0;
+            U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = -1;
             if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5 || XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] > 1.5)
             {
-                if (XYCOORD[Index_Coord(i, j, 1, N_x + 2 * num_ghost_cell)] <
-                    -(1 / tan(angle)) * XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)] + 0.5 * (1 / tan(angle)) + 0.5)
+                double xp = XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)];
+                double yp = XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)];
+                double r = pow((xp - xlc) * (xp - xlc) + (yp - ylc) * (yp - ylc), 0.5);
+                double phi = atan((yp - ylc) / (xp - xlc));
+                if (xp - xlc < 0.0)
+                    phi = phi + pi;
+
+                if (r < rvortex)
                 {
-                    U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho_L;
-                    U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho_L * u_L;
-                    U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = rho_L * v_L;
-                    U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = p_L / (gamma - 1) + 0.5 * rho_L * (u_L * u_L + v_L * v_L);
+                    if (r < rvortex / 2.0)
+                    {
+                        ur = ua * 2.0 * r / rvortex;
+                        p = (r / rvortex) * (r / rvortex) + 1.0 - 2.0 * log(2.0);
+                    }
+                    else
+                    {
+                        ur = ua * 2.0 * (1.0 - r / rvortex);
+                        p = (r / rvortex) * (r / rvortex) + 3.0 - 4.0 * r / rvortex + 2.0 * log(r / rvortex);
+                    }
+                    double u = -sin(phi) * ur;
+                    double v = cos(phi) * ur;
                 }
                 else
                 {
-                    U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho_R;
-                    U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho_R * u_R;
-                    U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = rho_R * v_R;
-                    U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = p_R / (gamma - 1) + 0.5 * rho_R * (u_R * u_R + v_R * v_R);
+                    p = 0.0;
+                    u = 0.0;
+                    v = 0.0;
                 }
-            }
-            else
-            {
-                U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = -1;
-                U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = 0;
-                U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = 0;
-                U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = -1;
-            }
-            for (int k = 0; k < num_eq; k++)
-            {
-                U_NEW[Index(i, j, k, N_x + 2 * num_ghost_cell)] = U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell)];
+
+                U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho0;
+                U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho0 * u;
+                U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = rho0 * v;
+                U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = p / (gamma - 1) + 0.5 * rho0 * (u * u + v * v);
             }
         }
     }
-}

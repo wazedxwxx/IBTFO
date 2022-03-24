@@ -27,22 +27,22 @@ int main(int argc,char** argv)
     ParamReader DetectParams;
     //parameter settings model
 
-    Params<double> p(DetectParams.open("sod.inp").numbers());
-    const int max_iter = int(p.get("max_iter", 100000));//max time steps
+    Params<double> para(DetectParams.open("sod.inp").numbers());
+    const int max_iter = int(para.get("max_iter", 100000));//max time steps
 
-    const double lo_x = p.get("lo_x", 0);//x direction grid number in computational domain
-    const double lo_y = p.get("lo_y", 0);//y direction grid number in computational domain
+    const double lo_x = para.get("lo_x", 0);//x direction grid number in computational domain
+    const double lo_y = para.get("lo_y", 0);//y direction grid number in computational domain
 
-    const double hi_x = p.get("hi_x", 1);//x direction grid number in computational domain
-    const double hi_y = p.get("hi_y", 1);//y direction grid number in computational domain
+    const double hi_x = para.get("hi_x", 1);//x direction grid number in computational domain
+    const double hi_y = para.get("hi_y", 1);//y direction grid number in computational domain
 
-    const int N_x = int(p.get("N_x", 500));//x direction grid number in computational domain
-    const int N_y = int(p.get("N_y", 200));//y direction grid number in computational domain
-    const double Psy_time = p.get("Psy_time", 1.0); // physical time
-    const double CFL_number = p.get("CFL_number", 0.3);//CFL_number
-    const int num_ghost_cell = int(p.get("num_ghost_cell", 2));
-    const int plot_per = int(p.get("plot_per", 100));
-    const double gamma = p.get("gamma", 1.4);//Gas parameters
+    const int N_x = int(para.get("N_x", 500));//x direction grid number in computational domain
+    const int N_y = int(para.get("N_y", 200));//y direction grid number in computational domain
+    const double Psy_time = para.get("Psy_time", 1.0); // physical time
+    const double CFL_number = para.get("CFL_number", 0.3);//CFL_number
+    const int num_ghost_cell = int(para.get("num_ghost_cell", 2));
+    const int plot_per = int(para.get("plot_per", 100));
+    const double gamma = para.get("gamma", 1.4);//Gas parameters
 
 
     cout <<" ==== parameters are read ===="<<endl;
