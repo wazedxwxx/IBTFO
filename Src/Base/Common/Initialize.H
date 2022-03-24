@@ -1,5 +1,5 @@
 
-void Initialize(const char *filename,
+void Initialize(char *filename,
                 const double Psy_L,
                 const double Psy_H,
                 const int N_x,
