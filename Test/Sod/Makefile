@@ -2,6 +2,7 @@ Scheme = MUSCL #Lax or MUSCL or MHM （MSUCL Hancock）
 Riemann = HLL #HLL or PVRS
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = Regular #Regular or BaseGFM or SimpleBound
+Time = SingleStep #SingleStep or RK2
 
 PROM = REGULAR_SOD.EX
 CC = nvc++

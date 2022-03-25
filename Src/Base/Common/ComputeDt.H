@@ -6,4 +6,5 @@ void ComputeDt(const double Psy_L,
                  const double gamma,
                  const double CFL_number,
                  double *U_OLD,
+                 double *XYCOORD,
                  double *dt);

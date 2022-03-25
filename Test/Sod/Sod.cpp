@@ -94,7 +94,7 @@ int main(int argc,char** argv)
 
     while (now_t < Psy_time && iter < max_iter)
     {    
-        ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, &dt);
+        ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, XYCOORD, &dt);
         TimeAdvance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, F_OLD, G_OLD, U_TMP, U_NEW, U_TMPRK, F_L, F_R, G_D, G_U, U_L, U_R, U_D, U_U,XYCOORD);
         Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
 
