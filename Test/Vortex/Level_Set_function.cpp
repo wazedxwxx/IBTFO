@@ -28,6 +28,6 @@ double Level_Set_function(char*filename,double a, double b)
 
     phi = ((phi1 < phi2) ? phi1 : phi2);
 
-    cout << " x " << a << " y "<<b<<" r "<<r <<endl;
+    //cout << " x " << a << " y "<<b<<" r "<<r <<endl;
     return phi;
 }

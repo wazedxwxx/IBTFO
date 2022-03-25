@@ -81,9 +81,9 @@ int main(int argc,char** argv)
     Scheme_Index(N_x, N_y, num_ghost_cell, XYCOORD, SCHEME_IDX);
     // WriteIDX2TXT(N_x, N_y, num_ghost_cell, SCHEME_IDX);
     Initialize(filename,Psy_L, Psy_H, N_x, N_y, num_ghost_cell,gamma, U_OLD, U_NEW, XYCOORD);
-    Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
-    //Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
     WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);
+    Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
+   
 
 #pragma acc data copy(U_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq]) \
                  copy(F_L[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\

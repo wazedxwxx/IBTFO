@@ -50,7 +50,7 @@ void Initialize(char *filename,
             }
             for (int k = 0; k < num_eq; k++)
             {
-                U_NEW[Index(i, j, i, N_x + 2 * num_ghost_cell)] = U_OLD[Index(i, j, i, N_x + 2 * num_ghost_cell)];
+               U_NEW[Index(i, j, k, N_x + 2 * num_ghost_cell)] = U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell)];
             }
         }
     }
