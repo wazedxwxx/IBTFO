@@ -7,14 +7,14 @@ lo_x=0
 lo_y=0
 hi_x=1
 hi_y=1
-CFL_number=0.2         # CFL_number
+CFL_number=0.5         # CFL_number
 num_ghost_cell=2       # ghost cell
 gamma=1.4              # Gas parameters
-plot_per=500           # write data to vtk
+plot_per=100           # write data to vtk
 
 #Problem Spectific
 fa=1.0
 fw=0
 f0=0
-f1=1.0
+f1=0.5
 

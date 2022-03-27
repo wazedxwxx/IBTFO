@@ -1,8 +1,8 @@
 #include "Boundary.H"
 #define num_eq 4
 #define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
-#define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 8 + (c)
-#define Index_sch(a, b, c, N) ((N) * (b) + (a)) * 2 + (c)
+#define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#define Index_sch(a, b, c, N) ((N) * (b) + (a)) * 8 + (c)
 void Boundary(const int N_x,
                     const int N_y,
                     const int num_ghost_cell,
@@ -16,7 +16,7 @@ void Boundary(const int N_x,
     for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
     {
 #pragma acc loop
-        for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
+        for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)     
         {
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
@@ -30,7 +30,7 @@ void Boundary(const int N_x,
 // ghost-cell
 #pragma acc parallel loop
     for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
-    {
+    { 
 #pragma acc loop
         for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
         {
