@@ -1,4 +1,5 @@
 #include "ParamReader.H"
+
 ParamReader::ParamReader()
 {
 	// TODO Auto-generated constructor stub
@@ -49,14 +50,19 @@ std::map<string, double> ParamReader::numbers()
 {
 	std::map<string, double> param_pair;
 	string tmp, key_tmp, value_tmp;
+	std::regex Pattern("[+-]?(\\d*\\.\\d+\|\\d+)");
+	std::smatch results;
 	int equal_symbol_index = 0;
 	for (int i = 0; i < this->inputContent.size(); i++)
 	{
 		tmp = this->inputContent[i];
 		equal_symbol_index = tmp.find("=");
+
 		key_tmp = tmp.substr(0, equal_symbol_index);
 		value_tmp = tmp.substr(equal_symbol_index + 1, tmp.length() - 1);
-		param_pair[key_tmp] = atof(value_tmp.c_str());
+		std::regex_search(value_tmp, results, Pattern);
+		string final_value = results.str();		
+		param_pair[key_tmp] = atof(final_value.c_str());
 	}
 	return param_pair;
 }

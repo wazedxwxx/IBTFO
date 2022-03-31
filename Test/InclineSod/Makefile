@@ -25,13 +25,13 @@ AdvanceFILES = $(foreach dir,$(AdvanceSRC)$(Scheme),$(wildcard $(dir)/*.cpp))
 CommonFILES = $(foreach dir,$(CommonSRC),$(wildcard $(dir)/*.cpp))
 RiemannFILES = $(foreach dir,$(RiemannSRC)$(Riemann),$(wildcard $(dir)/*.cpp))
 SlopelimiterFILES = $(foreach dir,$(SlopelimiterSRC)$(Limiter),$(wildcard $(dir)/*.cpp))
-TimeFILES = $(foreach dir,$(TimeSRC)$(Time),$(wildcard $(dir)/*.cpp))
+TimeFILES = $(foreach dir,$(TimeSRC)$(Time),$(wildcard $(dir)/*.cpp)) 
 $(shell rm -f $(PROM))
 
 
 CFLAGS = -fast -ta=multicore -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
-                 -I$(SlopelimiterSRC) -I$(TimeSRC)
+                 -I$(SlopelimiterSRC) -I$(TimeSRC) -lpng16
 
 
 $(PROM) : $(OBJ)

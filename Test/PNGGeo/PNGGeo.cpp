@@ -20,6 +20,7 @@
 using namespace std;
 
 #define num_eq 4
+#define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
 
 int main(int argc,char** argv)
 {
@@ -28,9 +29,8 @@ int main(int argc,char** argv)
     ParamReader DetectParams;
     //parameter settings model
     char* filename = argv[1];
-    Params<double> para(DetectParams.open("sod.inp").numbers());
+    Params<double> para(DetectParams.open(filename).numbers());
     const int max_iter = int(para.get("max_iter", 100000));//max time steps
-
     const double lo_x = para.get("lo_x", 0);//x direction grid number in computational domain
     const double lo_y = para.get("lo_y", 0);//y direction grid number in computational domain
 
@@ -44,7 +44,8 @@ int main(int argc,char** argv)
     const int num_ghost_cell = int(para.get("num_ghost_cell", 2));
     const int plot_per = int(para.get("plot_per", 100));
     const double gamma = para.get("gamma", 1.4);//Gas parameters
-
+    const int plot_int = para.get("plot_int", 0);//Outputs NUM
+    int output_int = 1;
 
     cout <<" ==== parameters are read ===="<<endl;
 
@@ -60,7 +61,7 @@ int main(int argc,char** argv)
     double *XYCOORD = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * 6];
     double *U_TMP = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_NEW = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
-    double *U_TMPRK = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
+     double *U_TMPRK = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_L = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_R = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_D = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
@@ -77,14 +78,13 @@ int main(int argc,char** argv)
 
     Psy_coord(lo_x,lo_y,Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
     Level_Set(filename, N_x, N_y, num_ghost_cell, XYCOORD);
-     Write_LS(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
-    Scheme_Index(N_x, N_y, num_ghost_cell, XYCOORD, SCHEME_IDX);
-    // WriteIDX2TXT(N_x, N_y, num_ghost_cell, SCHEME_IDX);
+    Write_LS(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
     Initialize(filename, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD);
-     cout <<" ====  Geometry Initialize complete ===="<<endl;
+    Scheme_Index(N_x, N_y, num_ghost_cell, XYCOORD, SCHEME_IDX);
     Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
-    //Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
-    WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);
+    WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
+    
+    //std::abort();
 
 #pragma acc data copy(U_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq]) \
                  copy(F_L[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
@@ -98,10 +98,9 @@ int main(int argc,char** argv)
                  copy(F_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
                  copy(G_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
                  copy(U_TMP[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
-                 copy(U_NEW[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
-                 copy(SCHEME_IDX[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * 8])\
+                 copy(U_NEW[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])
 
-    while (now_t < Psy_time && iter < max_iter)
+while (now_t < Psy_time && iter < max_iter)
     {    
         ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, XYCOORD, &dt);
         TimeAdvance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, F_OLD, G_OLD, U_TMP, U_NEW, U_TMPRK, F_L, F_R, G_D, G_U, U_L, U_R, U_D, U_U,XYCOORD);
@@ -110,11 +109,28 @@ int main(int argc,char** argv)
         now_t = now_t + dt;
         iter++;   
 
-        if (iter % plot_per == 0)
-        {
+
+
+if (plot_int==0){
+    if (iter % plot_per == 0)
+    {
         cout <<" ==== Writing Data Wait ===="<<endl;
         WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
-        }
+    }
+}
+else{
+    if (now_t > output_int * Psy_time / plot_int)
+    {
+        cout <<" ==== Writing Data Wait ===="<<endl;
+        WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
+        output_int++;
+    }
+}
+
+
+
+
+
         cout.precision(6);
         cout << "iter : "<<iter<<".   dt :"<<dt<<".   time :"<<now_t<<endl;
     }

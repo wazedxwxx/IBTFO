@@ -1,0 +1,24 @@
+#do not add space in params!!!
+max_iter=20000
+N_x=800                 # x direction grid number in computational domain
+N_y=320                 # y direction grid number in computational domain
+Psy_time=0.4           # physical time
+
+lo_x           = 0
+lo_y           = 0
+hi_x           = 1
+hi_y           = 0.4
+
+plot_int=10            #ouput result
+CFL_number=0.1         # CFL_number
+num_ghost_cell=2       # ghost cell
+rho_L=1                # left side density
+u_L=0                  # left side x-vel
+v_L=0                  # left side y-vel
+p_L=1                  # left side pressure
+rho_R=0.5            # right side density
+u_R=0                  # right side x-vel
+v_R=0                  # right side y-vel
+p_R=0.125              # right side pressure
+gamma=1.4              # Gas parameters
+plot_per=800          # write data to vtk

@@ -16,9 +16,10 @@ void Psy_coord(const double lo_x,
     double Hi = lo_y;
     Li = -dx * num_ghost_cell + lo_x + dx / 2;
     Hi = -dy * num_ghost_cell + lo_y + dy / 2;
-
+#pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
     {
+#pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
             XYCOORD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = Li + i * dx;

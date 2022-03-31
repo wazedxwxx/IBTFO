@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <regex>
 #include <iostream>
 #include <string.h>
 #include <algorithm>

@@ -1,0 +1,9 @@
+I=imread('A0.png');
+I=rgb2gray(I);
+I=imresize(I,2);
+I=im2bw(I);
+I0=I;
+I=cat(3,I,255.*I0);
+I=cat(3,I,255.*I0);
+imshow(I);
+imwrite(I,"A.png");

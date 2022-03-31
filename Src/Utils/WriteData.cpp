@@ -41,7 +41,10 @@ void WriteData(const double lo_x,
         for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
         {
             if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5)
-                outfile << U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] << endl;
+                if (U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] > 1e-6)
+                    outfile << U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] << endl;
+                else
+                    outfile << 1e-6 << endl;
             else
                 outfile << -1.0 << endl;
         }
@@ -88,7 +91,7 @@ void WriteData(const double lo_x,
                 outfile << p << endl;
             }
             else
-            outfile << -1.0 << endl;
+                outfile << -1.0 << endl;
         }
     }
 

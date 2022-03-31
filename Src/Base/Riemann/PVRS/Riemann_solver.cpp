@@ -29,25 +29,27 @@ void Riemann_solver(const double Psy_L,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            double rho_L = U_L[Index(i, j, 0, N_x + 2 * num_ghost_cell)];                                                       // density
+            double rho_L = U_L[Index(i, j, 0, N_x + 2 * num_ghost_cell)]; // density
+            double rho_R = U_R[Index(i, j, 0, N_x + 2 * num_ghost_cell)]; // density
+            double rho_U = U_U[Index(i, j, 0, N_x + 2 * num_ghost_cell)]; // density
+            double rho_D = U_D[Index(i, j, 0, N_x + 2 * num_ghost_cell)]; // density
+
             double u_L = U_L[Index(i, j, 1, N_x + 2 * num_ghost_cell)] / rho_L;                                                 // x-velocity
             double v_L = U_L[Index(i, j, 2, N_x + 2 * num_ghost_cell)] / rho_L;                                                 // y-velocity
             double p_L = (gamma - 1) * (U_L[Index(i, j, 3, N_x + 2 * num_ghost_cell)] - 0.5 * rho_L * (u_L * u_L + v_L * v_L)); // pressure
 
-            double rho_R = U_R[Index(i, j, 0, N_x + 2 * num_ghost_cell)];                                                       // density
             double u_R = U_R[Index(i, j, 1, N_x + 2 * num_ghost_cell)] / rho_R;                                                 // x-velocity
             double v_R = U_R[Index(i, j, 2, N_x + 2 * num_ghost_cell)] / rho_R;                                                 // y-velocity
             double p_R = (gamma - 1) * (U_R[Index(i, j, 3, N_x + 2 * num_ghost_cell)] - 0.5 * rho_R * (u_R * u_R + v_R * v_R)); // pressure
 
-            double rho_U = U_U[Index(i, j, 0, N_x + 2 * num_ghost_cell)];                                                       // density
             double u_U = U_U[Index(i, j, 1, N_x + 2 * num_ghost_cell)] / rho_U;                                                 // x-velocity
             double v_U = U_U[Index(i, j, 2, N_x + 2 * num_ghost_cell)] / rho_U;                                                 // y-velocity
             double p_U = (gamma - 1) * (U_U[Index(i, j, 3, N_x + 2 * num_ghost_cell)] - 0.5 * rho_U * (u_U * u_U + v_U * v_U)); // pressure
 
-            double rho_D = U_D[Index(i, j, 0, N_x + 2 * num_ghost_cell)];                                                       // density
             double u_D = U_D[Index(i, j, 1, N_x + 2 * num_ghost_cell)] / rho_D;                                                 // x-velocity
             double v_D = U_D[Index(i, j, 2, N_x + 2 * num_ghost_cell)] / rho_D;                                                 // y-velocity
             double p_D = (gamma - 1) * (U_D[Index(i, j, 3, N_x + 2 * num_ghost_cell)] - 0.5 * rho_D * (u_D * u_D + v_D * v_D)); // pressure
+
 
             double a_L = std::pow((gamma * p_L / rho_L), 0.5);
             double a_R = std::pow((gamma * p_R / rho_R), 0.5);

@@ -1,0 +1,10 @@
+ ==== parameters are read ====
+ ====  memory allocation complete ====
+iter : 1.   dt :0.000169031.   time :0.000169031
+iter : 2.   dt :0.000133701.   time :0.000302732
+iter : 3.   dt :0.000124428.   time :0.000427159
+iter : 4.   dt :0.000119307.   time :0.000546466
+iter : 5.   dt :0.00011597.   time :0.000662436
+iter : 6.   dt :0.000113575.   time :0.000776012
+iter : 7.   dt :0.000111755.   time :0.000887767
+iter : 8.   dt :0.000110316.   time :0.000998083

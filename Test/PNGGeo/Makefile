@@ -1,12 +1,10 @@
-Scheme = MUSCL #Lax or MUSCL or MHM
-Riemann = HLL  #HLL or PVRS
-Limiter = VanLeer #minmod or VanLeer or VanAlbada
-Boundary = BaseGFM #Regular or BaseGFM or SimpleBound
-Time = SingleStep #SingleStep or RK2
+Scheme =Lax        #Lax or MUSCL or MHM （MSUCL Hancock）
+Riemann = HLL         #HLL or PVRS
+Limiter = minmod      #minmod or VanLeer or VanAlbada
+Boundary = BaseGFM    #Regular or BaseGFM or SimpleBound
+Time = SingleStep     #SingleStep or RK2
 
-
-
-PROM = VORTEX.EX
+PROM = PNGGEO.EX
 CC = nvc++
 GeometrySRC=../../Src/Geometry/
 UtilsSRC=../../Src/Utils/
@@ -18,7 +16,7 @@ SlopelimiterSRC=../../Src/Base/Slope_limiter/
 TimeSRC=../../Src/Base/TimeAdvance/
 
 
-GeometryFILES = $(foreach dir,$(GeometrySRC),$(wildcard $(dir)/*.cpp))
+GeometryFILESTMP = $(foreach dir,$(GeometrySRC),$(wildcard $(dir)/*.cpp))
 UtilsFILES = $(foreach dir,$(UtilsSRC),$(wildcard $(dir)/*.cpp))
 BoundFILES = $(foreach dir,$(BoundSRC)$(Boundary),$(wildcard $(dir)/*.cpp))
 AdvanceFILES = $(foreach dir,$(AdvanceSRC)$(Scheme),$(wildcard $(dir)/*.cpp))
@@ -28,10 +26,11 @@ SlopelimiterFILES = $(foreach dir,$(SlopelimiterSRC)$(Limiter),$(wildcard $(dir)
 TimeFILES = $(foreach dir,$(TimeSRC)$(Time),$(wildcard $(dir)/*.cpp))
 $(shell rm -f $(PROM))
 
+GeometryFILES = $(filter-out $(GeometrySRC)/Level_Set.cpp,$(GeometryFILESTMP))
 
 CFLAGS = -fast -ta=multicore -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
-                 -I$(SlopelimiterSRC) -I$(TimeSRC)
+                 -I$(SlopelimiterSRC) -I$(TimeSRC) -lpng16
 
 
 $(PROM) : $(OBJ)

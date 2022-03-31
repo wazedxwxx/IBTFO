@@ -1,25 +1,25 @@
 #do not add space in params!!!
-max_iter=3000
-N_x=500                # x direction grid number in computational domain
-N_y=500                # y direction grid number in computational domain
-Psy_time=0.4           # physical time
-lo_x=0
-lo_y=0
-hi_x=1
-hi_y=1
-CFL_number=0.3         # CFL_number
-num_ghost_cell=2       # ghost cell
-gamma=1.4              # Gas parameters
-plot_per=100           # write data to vtk
+max_iter       = 3000
+N_x            = 200                 # x direction grid number in computational domain
+N_y            = 200                 # y direction grid number in computational domain
+Psy_time       = 0.4                # physical time
+lo_x           = 0
+lo_y           = 0
+hi_x           = 1
+hi_y           = 1
+CFL_number     = 0.3                # CFL_number
+num_ghost_cell = 2                  # ghost cell
+gamma          = 1.4                # Gas parameters
+plot_per       = 200                # write data to vtk
 
 #Problem Spectific
-rho_L=1                # left side density
-u_L=0                  # left side x-vel
-v_L=0                  # left side y-vel
-p_L=1                  # left side pressure
-rho_R=0.125            # right side density
-u_R=0                  # right side x-vel
-v_R=0                  # right side y-vel
-p_R=0.1                # right side pressure
-angle=30.0             # tube angle
-yaxisD=0.4             # The y-intercept of the shock tube > 0
+rho_L          = 1                  # left side density
+u_L            = 0                  # left side x-vel
+v_L            = 0                  # left side y-vel
+p_L            = 1                  # left side pressure
+rho_R          = 0.125              # right side density
+u_R            = 0                  # right side x-vel
+v_R            = 0                  # right side y-vel
+p_R            = 0.1                # right side pressure
+angle          = 30.0               # tube angle
+yaxisD         = 0.4                # The y-intercept of the shock tube > 0
