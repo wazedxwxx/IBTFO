@@ -49,11 +49,12 @@ void Level_Set(char *filename,
 
     // Caculate pixel gradient
     int edg_num = 0;
-#pragma acc parallel loop
-    for (int y = 0; y < image_height; y++)
+
+#pragma acc parallel loop 
+    for (int y = 1; y < image_height - 1; y++)
     {
 #pragma acc loop
-        for (int x = 0; x < image_width; x++)
+        for (int x = 1; x < image_width - 1; x++)
         {
             double dx = 0;
             double dy = 0;
@@ -66,32 +67,33 @@ void Level_Set(char *filename,
                 dy = TempImage[Index(x, y, 0, image_width)] - TempImage[Index(x, y - 1, 0, image_width)];
             else
                 dy = TempImage[Index(x, y + 1, 0, image_width)] - TempImage[Index(x, y, 0, image_width)];
-
             TempImage[Index(x, y, 1, image_width)] = (abs(dx) > abs(dy)) ? abs(dx) : abs(dy);
-            if (TempImage[Index(x, y, 1, image_width)] > 0.1)
+            if (TempImage[Index(x, y, 1, image_width)] > 0.1){
+            #pragma acc atomic update
                 edg_num++;
+            }
+
         }
     }
 
     double *edg_point = new double[edg_num * 2];
     int edg_point_idx = 0;
-#pragma acc parallel loop
+
     for (int y = 0; y < image_height; y++)
     {
-#pragma acc loop
         for (int x = 0; x < image_width; x++)
         {
             double dx = (Psy_L / N_x) * (N_x + 2 * num_ghost_cell) / image_width;
             double dy = (Psy_H / N_y) * (N_y + 2 * num_ghost_cell) / image_height;
             if (TempImage[Index(x, y, 1, image_width)] > 0.1)
             {
-                edg_point[edg_point_idx] = -num_ghost_cell * (Psy_L / N_x) + dx * x + dx / 2;
-                edg_point[edg_num + edg_point_idx] = -num_ghost_cell * (Psy_H / N_y) + dy * y + dy / 2;
-                // cout << edg_point[edg_point_idx] << " " << edg_point[edg_num + edg_point_idx] << endl;
-                edg_point_idx++;
+                edg_point[edg_point_idx] = -num_ghost_cell * (Psy_L / N_x) + dx * x;
+                edg_point[edg_num + edg_point_idx] = -num_ghost_cell * (Psy_H / N_y) + dy * y;
+                edg_point_idx++; 
             }
         }
     }
+
 
 #pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
@@ -99,16 +101,16 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            int x = i * image_width / (N_x + 2 * num_ghost_cell);
-            int y = j * image_height / (N_y + 2 * num_ghost_cell);
+            int x = (i + 0.5) * (image_width) / (N_x + 2 * num_ghost_cell);
+            int y = (j + 0.5) * (image_height) / (N_y + 2 * num_ghost_cell);
             // cout << i << " " << j << " " << TempImage[Index(x, y, 0, image_width)] << endl;
             XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = TempImage[Index(x, y, 0, image_width)]; // Caculate cell type
         }
     }
 
     double min_distance;
-    double distance;
-#pragma acc parallel loop
+#pragma acc parallel loop reduction(min \
+                                    : min_distance)
     for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
     {
 #pragma acc loop
@@ -128,7 +130,10 @@ void Level_Set(char *filename,
 
                         if (count_factor != (2 * num_ghost_cell + 3) * (2 * num_ghost_cell + 3) * XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)])
                         {*/
-            min_distance = 1000;
+            min_distance = 100;
+            double distance;
+            int pn_factor = 1;
+#pragma acc loop
             for (int k3 = 0; k3 < edg_num; k3++)
             {
                 distance = sqrt((edg_point[k3] - XYCOORD[Index(i, j, 0, N_x + 2 * num_ghost_cell)]) *
@@ -138,9 +143,8 @@ void Level_Set(char *filename,
 
                 if (distance < min_distance)
                     min_distance = distance;
-                // cout << count_factor << endl;
             }
-            int pn_factor = XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] >= 0 ? 1 : -1;
+            pn_factor = XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] >= 0 ? 1 : -1;
             XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = pn_factor * min_distance;
             //}
         }

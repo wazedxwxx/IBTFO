@@ -38,10 +38,10 @@ void Riemann_solver(const double Psy_L,
             double rho_U = U_U[Index(i, j, 0, N_x + 2 * num_ghost_cell)]; // density
             double rho_D = U_D[Index(i, j, 0, N_x + 2 * num_ghost_cell)]; // density
 
-            rho_L = rho_L > 1e-1 ? rho_L : 1e-1;
+/*             rho_L = rho_L > 1e-1 ? rho_L : 1e-1;
             rho_R = rho_R > 1e-1 ? rho_R : 1e-1;
             rho_U = rho_U > 1e-1 ? rho_U : 1e-1;
-            rho_D = rho_D > 1e-1 ? rho_D : 1e-1;
+            rho_D = rho_D > 1e-1 ? rho_D : 1e-1; */
 
             double u_L = U_L[Index(i, j, 1, N_x + 2 * num_ghost_cell)] / rho_L;                                                 // x-velocity
             double v_L = U_L[Index(i, j, 2, N_x + 2 * num_ghost_cell)] / rho_L;                                                 // y-velocity
@@ -59,10 +59,10 @@ void Riemann_solver(const double Psy_L,
             double v_D = U_D[Index(i, j, 2, N_x + 2 * num_ghost_cell)] / rho_D;                                                 // y-velocity
             double p_D = (gamma - 1) * (U_D[Index(i, j, 3, N_x + 2 * num_ghost_cell)] - 0.5 * rho_D * (u_D * u_D + v_D * v_D)); // pressure
 
-            p_L = p_L > 1e-1 ? p_L : 1e-1;
+/*             p_L = p_L > 1e-1 ? p_L : 1e-1;
             p_R = p_R > 1e-1 ? p_R : 1e-1;
             p_U = p_U > 1e-1 ? p_U : 1e-1;
-            p_D = p_D > 1e-1 ? p_D : 1e-1;
+            p_D = p_D > 1e-1 ? p_D : 1e-1; */
 
             double a_L = std::pow((gamma * p_L / rho_L), 0.5);
             double a_R = std::pow((gamma * p_R / rho_R), 0.5);

@@ -1,4 +1,4 @@
-I=imread('A0.png');
+I=imread('./A0.png');
 I=rgb2gray(I);
 I=imresize(I,2);
 I=im2bw(I);

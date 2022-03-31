@@ -32,9 +32,9 @@ void Initialize(char *filename,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-             if (i < (N_x + 2 * num_ghost_cell) / 2)
-            //if (XYCOORD[Index_Coord(i, j, 1, N_x + 2 * num_ghost_cell)] <
-           //     -pow(3, 0.5) * XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)] + 0.5 * pow(3, 0.5) + 0.5)
+           if (i < (N_x + 2 * num_ghost_cell) / 2)
+/*             if (XYCOORD[Index_Coord(i, j, 1, N_x + 2 * num_ghost_cell)] <
+               -pow(3, 0.5) * XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)] + 0.5 * pow(3, 0.5) + 0.5) */
             {
                 U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho_L;
                 U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho_L * u_L;
