@@ -1,7 +1,7 @@
 #include "Conserve2Flux.H"
 #include <math.h>
-#define num_eq 4
-#define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
+#include "EQDefine.H"
+#include "CoordDefine.H"
 using namespace std;
 void Riemann_solver(const double Psy_L,
                     const double Psy_H,

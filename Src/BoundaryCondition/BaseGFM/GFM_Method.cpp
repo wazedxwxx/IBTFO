@@ -2,7 +2,8 @@
 #include "Mirror_IDX.H"
 #include <iostream>
 #include <math.h>
-#define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#include "EQDefine.H"
+#include "CoordDefine.H"
 #define Index_GFM(a, b, c, N) ((N) * (b) + (a)) * 8 + (c)
 void Scheme_Index(const int N_x,
                 const int N_y,

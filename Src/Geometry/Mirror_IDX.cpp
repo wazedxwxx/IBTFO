@@ -1,6 +1,6 @@
 #include "Mirror_IDX.H"
 #include <math.h>
-#define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#include "CoordDefine.H"
 void Mirror_IDX(const int N_x,
                 const int N_y,
                 const int num_ghost_cell,

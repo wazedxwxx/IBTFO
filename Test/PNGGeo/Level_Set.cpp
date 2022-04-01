@@ -23,12 +23,12 @@ void Level_Set(char *filename,
     const double hi_x = para.get("hi_x", 1);   // x direction grid number in computational domain
     const double hi_y = para.get("hi_y", 0.4); // y direction grid number in computational domain
 
+
     const double Psy_L = hi_x - lo_x;
     const double Psy_H = hi_y - lo_y;
 
-    cout << " ====  read image ====" << endl;
-
-    png_bytep *row_pointers = read_png_file("/home/ubuntu/IB2TF/Test/PNGGeo/A.png", &image_width, &image_height);
+    cout << " ====  read image ====    " << endl;
+    png_bytep *row_pointers = read_png_file("Demo.png", &image_width, &image_height);
 
     double *TempImage = new double[image_width * image_height * 6];
 // Caculate pixel value

@@ -1,5 +1,6 @@
 #include "Level_Set.H"
-#define Index(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#include "EQDefine.H"
+#include "CoordDefine.H"
 #include <iostream>
 // 0 x_coord 1 y_coord 2 phi 3 n_x 4 n_y 5 cell type
 void Level_Set(char *filename,
@@ -14,8 +15,8 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = Level_Set_function(filename, XYCOORD[Index(i, j, 0, N_x + 2 * num_ghost_cell)],
-                                                                                   XYCOORD[Index(i, j, 1, N_x + 2 * num_ghost_cell)]); // Phi
+            XYCOORD[Index_Coord(i, j, 2, N_x + 2 * num_ghost_cell)] = Level_Set_function(filename, XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)],
+                                                                                   XYCOORD[Index_Coord(i, j, 1, N_x + 2 * num_ghost_cell)]); // Phi
         }
     }
 
@@ -25,14 +26,14 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 1; j < N_y + 2 * num_ghost_cell - 1; j++)
         {
-            XYCOORD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = (XYCOORD[Index(i + 1, j, 2, N_x + 2 * num_ghost_cell)] -
-                                                                 XYCOORD[Index(i - 1, j, 2, N_x + 2 * num_ghost_cell)]) /
-                                                                ((XYCOORD[Index(i + 1, j, 0, N_x + 2 * num_ghost_cell)] -
-                                                                  XYCOORD[Index(i - 1, j, 0, N_x + 2 * num_ghost_cell)])); // N_x
-            XYCOORD[Index(i, j, 4, N_x + 2 * num_ghost_cell)] = (XYCOORD[Index(i, j + 1, 2, N_x + 2 * num_ghost_cell)] -
-                                                                 XYCOORD[Index(i, j - 1, 2, N_x + 2 * num_ghost_cell)]) /
-                                                                ((XYCOORD[Index(i, j + 1, 1, N_x + 2 * num_ghost_cell)] -
-                                                                  XYCOORD[Index(i, j - 1, 1, N_x + 2 * num_ghost_cell)])); // N_y
+            XYCOORD[Index_Coord(i, j, 3, N_x + 2 * num_ghost_cell)] = (XYCOORD[Index_Coord(i + 1, j, 2, N_x + 2 * num_ghost_cell)] -
+                                                                 XYCOORD[Index_Coord(i - 1, j, 2, N_x + 2 * num_ghost_cell)]) /
+                                                                ((XYCOORD[Index_Coord(i + 1, j, 0, N_x + 2 * num_ghost_cell)] -
+                                                                  XYCOORD[Index_Coord(i - 1, j, 0, N_x + 2 * num_ghost_cell)])); // N_x
+            XYCOORD[Index_Coord(i, j, 4, N_x + 2 * num_ghost_cell)] = (XYCOORD[Index_Coord(i, j + 1, 2, N_x + 2 * num_ghost_cell)] -
+                                                                 XYCOORD[Index_Coord(i, j - 1, 2, N_x + 2 * num_ghost_cell)]) /
+                                                                ((XYCOORD[Index_Coord(i, j + 1, 1, N_x + 2 * num_ghost_cell)] -
+                                                                  XYCOORD[Index_Coord(i, j - 1, 1, N_x + 2 * num_ghost_cell)])); // N_y
         }
     }
 
@@ -44,10 +45,10 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
         {
-            if (XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] >= 0)
-                XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 0; // fluid cell
+            if (XYCOORD[Index_Coord(i, j, 2, N_x + 2 * num_ghost_cell)] >= 0)
+                XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] = 0; // fluid cell
             else
-                XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 1; // solid cell
+                XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] = 1; // solid cell
         }
     }
 
@@ -57,14 +58,14 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
         {
-            if (XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] == 0)
+            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] == 0)
             {
                 for (int k = 1; k < num_ghost_cell + 1; k++)
                 {
-                    XYCOORD[Index(i + k, j, 5, N_x + 2 * num_ghost_cell)] = 2 * XYCOORD[Index(i + k, j, 5, N_x + 2 * num_ghost_cell)];
-                    XYCOORD[Index(i - k, j, 5, N_x + 2 * num_ghost_cell)] = 2 * XYCOORD[Index(i - k, j, 5, N_x + 2 * num_ghost_cell)];
-                    XYCOORD[Index(i, j + k, 5, N_x + 2 * num_ghost_cell)] = 2 * XYCOORD[Index(i, j + k, 5, N_x + 2 * num_ghost_cell)];
-                    XYCOORD[Index(i, j - k, 5, N_x + 2 * num_ghost_cell)] = 2 * XYCOORD[Index(i, j - k, 5, N_x + 2 * num_ghost_cell)];
+                    XYCOORD[Index_Coord(i + k, j, 5, N_x + 2 * num_ghost_cell)] = 2 * XYCOORD[Index_Coord(i + k, j, 5, N_x + 2 * num_ghost_cell)];
+                    XYCOORD[Index_Coord(i - k, j, 5, N_x + 2 * num_ghost_cell)] = 2 * XYCOORD[Index_Coord(i - k, j, 5, N_x + 2 * num_ghost_cell)];
+                    XYCOORD[Index_Coord(i, j + k, 5, N_x + 2 * num_ghost_cell)] = 2 * XYCOORD[Index_Coord(i, j + k, 5, N_x + 2 * num_ghost_cell)];
+                    XYCOORD[Index_Coord(i, j - k, 5, N_x + 2 * num_ghost_cell)] = 2 * XYCOORD[Index_Coord(i, j - k, 5, N_x + 2 * num_ghost_cell)];
                 }
             }
         }
@@ -76,8 +77,8 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            if (XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] > 1)
-                XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
+            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] > 1)
+                XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
         }
     }
 
@@ -87,7 +88,7 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
+            XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
         }
     }
 
@@ -97,7 +98,7 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
+            XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
         }
     }
 
@@ -107,7 +108,7 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 0; j < num_ghost_cell; j++)
         {
-            XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
+            XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
         }
     }
 
@@ -117,7 +118,7 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = N_y + num_ghost_cell; j < N_y + 2 * num_ghost_cell; j++)
         {
-            XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
+            XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
         }
     }
 
@@ -127,7 +128,7 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = N_y + num_ghost_cell; j < N_y + 2 * num_ghost_cell; j++)
         {
-            XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
+            XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] = 2; // ghost cell
         }
     }
 }

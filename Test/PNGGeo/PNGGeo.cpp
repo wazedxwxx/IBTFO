@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <string>
 
+#include "EQDefine.H"
 #include "Initialize.H"
 #include "Psy_coord.H"
 #include "WriteData.H"
@@ -19,8 +20,7 @@
 
 using namespace std;
 
-#define num_eq 4
-#define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
+
 
 int main(int argc,char** argv)
 {
@@ -47,7 +47,7 @@ int main(int argc,char** argv)
     const int plot_int = para.get("plot_int", 0);//Outputs NUM
     int output_int = 1;
 
-    cout <<" ==== parameters are read ===="<<endl;
+    cout <<" ====  parameters are read ===="<<endl;
 
     const double h = 1.0 / N_x;        //cell size
     const double delta_t = 1 / 1000;   //Preset time step

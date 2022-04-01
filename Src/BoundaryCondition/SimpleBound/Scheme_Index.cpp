@@ -1,7 +1,6 @@
 #include "Scheme_Index.H"
-#define num_eq 4
-#define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
-#define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#include "EQDefine.H"
+#include "CoordDefine.H"
 #define Index_sch(a, b, c, N) ((N) * (b) + (a)) * 8 + (c)
 void Scheme_Index(const int N_x,
                   const int N_y,

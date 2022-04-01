@@ -1,8 +1,7 @@
 #include "Boundary.H"
-#define num_eq 4
-#define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#include "EQDefine.H"
+#include "CoordDefine.H"
 #define Index_GFM(a, b, c, N) ((N) * (b) + (a)) * 8 + (c)
-#define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
 #include <iostream>
 #include <math.h>
 void Boundary(const int N_x,

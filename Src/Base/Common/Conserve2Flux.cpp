@@ -1,6 +1,6 @@
 #include "Conserve2Flux.H"
-#define num_eq 4
-#define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
+#include "EQDefine.H"
+#include "CoordDefine.H"
 void Conserve2Flux(const int N_x,
                    const int N_y,
                    const int num_ghost_cell,

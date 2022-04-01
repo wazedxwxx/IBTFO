@@ -2,9 +2,8 @@
 #include "Conserve2Flux.H"
 #include "WriteData.H"
 #include <iostream>
-#define num_eq 4
-#define Index(a, b, c, N) ((N) * (b) + (a)) * num_eq + (c)
-#define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#include "EQDefine.H"
+#include "CoordDefine.H"
 void Advance(const double Psy_L,
                   const double Psy_H,
                   const int N_x,

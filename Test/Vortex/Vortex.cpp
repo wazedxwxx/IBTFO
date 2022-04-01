@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <string>
 
+#include "EQDefine.H"
 #include "Initialize.H"
 #include "Psy_coord.H"
 #include "WriteData.H"
@@ -16,8 +17,6 @@
 #include "ComputeDt.H"
 #include "ParamReader.H"
 
-using namespace std;
-#define num_eq 4
 
 
 int main(int argc,char** argv)

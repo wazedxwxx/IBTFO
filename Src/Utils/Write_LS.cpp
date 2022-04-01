@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "Write_LS.H"
-#define Index(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#include "CoordDefine.H"
 #define Index_sch(a, b, c, N) ((N) * (b) + (a)) * 2 + (c)
 using namespace std;
 void Write_LS(const double Psy_L,
@@ -31,7 +31,7 @@ void Write_LS(const double Psy_L,
     {
         for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
         {
-            outfile << XYCOORD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] << endl;
+            outfile << XYCOORD[Index_Coord(i, j, 2, N_x + 2 * num_ghost_cell)] << endl;
         }
     }
 
@@ -41,7 +41,7 @@ void Write_LS(const double Psy_L,
     {
         for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
         {
-            outfile << XYCOORD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] << endl;
+            outfile << XYCOORD[Index_Coord(i, j, 3, N_x + 2 * num_ghost_cell)] << endl;
         }
     }
 
@@ -51,7 +51,7 @@ void Write_LS(const double Psy_L,
     {
         for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
         {
-            outfile << XYCOORD[Index(i, j, 4, N_x + 2 * num_ghost_cell)] << endl;
+            outfile << XYCOORD[Index_Coord(i, j, 4, N_x + 2 * num_ghost_cell)] << endl;
         }
     }
 
@@ -61,7 +61,7 @@ void Write_LS(const double Psy_L,
     {
         for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
         {
-            outfile << XYCOORD[Index(i, j, 5, N_x + 2 * num_ghost_cell)] << endl;
+            outfile << XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] << endl;
         }
     }
 

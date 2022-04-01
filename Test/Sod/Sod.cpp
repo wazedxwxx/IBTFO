@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <string>
 
+#include "EQDefine.H"
 #include "Initialize.H"
 #include "Psy_coord.H"
 #include "WriteData.H"
