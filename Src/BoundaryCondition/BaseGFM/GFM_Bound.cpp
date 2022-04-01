@@ -1,7 +1,7 @@
 #include "Boundary.H"
 #include "EQDefine.H"
 #include "CoordDefine.H"
-#define Index_GFM(a, b, c, N) ((N) * (b) + (a)) * 8 + (c)
+#include "SchDefine.H"
 #include <iostream>
 #include <math.h>
 void Boundary(const int N_x,
@@ -57,14 +57,14 @@ void Boundary(const int N_x,
 
             if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] > 1)
             {
-                double a1 = GFM_Index[Index_GFM(i, j, 4, N_x + 2 * num_ghost_cell)];
-                double a2 = GFM_Index[Index_GFM(i, j, 5, N_x + 2 * num_ghost_cell)];
-                double a3 = GFM_Index[Index_GFM(i, j, 6, N_x + 2 * num_ghost_cell)];
-                double a4 = GFM_Index[Index_GFM(i, j, 7, N_x + 2 * num_ghost_cell)];
+                double a1 = GFM_Index[Index_sch(i, j, 4, N_x + 2 * num_ghost_cell)];
+                double a2 = GFM_Index[Index_sch(i, j, 5, N_x + 2 * num_ghost_cell)];
+                double a3 = GFM_Index[Index_sch(i, j, 6, N_x + 2 * num_ghost_cell)];
+                double a4 = GFM_Index[Index_sch(i, j, 7, N_x + 2 * num_ghost_cell)];
                 double n_x = XYCOORD[Index_Coord(i, j, 3, N_x + 2 * num_ghost_cell)];
                 double n_y = XYCOORD[Index_Coord(i, j, 4, N_x + 2 * num_ghost_cell)];
-                int IDX = GFM_Index[Index_GFM(i, j, 2, N_x + 2 * num_ghost_cell)];
-                int IDY = GFM_Index[Index_GFM(i, j, 3, N_x + 2 * num_ghost_cell)];
+                int IDX = GFM_Index[Index_sch(i, j, 2, N_x + 2 * num_ghost_cell)];
+                int IDY = GFM_Index[Index_sch(i, j, 3, N_x + 2 * num_ghost_cell)];
                 double rho1 = U_NEW[Index(IDX, IDY, 0, N_x + 2 * num_ghost_cell)];
                 double u1 = U_NEW[Index(IDX, IDY, 1, N_x + 2 * num_ghost_cell)] / rho1;
                 double v1 = U_NEW[Index(IDX, IDY, 2, N_x + 2 * num_ghost_cell)] / rho1;
@@ -104,8 +104,8 @@ void Boundary(const int N_x,
                           << " Phi " << std::abs(XYCOORD[Index_Coord(i, j, 2, N_x + 2 * num_ghost_cell)])
                           << " nx " << XYCOORD[Index_Coord(i, j, 3, N_x + 2 * num_ghost_cell)]
                           << " ny " << XYCOORD[Index_Coord(i, j, 4, N_x + 2 * num_ghost_cell)]
-                          << " MirrorIDX " << GFM_Index[Index_GFM(i, j, 2, N_x + 2 * num_ghost_cell)]
-                          << " MirrorIDY " << GFM_Index[Index_GFM(i, j, 3, N_x + 2 * num_ghost_cell)]
+                          << " MirrorIDX " << GFM_Index[Index_sch(i, j, 2, N_x + 2 * num_ghost_cell)]
+                          << " MirrorIDY " << GFM_Index[Index_sch(i, j, 3, N_x + 2 * num_ghost_cell)]
                           << " A1 " << a1
                           << " rho1 " << rho1
                           << " u1 " << u1

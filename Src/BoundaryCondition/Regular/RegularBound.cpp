@@ -2,6 +2,7 @@
 #include "WriteData.H"
 #include "EQDefine.H"
 #include "CoordDefine.H"
+#include "SchDefine.H"
 using namespace std;
 void Boundary(const int N_x,
                   const int N_y,

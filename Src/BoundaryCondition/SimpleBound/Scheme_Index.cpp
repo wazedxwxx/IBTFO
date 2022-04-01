@@ -1,7 +1,7 @@
 #include "Scheme_Index.H"
 #include "EQDefine.H"
 #include "CoordDefine.H"
-#define Index_sch(a, b, c, N) ((N) * (b) + (a)) * 8 + (c)
+#include "SchDefine.H"
 void Scheme_Index(const int N_x,
                   const int N_y,
                   const int num_ghost_cell,

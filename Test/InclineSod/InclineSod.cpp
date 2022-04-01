@@ -4,6 +4,8 @@
 #include <string>
 
 #include "EQDefine.H"
+#include "CoordDefine.H"
+#include "SchDefine.H"
 #include "Initialize.H"
 #include "Psy_coord.H"
 #include "WriteData.H"
@@ -43,6 +45,8 @@ int main(int argc,char** argv)
     const int num_ghost_cell = int(para.get("num_ghost_cell", 2));
     const int plot_per = int(para.get("plot_per", 100));
     const double gamma = para.get("gamma", 1.4);//Gas parameters
+    const int plot_int = para.get("plot_int", 0);//Outputs NUM
+    int output_int = 1;
 
 
     cout <<" ==== parameters are read ===="<<endl;
@@ -56,7 +60,7 @@ int main(int argc,char** argv)
     const double Psy_H = hi_y - lo_y;
 
     double *U_OLD = new double[(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq];
-    double *XYCOORD = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * 6];
+    double *XYCOORD = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_coord];
     double *U_TMP = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_NEW = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *U_TMPRK = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
@@ -70,7 +74,7 @@ int main(int argc,char** argv)
     double *G_U = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *F_OLD = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *G_OLD = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
-    double *SCHEME_IDX = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * 8];
+    double *SCHEME_IDX = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_sch];
     
     cout <<" ====  memory allocation complete ===="<<endl;
 
@@ -98,7 +102,7 @@ int main(int argc,char** argv)
                  copy(G_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
                  copy(U_TMP[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
                  copy(U_NEW[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])\
-                 copy(SCHEME_IDX[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * 8])\
+                 copy(SCHEME_IDX[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_sch])\
 
     while (now_t < Psy_time && iter < max_iter)
     {    
@@ -109,11 +113,21 @@ int main(int argc,char** argv)
         now_t = now_t + dt;
         iter++;   
 
-        if (iter % plot_per == 0)
-        {
+if (plot_int==0){
+    if (iter % plot_per == 0)
+    {
         cout <<" ==== Writing Data Wait ===="<<endl;
         WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
-        }
+    }
+}
+else{
+    if (now_t > output_int * Psy_time / plot_int)
+    {
+        cout <<" ==== Writing Data Wait ===="<<endl;
+        WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
+        output_int++;
+    }
+}
         cout.precision(6);
         cout << "iter : "<<iter<<".   dt :"<<dt<<".   time :"<<now_t<<endl;
     }

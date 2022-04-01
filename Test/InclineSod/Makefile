@@ -1,7 +1,7 @@
 Scheme = MUSCL #Lax or MUSCL or MHM
 Riemann = HLL #HLL or PVRS
 Limiter = minmod #minmod or VanLeer or VanAlbada
-Boundary = SimpleBound #Regular or BaseGFM or SimpleBound
+Boundary = BaseGFM #Regular or BaseGFM or SimpleBound
 Time = SingleStep #SingleStep or RK2
 
 
@@ -31,7 +31,7 @@ $(shell rm -f $(PROM))
 
 CFLAGS = -fast -ta=multicore -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
-                 -I$(SlopelimiterSRC) -I$(TimeSRC) -lpng16
+                 -I$(SlopelimiterSRC) -I$(TimeSRC) -I$(BoundSRC)$(Boundary) -lpng16
 
 
 $(PROM) : $(OBJ)
