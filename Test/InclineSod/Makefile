@@ -1,7 +1,7 @@
 Scheme = MUSCL #Lax or MUSCL or MHM
 Riemann = HLL #HLL or PVRS
 Limiter = minmod #minmod or VanLeer or VanAlbada
-Boundary = BCGFM #Regular or BaseGFM or SimpleBound or BCGFM or HBCGFM
+Boundary = BaseGFM #Regular or BaseGFM or SimpleBound or BCGFM or HBCGFM
 Time = SingleStep #SingleStep or RK2
 
 

@@ -250,19 +250,19 @@ void Level_Set(char *filename,
         }*/
 
 #pragma acc parallel loop
-    for (int i = 1; i < N_x + 2 * num_ghost_cell - 1; i++)
+    for (int i = 2; i < N_x + 2 * num_ghost_cell - 2; i++)
     {
 #pragma acc loop
-        for (int j = 1; j < N_y + 2 * num_ghost_cell - 1; j++)
+        for (int j = 2; j < N_y + 2 * num_ghost_cell - 2; j++)
         {
-            XYCOORD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = (XYCOORD[Index(i + 1, j, 2, N_x + 2 * num_ghost_cell)] -
-                                                                 XYCOORD[Index(i - 1, j, 2, N_x + 2 * num_ghost_cell)]) /
-                                                                ((XYCOORD[Index(i + 1, j, 0, N_x + 2 * num_ghost_cell)] -
-                                                                  XYCOORD[Index(i - 1, j, 0, N_x + 2 * num_ghost_cell)])); // N_x
-            XYCOORD[Index(i, j, 4, N_x + 2 * num_ghost_cell)] = (XYCOORD[Index(i, j + 1, 2, N_x + 2 * num_ghost_cell)] -
-                                                                 XYCOORD[Index(i, j - 1, 2, N_x + 2 * num_ghost_cell)]) /
-                                                                ((XYCOORD[Index(i, j + 1, 1, N_x + 2 * num_ghost_cell)] -
-                                                                  XYCOORD[Index(i, j - 1, 1, N_x + 2 * num_ghost_cell)])); // N_y
+            XYCOORD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = (XYCOORD[Index(i + 2, j, 2, N_x + 2 * num_ghost_cell)] -
+                                                                 XYCOORD[Index(i - 2, j, 2, N_x + 2 * num_ghost_cell)]) /
+                                                                ((XYCOORD[Index(i + 2, j, 0, N_x + 2 * num_ghost_cell)] -
+                                                                  XYCOORD[Index(i - 2, j, 0, N_x + 2 * num_ghost_cell)])); // N_x
+            XYCOORD[Index(i, j, 4, N_x + 2 * num_ghost_cell)] = (XYCOORD[Index(i, j + 2, 2, N_x + 2 * num_ghost_cell)] -
+                                                                 XYCOORD[Index(i, j - 2, 2, N_x + 2 * num_ghost_cell)]) /
+                                                                ((XYCOORD[Index(i, j + 2, 1, N_x + 2 * num_ghost_cell)] -
+                                                                  XYCOORD[Index(i, j - 2, 1, N_x + 2 * num_ghost_cell)])); // N_y
         }
     }
 

@@ -1,6 +1,7 @@
 I=imread('./A0.png');
 I=rgb2gray(I);
-I=imresize(I,2);
+imshow(I)
+I=imresize(I,1.5);
 I=im2bw(I);
 I0=I;
 I=cat(3,I,255.*I0);
