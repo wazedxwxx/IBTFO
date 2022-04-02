@@ -1,16 +1,17 @@
 #do not add space in params!!!
-max_iter= 10000
-N_x=400                # x direction grid number in computational domain
-N_y=400                # y direction grid number in computational domain
+max_iter= 1000000
+N_x=512                # x direction grid number in computational domain
+N_y=512                # y direction grid number in computational domain
 Psy_time=1.0           # physical time
 lo_x=0
 lo_y=0
 hi_x=1
 hi_y=1
-CFL_number=0.3         # CFL_number
+CFL_number=0.1         # CFL_number
 num_ghost_cell=2       # ghost cell
 gamma=1.4              # Gas parameters
 plot_per=330           # write data to vtk
+plot_int=10
 
 #Problem Spectific
 fa=1.0

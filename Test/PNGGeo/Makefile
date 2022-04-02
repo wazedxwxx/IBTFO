@@ -30,7 +30,7 @@ GeometryFILES = $(filter-out $(GeometrySRC)/Level_Set.cpp,$(GeometryFILESTMP))
 
 CFLAGS = -fast -ta=multicore -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
-                 -I$(SlopelimiterSRC) -I$(TimeSRC) -lpng16
+                 -I$(SlopelimiterSRC) -I$(TimeSRC) -I$(BoundSRC)$(Boundary) -lpng16
 
 
 $(PROM) : $(OBJ)

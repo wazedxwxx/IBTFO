@@ -2,11 +2,13 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <math.h>
 
 #include "EQDefine.H"
 #include "CoordDefine.H"
 #include "SchDefine.H"
 #include "Initialize.H"
+#include "CaculateMass.H"
 #include "Psy_coord.H"
 #include "WriteData.H"
 #include "Scheme_Index.H"
@@ -75,6 +77,7 @@ int main(int argc,char** argv)
     double *F_OLD = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *G_OLD = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_eq];
     double *SCHEME_IDX = new double[(N_x + 2 *num_ghost_cell) * (N_y + 2 *num_ghost_cell) * num_sch];
+    double Mass_start, Mass_now, Mass_loss;
     
     cout <<" ====  memory allocation complete ===="<<endl;
 
@@ -84,6 +87,9 @@ int main(int argc,char** argv)
     Scheme_Index(N_x, N_y, num_ghost_cell, XYCOORD, SCHEME_IDX);
     // WriteIDX2TXT(N_x, N_y, num_ghost_cell, SCHEME_IDX);
     Initialize(filename,Psy_L, Psy_H, N_x, N_y, num_ghost_cell,gamma, U_OLD, U_NEW, XYCOORD);
+    Mass_start = CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD);
+    cout << " ====  Initial Mass is " <<Mass_start <<" ===="<< endl;
+    cout << " ====  Geometry Initialize complete ====" << endl;
     WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);
     Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW,XYCOORD,SCHEME_IDX);
    
@@ -127,8 +133,10 @@ else{
         output_int++;
     }
 }
-        cout.precision(6);
-        cout << "iter : "<<iter<<".   dt :"<<dt<<".   time :"<<now_t<<endl;
+       Mass_now = CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD);
+       Mass_loss = abs(Mass_start - Mass_now);
+       cout.precision(6);
+       cout << "iter : " << iter << ".   dt :" << dt << ".   time :" << now_t << ".   mass loss :" << Mass_loss << endl;
     }
     return 0;
 }

@@ -1,15 +1,15 @@
 #do not add space in params!!!
 max_iter=15000
 N_x=500                 # x direction grid number in computational domain
-N_y=200                  # y direction grid number in computational domain
+N_y=500                  # y direction grid number in computational domain
 Psy_time=0.5             # physical time
 
 lo_x           = 0
 lo_y           = 0
 hi_x           = 1
-hi_y           = 0.4
+hi_y           = 1
 
-plot_int=25            # ouput result
+plot_int=10            # ouput result
 CFL_number=0.1         # CFL_number
 num_ghost_cell=2       # ghost cell
 rho_L=1                # left side density
