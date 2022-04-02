@@ -45,10 +45,10 @@ void Initialize(char *filename,
             double r = 0;
             double phi = 0;
 
-            U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho0;
-            U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho0 * u;
-            U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = rho0 * v;
-            U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = (p0 + 2.0 * rho0 * ua * ua * p) / (gamma - 1) + 0.5 * rho0 * (u * u + v * v);
+            U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho0;
+            U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho0 * u;
+            U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho0 * v;
+            U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = (p0 + 2.0 * rho0 * ua * ua * p) / (gamma - 1) + 0.5 * rho0 * (u * u + v * v);
             if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5 || XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] > 1.5)
             {
                 xp = XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)];
@@ -83,14 +83,14 @@ void Initialize(char *filename,
                     v = 0.0;
                 }
 
-                U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell)] = rho0;
-                U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell)] = rho0 * u;
-                U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell)] = rho0 * v;
-                U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell)] = (p0 + 2.0 * rho0 * ua * ua * p) / (gamma - 1) + 0.5 * rho0 * (u * u + v * v);
+                U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho0;
+                U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho0 * u;
+                U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho0 * v;
+                U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = (p0 + 2.0 * rho0 * ua * ua * p) / (gamma - 1) + 0.5 * rho0 * (u * u + v * v);
             }
             for (int k = 0; k < num_eq; k++)
             {
-                U_NEW[Index(i, j, k, N_x + 2 * num_ghost_cell)] = U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell)];
+                U_NEW[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
             }
         }
     }

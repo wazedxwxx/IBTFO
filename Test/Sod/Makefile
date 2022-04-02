@@ -29,7 +29,7 @@ $(shell rm -f $(PROM))
 
 CFLAGS = -fast -ta=multicore -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
-                 -I$(SlopelimiterSRC) -I$(TimeSRC) -I$(BoundSRC)$(Boundary) -lpng16
+                 -I$(SlopelimiterSRC) -I$(TimeSRC) -I$(BoundSRC)$(Boundary) -I$(AdvanceSRC)$(Scheme) -lpng16
 
 
 $(PROM) : $(OBJ)
