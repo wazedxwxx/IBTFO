@@ -14,20 +14,18 @@ void Mirror_IDX(const int N_x,
 #pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell - 1; i++)
     {
-        if (x_mirror < XYCOORD[Index_Coord(i + 1, 0, 0, N_x + 2 * num_ghost_cell)] && x_mirror >= XYCOORD[Index_Coord(i, 0, 0, N_x + 2 * num_ghost_cell)])
+        if (x_mirror < XYCOORD[Index_Coord(i + 1, 0, 0)] && x_mirror >= XYCOORD[Index_Coord(i, 0, 0)])
         {
             *IDX = i;
         }
     }
 
-
 #pragma acc parallel loop
     for (int j = 0; j < N_y + 2 * num_ghost_cell - 1; j++)
     {
-        if (y_mirror < XYCOORD[Index_Coord(0, j+1, 1, N_x + 2 * num_ghost_cell)] && y_mirror >= XYCOORD[Index_Coord(0, j, 1, N_x + 2 * num_ghost_cell)])
+        if (y_mirror < XYCOORD[Index_Coord(0, j + 1, 1)] && y_mirror >= XYCOORD[Index_Coord(0, j, 1)])
         {
             *IDY = j;
         }
     }
-
 }

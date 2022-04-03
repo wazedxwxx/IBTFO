@@ -15,22 +15,20 @@ void Conserve2Flux(const int N_x,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            double rho = U[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-            double u = U[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / U[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-            double v = U[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / U[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-            double p = (gamma - 1) * (U[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - 0.5 * rho * (u * u + v * v));
+            double rho = U[Index(i, j, 0)];
+            double u = U[Index(i, j, 1)] / U[Index(i, j, 0)];
+            double v = U[Index(i, j, 2)] / U[Index(i, j, 0)];
+            double p = (gamma - 1) * (U[Index(i, j, 3)] - 0.5 * rho * (u * u + v * v));
 
+            F[Index(i, j, 0)] = rho * u;
+            F[Index(i, j, 1)] = rho * u * u + p;
+            F[Index(i, j, 2)] = rho * u * v;
+            F[Index(i, j, 3)] = (U[Index(i, j, 3)] + p) * u;
 
-            F[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho * u;
-            F[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho * u * u + p;
-            F[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho * u * v;
-            F[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = (U[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] + p) * u;
-
-            G[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho * v;
-            G[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho * u * v;
-            G[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho * v * v + p;
-            G[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = (U[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] + p) * v;
-
+            G[Index(i, j, 0)] = rho * v;
+            G[Index(i, j, 1)] = rho * u * v;
+            G[Index(i, j, 2)] = rho * v * v + p;
+            G[Index(i, j, 3)] = (U[Index(i, j, 3)] + p) * v;
         }
     }
 }

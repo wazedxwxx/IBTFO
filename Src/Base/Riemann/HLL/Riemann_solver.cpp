@@ -10,22 +10,12 @@ void Riemann_solver(const double Psy_L,
                     const int num_ghost_cell,
                     const double gamma,
                     double *U_OLD,
-                    double *F_OLD,
-                    double *G_OLD,
-                    double *F_L,
-                    double *F_R,
-                    double *G_D,
-                    double *G_U,
-                    double *U_L,
-                    double *U_R,
-                    double *U_D,
-                    double *U_U,
                     double *U_TMP)
 {
-    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, U_L, F_L, U_TMP);
-    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, U_R, F_R, U_TMP);
-    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, U_D, U_TMP, G_D);
-    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, U_U, U_TMP, G_U);
+    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, &U_TMP[Index_U_L(0, 0, 0)], &U_TMP[Index_F_L(0, 0, 0)], U_TMP);
+    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, &U_TMP[Index_U_R(0, 0, 0)], &U_TMP[Index_F_R(0, 0, 0)], U_TMP);
+    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, &U_TMP[Index_U_D(0, 0, 0)], U_TMP, &U_TMP[Index_G_D(0, 0, 0)]);
+    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, &U_TMP[Index_U_U(0, 0, 0)], U_TMP, &U_TMP[Index_G_U(0, 0, 0)]);
 
 #pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
@@ -33,31 +23,31 @@ void Riemann_solver(const double Psy_L,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            double rho_L = U_L[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]; // density
-            double rho_R = U_R[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]; // density
-            double rho_U = U_U[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]; // density
-            double rho_D = U_D[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]; // density
+            double rho_L = U_TMP[Index_U_L(i, j, 0)]; // density
+            double rho_R = U_TMP[Index_U_R(i, j, 0)]; // density
+            double rho_U = U_TMP[Index_U_U(i, j, 0)]; // density
+            double rho_D = U_TMP[Index_U_D(i, j, 0)]; // density
 
             /*             rho_L = rho_L > 1e-1 ? rho_L : 1e-1;
                         rho_R = rho_R > 1e-1 ? rho_R : 1e-1;
                         rho_U = rho_U > 1e-1 ? rho_U : 1e-1;
                         rho_D = rho_D > 1e-1 ? rho_D : 1e-1; */
 
-            double u_L = U_L[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / rho_L;                                                 // x-velocity
-            double v_L = U_L[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / rho_L;                                                 // y-velocity
-            double p_L = (gamma - 1) * (U_L[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - 0.5 * rho_L * (u_L * u_L + v_L * v_L)); // pressure
+            double u_L = U_TMP[Index_U_L(i, j, 1)] / rho_L;                                                 // x-velocity
+            double v_L = U_TMP[Index_U_L(i, j, 2)] / rho_L;                                                 // y-velocity
+            double p_L = (gamma - 1) * (U_TMP[Index_U_L(i, j, 3)] - 0.5 * rho_L * (u_L * u_L + v_L * v_L)); // pressure
 
-            double u_R = U_R[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / rho_R;                                                 // x-velocity
-            double v_R = U_R[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / rho_R;                                                 // y-velocity
-            double p_R = (gamma - 1) * (U_R[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - 0.5 * rho_R * (u_R * u_R + v_R * v_R)); // pressure
+            double u_R = U_TMP[Index_U_R(i, j, 1)] / rho_R;                                                 // x-velocity
+            double v_R = U_TMP[Index_U_R(i, j, 2)] / rho_R;                                                 // y-velocity
+            double p_R = (gamma - 1) * (U_TMP[Index_U_R(i, j, 3)] - 0.5 * rho_R * (u_R * u_R + v_R * v_R)); // pressure
 
-            double u_U = U_U[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / rho_U;                                                 // x-velocity
-            double v_U = U_U[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / rho_U;                                                 // y-velocity
-            double p_U = (gamma - 1) * (U_U[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - 0.5 * rho_U * (u_U * u_U + v_U * v_U)); // pressure
+            double u_U = U_TMP[Index_U_U(i, j, 1)] / rho_U;                                                 // x-velocity
+            double v_U = U_TMP[Index_U_U(i, j, 2)] / rho_U;                                                 // y-velocity
+            double p_U = (gamma - 1) * (U_TMP[Index_U_U(i, j, 3)] - 0.5 * rho_U * (u_U * u_U + v_U * v_U)); // pressure
 
-            double u_D = U_D[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / rho_D;                                                 // x-velocity
-            double v_D = U_D[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / rho_D;                                                 // y-velocity
-            double p_D = (gamma - 1) * (U_D[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - 0.5 * rho_D * (u_D * u_D + v_D * v_D)); // pressure
+            double u_D = U_TMP[Index_U_D(i, j, 1)] / rho_D;                                                 // x-velocity
+            double v_D = U_TMP[Index_U_D(i, j, 2)] / rho_D;                                                 // y-velocity
+            double p_D = (gamma - 1) * (U_TMP[Index_U_D(i, j, 3)] - 0.5 * rho_D * (u_D * u_D + v_D * v_D)); // pressure
 
             /*             p_L = p_L > 1e-1 ? p_L : 1e-1;
                         p_R = p_R > 1e-1 ? p_R : 1e-1;
@@ -84,32 +74,31 @@ void Riemann_solver(const double Psy_L,
             {
                 if (S_L >= 0)
                 {
-                    F_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = F_L[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
+                    U_TMP[Index_F_OLD(i, j, k)] = U_TMP[Index_F_L(i, j, k)];
                 }
                 else
                 {
                     if (S_R <= 0)
-                        F_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = F_R[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
+                        U_TMP[Index_F_OLD(i, j, k)] = U_TMP[Index_F_R(i, j, k)];
                     else
-                        F_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = (S_R * F_L[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                                     S_L * F_R[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] +
-                                                                                                     S_R * S_L * (U_R[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_L[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)])) /
-                                                                                                    (S_R - S_L);
+                        U_TMP[Index_F_OLD(i, j, k)] = (S_R * U_TMP[Index_F_L(i, j, k)] -
+                                                       S_L * U_TMP[Index_F_R(i, j, k)] +
+                                                       S_R * S_L * (U_TMP[Index_U_R(i, j, k)] - U_TMP[Index_U_L(i, j, k)])) /
+                                                      (S_R - S_L);
                 }
 
                 if (S_D >= 0)
                 {
-                    G_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = G_D[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
                 }
                 else
                 {
                     if (S_U <= 0)
-                        G_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = G_U[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
+                        U_TMP[Index_G_OLD(i, j, k)] = U_TMP[Index_G_U(i, j, k)];
                     else
-                        G_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = (S_U * G_D[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                                     S_D * G_U[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] +
-                                                                                                     S_U * S_D * (U_U[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_D[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)])) /
-                                                                                                    (S_U - S_D);
+                        U_TMP[Index_G_OLD(i, j, k)] = (S_U * U_TMP[Index_G_D(i, j, k)] -
+                                                       S_D * U_TMP[Index_G_U(i, j, k)] +
+                                                       S_U * S_D * (U_TMP[Index_U_U(i, j, k)] - U_TMP[Index_U_D(i, j, k)])) /
+                                                      (S_U - S_D);
                 }
             }
         }

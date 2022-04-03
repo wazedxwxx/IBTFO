@@ -16,18 +16,8 @@ void Advance(const double Psy_L,
              const double gamma,
              double dt,
              double *U_OLD,
-             double *F_OLD,
-             double *G_OLD,
              double *U_TMP,
              double *U_NEW,
-             double *F_L,
-             double *F_R,
-             double *G_D,
-             double *G_U,
-             double *U_L,
-             double *U_R,
-             double *U_D,
-             double *U_U,
              double *XYCOORD)
 {
     const double dx = Psy_L / N_x;
@@ -42,9 +32,9 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_L[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] +
-                                                                                          0.5 * Slope_limiter(U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_OLD[Index(i - 1, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)],
-                                                                                                              U_OLD[Index(i + 1, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]);
+                U_TMP[Index_U_L(i, j, k)] = U_OLD[Index(i, j, k)] +
+                                            0.5 * Slope_limiter(U_OLD[Index(i, j, k)] - U_OLD[Index(i - 1, j, k)],
+                                                                U_OLD[Index(i + 1, j, k)] - U_OLD[Index(i, j, k)]);
             }
         }
     }
@@ -58,9 +48,9 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_R[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_OLD[Index(i + 1, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                          0.5 * Slope_limiter(U_OLD[Index(i + 2, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_OLD[Index(i + 1, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)],
-                                                                                                              U_OLD[Index(i + 1, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]);
+                U_TMP[Index_U_R(i, j, k)] = U_OLD[Index(i + 1, j, k)] -
+                                            0.5 * Slope_limiter(U_OLD[Index(i + 2, j, k)] - U_OLD[Index(i + 1, j, k)],
+                                                                U_OLD[Index(i + 1, j, k)] - U_OLD[Index(i, j, k)]);
             }
         }
     }
@@ -74,9 +64,9 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_D[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] +
-                                                                                          0.5 * Slope_limiter(U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_OLD[Index(i, j - 1, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)],
-                                                                                                              U_OLD[Index(i, j + 1, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]);
+                U_TMP[Index_U_D(i, j, k)] = U_OLD[Index(i, j, k)] +
+                                            0.5 * Slope_limiter(U_OLD[Index(i, j, k)] - U_OLD[Index(i, j - 1, k)],
+                                                                U_OLD[Index(i, j + 1, k)] - U_OLD[Index(i, j, k)]);
             }
         }
     }
@@ -90,17 +80,17 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_U[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_OLD[Index(i, j + 1, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                          0.5 * Slope_limiter(U_OLD[Index(i, j + 2, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_OLD[Index(i, j + 1, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)],
-                                                                                                              U_OLD[Index(i, j + 1, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]);
+                U_TMP[Index_U_U(i, j, k)] = U_OLD[Index(i, j + 1, k)] -
+                                            0.5 * Slope_limiter(U_OLD[Index(i, j + 2, k)] - U_OLD[Index(i, j + 1, k)],
+                                                                U_OLD[Index(i, j + 1, k)] - U_OLD[Index(i, j, k)]);
             }
         }
     }
 
-    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, U_L, F_L, U_TMP);
-    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, U_R, F_R, U_TMP);
-    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, U_D, U_TMP, G_D);
-    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, U_U, U_TMP, G_U);
+    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, &U_TMP[Index_U_L(0, 0, 0)], &U_TMP[Index_F_L(0, 0, 0)], U_TMP);
+    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, &U_TMP[Index_U_R(0, 0, 0)], &U_TMP[Index_F_R(0, 0, 0)], U_TMP);
+    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, &U_TMP[Index_U_D(0, 0, 0)], U_TMP, &U_TMP[Index_G_D(0, 0, 0)]);
+    Conserve2Flux(N_x, N_y, num_ghost_cell, gamma, &U_TMP[Index_U_U(0, 0, 0)], U_TMP, &U_TMP[Index_G_U(0, 0, 0)]);
 
 #pragma acc parallel loop
     for (int i = num_ghost_cell - 1; i < N_x + 2 * num_ghost_cell - 1; i++)
@@ -111,10 +101,10 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_L[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_L[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] + 0.5 *
-                                                                                                                                                                        (F_L[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                                                                                                         F_R[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]) *
-                                                                                                                                                                        dt / dx;
+                U_TMP[Index_U_L(i, j, k)] = U_TMP[Index_U_L(i, j, k)] + 0.5 *
+                                                                            (U_TMP[Index_F_L(i, j, k)] -
+                                                                             U_TMP[Index_F_R(i, j, k)]) *
+                                                                            dt / dx;
             }
         }
     }
@@ -128,10 +118,10 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_R[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_R[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] + 0.5 *
-                                                                                                                                                                        (F_L[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                                                                                                         F_R[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]) *
-                                                                                                                                                                        dt / dx;
+                U_TMP[Index_U_R(i, j, k)] = U_TMP[Index_U_R(i, j, k)] + 0.5 *
+                                                                            (U_TMP[Index_F_L(i, j, k)] -
+                                                                             U_TMP[Index_F_R(i, j, k)]) *
+                                                                            dt / dx;
             }
         }
     }
@@ -145,10 +135,10 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_D[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_D[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] + 0.5 *
-                                                                                                                                                                        (G_D[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                                                                                                         G_U[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]) *
-                                                                                                                                                                        dt / dx;
+                U_TMP[Index_U_D(i, j, k)] = U_TMP[Index_U_D(i, j, k)] + 0.5 *
+                                                                            (U_TMP[Index_G_D(i, j, k)] -
+                                                                             U_TMP[Index_G_U(i, j, k)]) *
+                                                                            dt / dx;
             }
         }
     }
@@ -162,15 +152,22 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_U[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_U[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] + 0.5 *
-                                                                                                                                                                        (G_D[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                                                                                                         G_U[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]) *
-                                                                                                                                                                        dt / dx;
+                U_TMP[Index_U_U(i, j, k)] = U_TMP[Index_U_U(i, j, k)] + 0.5 *
+                                                                            (U_TMP[Index_G_D(i, j, k)] -
+                                                                             U_TMP[Index_G_U(i, j, k)]) *
+                                                                            dt / dx;
             }
         }
     }
 
-    Riemann_solver(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, U_OLD, F_OLD, G_OLD, F_L, F_R, G_D, G_U, U_L, U_R, U_D, U_U, U_TMP);
+    Riemann_solver(Psy_L,
+                   Psy_H,
+                   N_x,
+                   N_y,
+                   num_ghost_cell,
+                   gamma,
+                   U_OLD,
+                   U_TMP);
 
 #pragma acc parallel loop
     for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
@@ -181,10 +178,10 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] == 0)
-                    U_NEW[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell), N_y + 2 * num_ghost_cell] = U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] -
-                                                                                                                          dt * (F_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - F_OLD[Index(i - 1, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]) / dx -
-                                                                                                                          dt * (G_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - G_OLD[Index(i, j - 1, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)]) / dy;
+                if (XYCOORD[Index_Coord(i, j, 5)] == 0)
+                    U_NEW[Index(i, j, k)] = U_OLD[Index(i, j, k)] -
+                                            dt * (U_TMP[Index_F_OLD(i, j, k)] - U_TMP[Index_F_OLD(i - 1, j, k)]) / dx -
+                                            dt * (U_TMP[Index_G_OLD(i, j, k)] - U_TMP[Index_G_OLD(i, j - 1, k)]) / dy;
             }
         }
     }

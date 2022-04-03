@@ -28,14 +28,14 @@ void ComputeDt(const double Psy_L,
 #pragma acc loop
         for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 1)
+            if (XYCOORD[Index_Coord(i, j, 5 )] < 1)
             {
 
                 double a = 0.0;
-                double rho = U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-                double u = U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-                double v = U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-                double p = (gamma - 1) * (U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - 0.5 * rho * (u * u + v * v));
+                double rho = U_OLD[Index(i, j, 0)];
+                double u = U_OLD[Index(i, j, 1)] / U_OLD[Index(i, j, 0)];
+                double v = U_OLD[Index(i, j, 2)] / U_OLD[Index(i, j, 0)];
+                double p = (gamma - 1) * (U_OLD[Index(i, j, 3)] - 0.5 * rho * (u * u + v * v));
                 a = std::pow((gamma * p / rho), 0.5);
                 a_max = max(a_max, a);
                 u_max = max(u_max, abs(u));

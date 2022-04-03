@@ -1,2 +1,4 @@
 #define num_coord 6
-#define Index_Coord(a, b, c, N) ((N) * (b) + (a)) * 6 + (c)
+#define M N_x + 2 * num_ghost_cell
+#define N N_y + 2 * num_ghost_cell
+#define Index_Coord(a, b, c) ((N) * (b) + (a)) * 6 + (c)

@@ -33,34 +33,34 @@ void Initialize(char *filename,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5 || XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] > 1.5)
+            if (XYCOORD[Index_Coord(i, j, 5)] < 0.5 || XYCOORD[Index_Coord(i, j, 5)] > 1.5)
             {
-                if (XYCOORD[Index_Coord(i, j, 1, N_x + 2 * num_ghost_cell)] <
-                    -(1 / tan(angle)) * XYCOORD[Index_Coord(i, j, 0, N_x + 2 * num_ghost_cell)] + 0.5 * (1 / tan(angle)) + 0.5)
+                if (XYCOORD[Index_Coord(i, j, 1)] <
+                    -(1 / tan(angle)) * XYCOORD[Index_Coord(i, j, 0)] + 0.5 * (1 / tan(angle)) + 0.5)
                 {
-                    U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho_L;
-                    U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho_L * u_L;
-                    U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho_L * v_L;
-                    U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = p_L / (gamma - 1) + 0.5 * rho_L * (u_L * u_L + v_L * v_L);
+                    U_OLD[Index(i, j, 0)] = rho_L;
+                    U_OLD[Index(i, j, 1)] = rho_L * u_L;
+                    U_OLD[Index(i, j, 2)] = rho_L * v_L;
+                    U_OLD[Index(i, j, 3)] = p_L / (gamma - 1) + 0.5 * rho_L * (u_L * u_L + v_L * v_L);
                 }
                 else
                 {
-                    U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho_R;
-                    U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho_R * u_R;
-                    U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = rho_R * v_R;
-                    U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = p_R / (gamma - 1) + 0.5 * rho_R * (u_R * u_R + v_R * v_R);
+                    U_OLD[Index(i, j, 0)] = rho_R;
+                    U_OLD[Index(i, j, 1)] = rho_R * u_R;
+                    U_OLD[Index(i, j, 2)] = rho_R * v_R;
+                    U_OLD[Index(i, j, 3)] = p_R / (gamma - 1) + 0.5 * rho_R * (u_R * u_R + v_R * v_R);
                 }
             }
             else
             {
-                U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = -1;
-                U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = 0;
-                U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = 0;
-                U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = -1;
+                U_OLD[Index(i, j, 0)] = -1;
+                U_OLD[Index(i, j, 1)] = 0;
+                U_OLD[Index(i, j, 2)] = 0;
+                U_OLD[Index(i, j, 3)] = -1;
             }
             for (int k = 0; k < num_eq; k++)
             {
-                U_NEW[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] = U_OLD[Index(i, j, k, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
+                U_NEW[Index(i, j, k)] = U_OLD[Index(i, j, k)];
             }
         }
     }

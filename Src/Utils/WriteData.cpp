@@ -39,9 +39,9 @@ void WriteData(const double lo_x,
     {
         for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5)
-                if (U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] > 1e-6)
-                    outfile << U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] << endl;
+            if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
+                if (U_OLD[Index(i, j, 0)] > 1e-6)
+                    outfile << U_OLD[Index(i, j, 0)] << endl;
                 else
                     outfile << 1e-6 << endl;
             else
@@ -55,8 +55,8 @@ void WriteData(const double lo_x,
     {
         for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5)
-                outfile << U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] << endl;
+            if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
+                outfile << U_OLD[Index(i, j, 1)] / U_OLD[Index(i, j, 0)] << endl;
             else
                 outfile << -100.0 << endl;
         }
@@ -68,8 +68,8 @@ void WriteData(const double lo_x,
     {
         for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5)
-                outfile << U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] << endl;
+            if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
+                outfile << U_OLD[Index(i, j, 2)] / U_OLD[Index(i, j, 0)] << endl;
             else
                 outfile << -100.0 << endl;
         }
@@ -81,12 +81,12 @@ void WriteData(const double lo_x,
     {
         for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5)
+            if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
             {
-                double rho = U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-                double u = U_OLD[Index(i, j, 1, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-                double v = U_OLD[Index(i, j, 2, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] / U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)];
-                double p = (gamma - 1) * (U_OLD[Index(i, j, 3, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] - 0.5 * rho * (u * u + v * v));
+                double rho = U_OLD[Index(i, j, 0)];
+                double u = U_OLD[Index(i, j, 1)] / U_OLD[Index(i, j, 0)];
+                double v = U_OLD[Index(i, j, 2)] / U_OLD[Index(i, j, 0)];
+                double p = (gamma - 1) * (U_OLD[Index(i, j, 3)] - 0.5 * rho * (u * u + v * v));
                 outfile << p << endl;
             }
             else

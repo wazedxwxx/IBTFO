@@ -18,10 +18,10 @@ double CaculateMass(const double Psy_L,
 #pragma acc loop
         for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] < 0.5)
+            if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
             {
 
-                mass += U_OLD[Index(i, j, 0, N_x + 2 * num_ghost_cell, N_y + 2 * num_ghost_cell)] * dx * dy;
+                mass += U_OLD[Index(i, j, 0)] * dx * dy;
             }
         }
     }

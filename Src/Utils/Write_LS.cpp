@@ -31,7 +31,7 @@ void Write_LS(const double Psy_L,
     {
         for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
         {
-            outfile << XYCOORD[Index_Coord(i, j, 2, N_x + 2 * num_ghost_cell)] << endl;
+            outfile << XYCOORD[Index_Coord(i, j, 2)] << endl;
         }
     }
 
@@ -41,7 +41,7 @@ void Write_LS(const double Psy_L,
     {
         for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
         {
-            outfile << XYCOORD[Index_Coord(i, j, 3, N_x + 2 * num_ghost_cell)] << endl;
+            outfile << XYCOORD[Index_Coord(i, j, 3)] << endl;
         }
     }
 
@@ -51,7 +51,7 @@ void Write_LS(const double Psy_L,
     {
         for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
         {
-            outfile << XYCOORD[Index_Coord(i, j, 4, N_x + 2 * num_ghost_cell)] << endl;
+            outfile << XYCOORD[Index_Coord(i, j, 4)] << endl;
         }
     }
 
@@ -61,7 +61,7 @@ void Write_LS(const double Psy_L,
     {
         for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
         {
-            outfile << XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] << endl;
+            outfile << XYCOORD[Index_Coord(i, j, 5)] << endl;
         }
     }
 
