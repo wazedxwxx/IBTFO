@@ -1,8 +1,9 @@
-Scheme = MUSCL #Lax or MUSCL or MHM
+Scheme = Lax #Lax or MUSCL or MHM
 Riemann = HLL  #HLL or PVRS
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = HBCGFM #Regular or BaseGFM or SimpleBound or BCGFM
 Time = SingleStep #SingleStep or RK2
+Equation = Euler
 
 
 
@@ -11,9 +12,9 @@ CC = nvc++
 GeometrySRC=../../Src/Geometry/
 UtilsSRC=../../Src/Utils/
 BoundSRC=../../Src/BoundaryCondition/
-AdvanceSRC=../../Src/Base/Advance/
+AdvanceSRC=../../Src/Base/$(Equation)/Advection/
 CommonSRC=../../Src/Base/Common/
-RiemannSRC=../../Src/Base/Riemann/
+RiemannSRC=../../Src/Base/$(Equation)/Riemann/
 SlopelimiterSRC=../../Src/Base/Slope_limiter/
 TimeSRC=../../Src/Base/TimeAdvance/
 

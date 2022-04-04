@@ -98,7 +98,7 @@ void Boundary(const int N_x,
                 U_OLD[Index(i, j, 2)] = rho_weight * v_weight;
                 U_OLD[Index(i, j, 3)] = p_weight / (gamma - 1) + 0.5 * rho_weight * (u_weight * u_weight + v_weight * v_weight);
 
-                /*std::cout << " i " << i << " j " << j
+/*                  std::cout << " i " << i << " j " << j
                           << " x " << XYCOORD[Index_Coord(i, j, 0 )]
                           << " y " << XYCOORD[Index_Coord(i, j, 1 )]
                           << " Phi " << std::abs(XYCOORD[Index_Coord(i, j, 2 )])
@@ -132,50 +132,7 @@ void Boundary(const int N_x,
                           << " uw " << u_weight
                           << " vw " << v_weight
                           << " pw " << p_weight
-                          << " " << std::endl;*/
-            }
-        }
-    }
-
-    // Upon and Down boundary
-
-#pragma acc parallel loop
-    for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
-    {
-#pragma acc loop
-        for (int j = 0; j < num_ghost_cell; j++)
-        {
-            for (int k = 0; k < num_eq; k++)
-            {
-                U_OLD[Index(i, j, k)] = U_NEW[Index(i, 2 * num_ghost_cell - 1, k)];
-                U_OLD[Index(i, N_y + num_ghost_cell + j, k)] = U_NEW[Index(i, N_y + num_ghost_cell - 1, k)];
-            }
-        }
-    }
-    // Reflect
-#pragma acc parallel loop
-    for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
-    {
-#pragma acc loop
-        for (int j = 0; j < num_ghost_cell; j++)
-        {
-            U_OLD[Index(i, j, 2)] = -U_NEW[Index(i, 2 * num_ghost_cell - j - 1, 2)];
-            U_OLD[Index(i, N_y + num_ghost_cell + j, 2)] = -U_NEW[Index(i, N_y + num_ghost_cell - 1 - j, 2)];
-        }
-    }
-
-// Right and Left Boundary
-#pragma acc parallel loop
-    for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
-    {
-#pragma acc loop
-        for (int i = 0; i < num_ghost_cell; i++)
-        {
-#pragma acc loop
-            for (int k = 0; k < num_eq; k++)
-            {
-                U_OLD[Index(i, j, k)] = U_NEW[Index(num_ghost_cell, j, k)];
-                U_OLD[Index(N_x + num_ghost_cell + i, j, k)] = U_NEW[Index(N_x + num_ghost_cell - 1, j, k)];
+                          << " " << std::endl;  */
             }
         }
     }

@@ -1,5 +1,5 @@
 #define num_eq 4
-#define num_tmp_size num_eq * 12
+#define num_tmp_size num_eq * 4
 #define M N_x + 2 * num_ghost_cell
 #define N N_y + 2 * num_ghost_cell
 /*

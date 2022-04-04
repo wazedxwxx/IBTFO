@@ -1,17 +1,18 @@
 Scheme = MUSCL        #Lax or MUSCL or MHM （MSUCL Hancock）
-Riemann = HLL         #HLL or PVRS
+Riemann = PVRS        #HLL or PVRS or StegerWarming
 Limiter = minmod      #minmod or VanLeer or VanAlbada
 Boundary = BaseGFM    #Regular or BaseGFM or SimpleBound
 Time = SingleStep     #SingleStep or RK2
+Equation = Euler
 
 PROM = PNGGEO.EX
 CC = nvc++
 GeometrySRC=../../Src/Geometry/
 UtilsSRC=../../Src/Utils/
 BoundSRC=../../Src/BoundaryCondition/
-AdvanceSRC=../../Src/Base/Advance/
+AdvanceSRC=../../Src/Base/$(Equation)/Advection/
 CommonSRC=../../Src/Base/Common/
-RiemannSRC=../../Src/Base/Riemann/
+RiemannSRC=../../Src/Base/$(Equation)/Riemann/
 SlopelimiterSRC=../../Src/Base/Slope_limiter/
 TimeSRC=../../Src/Base/TimeAdvance/
 

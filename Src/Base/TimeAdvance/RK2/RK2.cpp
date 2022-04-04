@@ -25,6 +25,7 @@ void TimeAdvance(const double Psy_L,
 
     Advance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, U_TMP, U_NEW, XYCOORD);
     Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX);
+    Global_Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW);
     Advance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, U_TMP, &U_TMP[Index_U_TMPRK(0, 0, 0)], XYCOORD);
 
 #pragma acc parallel loop

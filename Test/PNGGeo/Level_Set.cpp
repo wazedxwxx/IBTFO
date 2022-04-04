@@ -253,14 +253,14 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 2; j < N_y + 2 * num_ghost_cell - 2; j++)
         {
-            XYCOORD[Index_Coord(i, j, 3)] = (XYCOORD[Index_Coord(i + 2, j, 2)] -
-                                             XYCOORD[Index_Coord(i - 2, j, 2)]) /
-                                            ((XYCOORD[Index_Coord(i + 2, j, 0)] -
-                                              XYCOORD[Index_Coord(i - 2, j, 0)])); // N_x
-            XYCOORD[Index_Coord(i, j, 4)] = (XYCOORD[Index_Coord(i, j + 2, 2)] -
-                                             XYCOORD[Index_Coord(i, j - 2, 2)]) /
-                                            ((XYCOORD[Index_Coord(i, j + 2, 1)] -
-                                              XYCOORD[Index_Coord(i, j - 2, 1)])); // N_y
+            XYCOORD[Index_Coord(i, j, 3)] = (XYCOORD[Index_Coord(i + 1, j, 2)] -
+                                             XYCOORD[Index_Coord(i - 1, j, 2)]) /
+                                            ((XYCOORD[Index_Coord(i + 1, j, 0)] -
+                                              XYCOORD[Index_Coord(i - 1, j, 0)])); // N_x
+            XYCOORD[Index_Coord(i, j, 4)] = (XYCOORD[Index_Coord(i, j + 1, 2)] -
+                                             XYCOORD[Index_Coord(i, j - 1, 2)]) /
+                                            ((XYCOORD[Index_Coord(i, j + 1, 1)] -
+                                              XYCOORD[Index_Coord(i, j - 1, 1)])); // N_y
         }
     }
 

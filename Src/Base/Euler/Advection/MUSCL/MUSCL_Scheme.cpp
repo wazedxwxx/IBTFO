@@ -4,6 +4,7 @@
 #include "WriteData.H"
 #include "Conserve2Flux.H"
 #include <cstdlib>
+#include <iostream>
 #include "EQDefine.H"
 #include "CoordDefine.H"
 using namespace std;

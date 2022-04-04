@@ -16,26 +16,26 @@ void Scheme_Index(const int N_x,
         for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
         {
 
-            SCHEME_IDX[Index_sch(i, j, 0, N_x + 2 * num_ghost_cell)] = 0; // x-direction index
-            SCHEME_IDX[Index_sch(i, j, 1, N_x + 2 * num_ghost_cell)] = 0; // y-direction index
-            if (XYCOORD[Index_Coord(i, j, 5, N_x + 2 * num_ghost_cell)] > 1)
+            SCHEME_IDX[Index_sch(i, j, 0)] = 0; // x-direction index
+            SCHEME_IDX[Index_sch(i, j, 1)] = 0; // y-direction index
+            if (XYCOORD[Index_Coord(i, j, 5)] > 1)
             {
 
                 for (int k = 0; k < num_ghost_cell + 1; k++)
                 {
-                    if (XYCOORD[Index_Coord(i - k, j, 5, N_x + 2 * num_ghost_cell)] < 1) // left search
+                    if (XYCOORD[Index_Coord(i - k, j, 5)] < 1) // left search
                     {
-                        SCHEME_IDX[Index_sch(i, j, 0, N_x + 2 * num_ghost_cell)] = 1 - 2 * k;
+                        SCHEME_IDX[Index_sch(i, j, 0)] = 1 - 2 * k;
                         break;
                     }
                 }
-                if (SCHEME_IDX[Index_sch(i, j, 0, N_x + 2 * num_ghost_cell)] == 0)
+                if (SCHEME_IDX[Index_sch(i, j, 0)] == 0)
                 {
                     for (int k = 0; k < num_ghost_cell + 1; k++)
                     {
-                        if (XYCOORD[Index_Coord(i + k, j, 5, N_x + 2 * num_ghost_cell)] < 1) // right search
+                        if (XYCOORD[Index_Coord(i + k, j, 5)] < 1) // right search
                         {
-                            SCHEME_IDX[Index_sch(i, j, 0, N_x + 2 * num_ghost_cell)] = 2 * k - 1;
+                            SCHEME_IDX[Index_sch(i, j, 0)] = 2 * k - 1;
                             break;
                         }
                     }
@@ -43,19 +43,19 @@ void Scheme_Index(const int N_x,
 
                 for (int k = 0; k < num_ghost_cell + 1; k++)
                 {
-                    if (XYCOORD[Index_Coord(i, j - k, 5, N_x + 2 * num_ghost_cell)] < 1) // down search
+                    if (XYCOORD[Index_Coord(i, j - k, 5)] < 1) // down search
                     {
-                        SCHEME_IDX[Index_sch(i, j, 1, N_x + 2 * num_ghost_cell)] = 1 - 2 * k;
+                        SCHEME_IDX[Index_sch(i, j, 1)] = 1 - 2 * k;
                         break;
                     }
                 }
-                if (SCHEME_IDX[Index_sch(i, j, 1, N_x + 2 * num_ghost_cell)] == 0)
+                if (SCHEME_IDX[Index_sch(i, j, 1)] == 0)
                 {
                     for (int k = 0; k < num_ghost_cell + 1; k++)
                     {
-                        if (XYCOORD[Index_Coord(i, j + k, 5, N_x + 2 * num_ghost_cell)] < 1) // right search
+                        if (XYCOORD[Index_Coord(i, j + k, 5)] < 1) // right search
                         {
-                            SCHEME_IDX[Index_sch(i, j, 1, N_x + 2 * num_ghost_cell)] = 2 * k - 1;
+                            SCHEME_IDX[Index_sch(i, j, 1)] = 2 * k - 1;
                             break;
                         }
                     }

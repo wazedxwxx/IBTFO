@@ -106,19 +106,4 @@ void Boundary(const int N_x,
         }
     }
 
-// Right and Left Boundary
-#pragma acc parallel loop
-    for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
-    {
-#pragma acc loop
-        for (int i = 0; i < num_ghost_cell; i++)
-        {
-#pragma acc loop
-            for (int k = 0; k < num_eq; k++)
-            {
-                U_OLD[Index(i, j, k)] = U_NEW[Index(2 * num_ghost_cell - 1, j, k)];
-                U_OLD[Index(N_x + num_ghost_cell + i, j, k)] = U_NEW[Index(N_x + num_ghost_cell - 1, j, k)];
-            }
-        }
-    }
 }
