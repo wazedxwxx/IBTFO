@@ -61,12 +61,19 @@ void Global_Boundary(const int N_x,
         for (int i = 0; i < num_ghost_cell; i++)
         {
 #pragma acc loop
+            double rho1 = 1.0;
+            double p1 = 0.71429;
+            double Ms = 1.3;
 
-            U_OLD[Index(i, j, 0)] = 1.0;
-            U_OLD[Index(i, j, 1)] = 3.0;
+            double rho2 = rho1 * (gamma + 1) * Ms * Ms / (2 + (gamma - 1) * Ms * Ms);
+            double p2 = p1 * ((2 * gamma) * Ms * Ms / (gamma + 1) - (gamma - 1) / (gamma + 1));
+            double v2 = 0;
+            double u2 = Ms * (1 - rho1 / rho2);
+
+            U_OLD[Index(i, j, 0)] = rho2;
+            U_OLD[Index(i, j, 1)] = rho2*u2;
             U_OLD[Index(i, j, 2)] = 0.0;
-            U_OLD[Index(i, j, 3)] = 0.71429 / (gamma - 1) + 0.5 * 1.0 * (3.0 * 3.0 + 0.0 * 0.0);
-
+            U_OLD[Index(i, j, 3)] = p2 / (gamma - 1) + 0.5 * rho2 * (u2 * u2);
         }
     }
 }

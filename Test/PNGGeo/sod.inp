@@ -1,23 +1,23 @@
 #do not add space in params!!!
 max_iter=100000
-N_x=400                 # x direction grid number in computational domain
-N_y=200                  # y direction grid number in computational domain
-Psy_time=3.0              # physical time
+N_x=1000                 # x direction grid number in computational domain
+N_y=1000                  # y direction grid number in computational domain
+Psy_time=0.5              # physical time
 
 lo_x           = 0
 lo_y           = 0
-hi_x           = 4
-hi_y           = 2
+hi_x           = 1
+hi_y           = 1
 
 plot_int=20            # ouput result
 CFL_number=0.1         # CFL_number
 num_ghost_cell=2       # ghost cell
 rho_L=1.0                # left side density
-u_L=3.0                  # left side x-vel
+u_L=0.0                  # left side x-vel
 v_L=0                  # left side y-vel
 p_L=0.71429                  # left side pressure
 rho_R=1.0            # right side density
-u_R=3.0                  # right side x-vel
+u_R=0.0                  # right side x-vel
 v_R=0                  # right side y-vel
 p_R=0.71429                # right side pressure
 gamma=1.4              # Gas parameters
