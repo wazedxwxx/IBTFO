@@ -2,7 +2,7 @@
 max_iter=100000
 N_x=1000                 # x direction grid number in computational domain
 N_y=1000                  # y direction grid number in computational domain
-Psy_time=0.5              # physical time
+Psy_time=1.0              # physical time
 
 lo_x           = 0
 lo_y           = 0

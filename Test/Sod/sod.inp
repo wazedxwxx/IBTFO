@@ -1,7 +1,7 @@
 #do not add space in params!!!
-max_iter=8000
-N_x=500                # x direction grid number in computational domain
-N_y=500                # y direction grid number in computational domain
+max_iter=100000
+N_x=1000                # x direction grid number in computational domain
+N_y=1000                # y direction grid number in computational domain
 Psy_time=0.4           # physical time
 Psy_L=1.0
 Psy_H=1.0
@@ -17,4 +17,4 @@ v_R=0                  # right side y-vel
 p_R=0.1                # right side pressure
 gamma=1.4              # Gas parameters
 plot_per=1          # write data to vtk
-plot_int=10
+plot_int=1

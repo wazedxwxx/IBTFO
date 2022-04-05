@@ -6,3 +6,4 @@ void Mirror_IDX(const int N_x,
                 double *XYCOORD,
                 const double x_mirror,
                 const double y_mirror);
+               

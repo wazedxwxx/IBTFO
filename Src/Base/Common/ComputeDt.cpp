@@ -2,7 +2,7 @@
 #include "ComputeDt.H"
 
 #include "EQDefine.H"
-#include "CoordDefine.H"s
+#include "CoordDefine.H"
 #include <iostream>
 using namespace std;
 

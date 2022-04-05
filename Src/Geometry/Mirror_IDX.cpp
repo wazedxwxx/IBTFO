@@ -11,6 +11,7 @@ void Mirror_IDX(const int N_x,
                 const double y_mirror)
 {
 // x direction search
+#pragma acc data copy(XYCOORD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_coord])
 #pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell - 1; i++)
     {

@@ -18,6 +18,7 @@ inline double line(double x, double y, double k, double b, int dir) // dist for 
     return phi;
 }
 
+#pragma acc routine worker
 double Level_Set_function(char* filename,double a, double b)
 {
     ParamReader DetectParams;

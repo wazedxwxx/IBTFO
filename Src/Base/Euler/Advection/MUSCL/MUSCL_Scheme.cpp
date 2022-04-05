@@ -32,9 +32,25 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
+                U_TMP[Index_U_SLIN1(i, j, k)] = U_OLD[Index(i, j, k)] - U_OLD[Index(i - 1, j, k)];
+                U_TMP[Index_U_SLIN2(i, j, k)] = U_OLD[Index(i + 1, j, k)] - U_OLD[Index(i, j, k)];
+            }
+        }
+    }
+
+    Slope_limiter(N_x, N_y, num_ghost_cell, U_TMP);
+
+#pragma acc parallel loop
+    for (int i = num_ghost_cell - 1; i < N_x + 2 * num_ghost_cell - 1; i++)
+    {
+#pragma acc loop
+        for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
+        {
+#pragma acc loop
+            for (int k = 0; k < num_eq; k++)
+            {
                 U_TMP[Index_U_L(i, j, k)] = U_OLD[Index(i, j, k)] +
-                                            0.5 * Slope_limiter(U_OLD[Index(i, j, k)] - U_OLD[Index(i - 1, j, k)],
-                                                                U_OLD[Index(i + 1, j, k)] - U_OLD[Index(i, j, k)]);
+                                            0.5 * U_TMP[Index_U_SLOUT(i, j, k)];
             }
         }
     }
@@ -48,9 +64,24 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
+                U_TMP[Index_U_SLIN1(i, j, k)] = U_OLD[Index(i + 2, j, k)] - U_OLD[Index(i + 1, j, k)];
+                U_TMP[Index_U_SLIN2(i, j, k)] = U_OLD[Index(i + 1, j, k)] - U_OLD[Index(i, j, k)];
+            }
+        }
+    }
+    Slope_limiter(N_x, N_y, num_ghost_cell, U_TMP);
+
+#pragma acc parallel loop
+    for (int i = 0; i < N_x + 2 * num_ghost_cell - 2; i++)
+    {
+#pragma acc loop
+        for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
+        {
+#pragma acc loop
+            for (int k = 0; k < num_eq; k++)
+            {
                 U_TMP[Index_U_R(i, j, k)] = U_OLD[Index(i + 1, j, k)] -
-                                            0.5 * Slope_limiter(U_OLD[Index(i + 2, j, k)] - U_OLD[Index(i + 1, j, k)],
-                                                                U_OLD[Index(i + 1, j, k)] - U_OLD[Index(i, j, k)]);
+                                            0.5 * U_TMP[Index_U_SLOUT(i, j, k)];
             }
         }
     }
@@ -64,12 +95,48 @@ void Advance(const double Psy_L,
 #pragma acc loop
             for (int k = 0; k < num_eq; k++)
             {
-                U_TMP[Index_U_D(i, j, k)] = U_OLD[Index(i, j, k)] +
-                                            0.5 * Slope_limiter(U_OLD[Index(i, j, k)] - U_OLD[Index(i, j - 1, k)],
-                                                                U_OLD[Index(i, j + 1, k)] - U_OLD[Index(i, j, k)]);
+                U_TMP[Index_U_SLIN1(i, j, k)] = U_OLD[Index(i, j, k)] - U_OLD[Index(i, j - 1, k)];
+                U_TMP[Index_U_SLIN2(i, j, k)] = U_OLD[Index(i, j + 1, k)] - U_OLD[Index(i, j, k)];
             }
         }
     }
+
+    Slope_limiter(N_x, N_y, num_ghost_cell, U_TMP);
+
+#pragma acc parallel loop
+    for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
+    {
+#pragma acc loop
+        for (int j = num_ghost_cell - 1; j < N_y + 2 * num_ghost_cell - 1; j++)
+        {
+#pragma acc loop
+            for (int k = 0; k < num_eq; k++)
+            {
+                U_TMP[Index_U_D(i, j, k)] = U_OLD[Index(i, j, k)] +
+                                            0.5 * U_TMP[Index_U_SLOUT(i, j, k)];
+            }
+        }
+    }
+
+
+#pragma acc parallel loop
+    for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
+    {
+#pragma acc loop
+        for (int j = 0; j < N_y + 2 * num_ghost_cell - 2; j++)
+        {
+#pragma acc loop
+            for (int k = 0; k < num_eq; k++)
+            {
+                U_TMP[Index_U_SLIN1(i, j, k)] = U_OLD[Index(i, j + 2, k)] - U_OLD[Index(i, j + 1, k)];
+                U_TMP[Index_U_SLIN2(i, j, k)] =  U_OLD[Index(i, j + 1, k)] - U_OLD[Index(i, j, k)];
+            }
+        }
+    }
+
+
+    Slope_limiter(N_x, N_y, num_ghost_cell, U_TMP);
+
 
 #pragma acc parallel loop
     for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
@@ -81,8 +148,7 @@ void Advance(const double Psy_L,
             for (int k = 0; k < num_eq; k++)
             {
                 U_TMP[Index_U_U(i, j, k)] = U_OLD[Index(i, j + 1, k)] -
-                                            0.5 * Slope_limiter(U_OLD[Index(i, j + 2, k)] - U_OLD[Index(i, j + 1, k)],
-                                                                U_OLD[Index(i, j + 1, k)] - U_OLD[Index(i, j, k)]);
+                                            0.5 * U_TMP[Index_U_SLOUT(i, j, k)];
             }
         }
     }

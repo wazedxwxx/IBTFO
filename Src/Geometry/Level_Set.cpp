@@ -15,8 +15,8 @@ void Level_Set(char *filename,
 #pragma acc loop
         for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
         {
-            XYCOORD[Index_Coord(i, j, 2)] = Level_Set_function(filename, XYCOORD[Index_Coord(i, j, 0)],
-                                                               XYCOORD[Index_Coord(i, j, 1)]); // Phi
+            XYCOORD[Index_Coord(i, j, 2)] =
+                Level_Set_function(filename, XYCOORD[Index_Coord(i, j, 0)], XYCOORD[Index_Coord(i, j, 1)]); // Phi
         }
     }
 
@@ -60,6 +60,7 @@ void Level_Set(char *filename,
         {
             if (XYCOORD[Index_Coord(i, j, 5)] == 0)
             {
+                #pragma acc loop
                 for (int k = 1; k < num_ghost_cell + 1; k++)
                 {
                     XYCOORD[Index_Coord(i + k, j, 5)] = 2 * XYCOORD[Index_Coord(i + k, j, 5)];
@@ -123,3 +124,5 @@ void Level_Set(char *filename,
     }
     std::cout << " ====  Geometry Initialize complete ====" << std::endl;
 }
+
+

@@ -31,3 +31,6 @@ U_U
 #define Index_U_R(a, b, c) ((M) * (b) + (a)) * num_eq + (c) + 9 * (M) * (N)*num_eq
 #define Index_U_D(a, b, c) ((M) * (b) + (a)) * num_eq + (c) + 10 * (M) * (N)*num_eq
 #define Index_U_U(a, b, c) ((M) * (b) + (a)) * num_eq + (c) + 11 * (M) * (N)*num_eq
+#define Index_U_SLIN1(a, b, c) ((M) * (b) + (a)) * num_eq + (c) + 12 * (M) * (N)*num_eq
+#define Index_U_SLIN2(a, b, c) ((M) * (b) + (a)) * num_eq + (c) + 13 * (M) * (N)*num_eq
+#define Index_U_SLOUT(a, b, c) ((M) * (b) + (a)) * num_eq + (c) + 14 * (M) * (N)*num_eq

@@ -3,3 +3,5 @@ void global(char *para)
 {
     char *filename = para;
 }
+
+

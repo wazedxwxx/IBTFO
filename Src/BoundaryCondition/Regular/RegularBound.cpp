@@ -27,3 +27,6 @@ void Boundary(const int N_x,
         }
     }
 }
+
+
+

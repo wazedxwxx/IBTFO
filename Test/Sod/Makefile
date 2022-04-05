@@ -4,6 +4,7 @@ Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = Regular #Regular or BaseGFM or SimpleBound
 Time = SingleStep #SingleStep or RK2
 Equation = Euler
+ARCH = GPU
 
 PROM = REGULAR_SOD.EX
 CC = nvc++
@@ -27,10 +28,16 @@ SlopelimiterFILES = $(foreach dir,$(SlopelimiterSRC)$(Limiter),$(wildcard $(dir)
 TimeFILES = $(foreach dir,$(TimeSRC)$(Time),$(wildcard $(dir)/*.cpp))
 $(shell rm -f $(PROM))
 
-
-CFLAGS = -fast -ta=multicore -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
+ifeq ($(ARCH),CPU)
+    CFLAGS = -fast -ta=multicore -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
                  -I$(SlopelimiterSRC) -I$(TimeSRC) -I$(BoundSRC)$(Boundary) -I$(AdvanceSRC)$(Scheme) -lpng16
+else
+    CFLAGS = -fast -ta=tesla:managed -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
+                -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
+                 -I$(SlopelimiterSRC) -I$(TimeSRC) -I$(BoundSRC)$(Boundary) -I$(AdvanceSRC)$(Scheme) -lpng16
+endif
+
 
 
 $(PROM) : $(OBJ)

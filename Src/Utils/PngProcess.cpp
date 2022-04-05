@@ -70,3 +70,5 @@ png_bytep * read_png_file(char *filename, int *width, int *height)
     png_destroy_read_struct(&png, &info, NULL);
     return row_pointers;
 }
+
+
