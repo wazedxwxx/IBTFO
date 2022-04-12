@@ -1,2 +1,2 @@
-# IBF2T
-Immersed Boundary Fast 2-dimensional Test
+# IBMF2TFBO
+Immersed Boundary Method Fast 2-dimensional Test Facility Based OpenAcc 
