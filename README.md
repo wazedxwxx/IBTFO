@@ -15,9 +15,40 @@ If you decide to use spack to manage dependencies, our recommended do:
 ```
 spack install libpng@1.6.37 nvhpc@21.9
 ```
+## Getting Started
+To build IBTFO and run a sample 2D SOD problem:
+1. Import related dependencies:
+```
+spack load libpng@1.6.37 nvhpc@21.9
+```
+2. CLone the repository and enter the SOD test case
+```
+git clone git@github.com:wazedxwxx/IBTFO.git
+cd IBTFO-main/Test/SOD/
+```
+3. Complie
+```
+make
+```
+4. Run
+```
+./REGULAR_SOD.EX sod.inp
+```
+
+### NOTE
+>+  If ARCH=CPU in the compilation options, the number of cores can be selected by setting ACC_NUM_CORES
+>```
+>export ACC_NUM_CORES=8 
+>```
+>After importing the above environment variables, IBTFO will use 8 cores for calculation.
+>+  If ARCH=GPU in the compilation options, the number of GPU can be selected by setting CUDA_VISIBLE_DEVICES. 
+>```
+> CUDA_VISIBLE_DEVICES="0" ./INCLINE_SOD.EX sod.inp 
+>```
+>This will only call GPU 0 for computation, otherwise all GPUs will be used.
 
 ## Tutorial
-The tutorial of CGC can be found here.
+The tutorial of IBTFO can be found here.
 
 
 ## Contributing
