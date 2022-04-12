@@ -127,7 +127,6 @@ int main(int argc, char **argv)
         if (device + 2 > ndevices)
             dt = *min_element(TMP_DT, TMP_DT + ndevices);
 
-        //        cout << "Device " << device << " REAL_LOWER " << REAL_LOWER << " REAL_UPPER " << REAL_UPPER << " LOWER " << LOWER << " UPPER " << UPPER << endl;
     }
 
     while (now_t < Psy_time && iter < max_iter)
