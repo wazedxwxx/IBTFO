@@ -1,6 +1,7 @@
-# IBTFO 
+# <img src="https://github.com/wazedxwxx/IBTFO/blob/main/Share/Logo/logo.svg" width="64" valign="middle" alt="Spack"/> IBTFO 
 [![License](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/wazedxwxx/IBTFO/)
 [![License](https://img.shields.io/github/license/wazedxwxx/IBTFO)](https://opensource.org/licenses/MIT)
+
 **IBTFO** is **I**mmersed **B**oundary method fast **T**est **F**acility based **O**penAcc. It is designed for easy development and validation of immersed boundary methods. Built-in basic Euler equation solver and shared memory computation using OpenACC.
 
 ## Installation
