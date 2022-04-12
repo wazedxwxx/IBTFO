@@ -1,8 +1,8 @@
 #do not add space in params!!!
-max_iter       = 100
-N_x            = 1500     # x direction grid number in computational domain
-N_y            = 1500     # y direction grid number in computational domain
-Psy_time       = 0.3                # physical time
+max_iter       = 1000
+N_x            = 1000     # x direction grid number in computational domain
+N_y            = 1000     # y direction grid number in computational domain
+Psy_time       = 0.1                # physical time
 lo_x           = 0
 lo_y           = 0
 hi_x           = 1

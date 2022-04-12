@@ -4,7 +4,7 @@ Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = HBCGFM #Regular or BaseGFM or SimpleBound or BCGFM or HBCGFM
 Time = SingleStep #SingleStep or RK2
 Equation = Euler
-ARCH = CPU
+ARCH = GPU
 
 
 PROM = INCLINE_SOD.EX
@@ -46,7 +46,7 @@ $(PROM) : $(OBJ)
 	$(CC) $(CFLAGS) -o $(PROM) $(GeometryFILES) $(UtilsFILES) \
 	$(BoundFILES) $(AdvanceFILES) $(CommonFILES) $(RiemannFILES) $(SlopelimiterFILES) $(TimeFILES) \
 	$(wildcard ./*.cpp)
-	$(RM) *.o *.vtk
+	$(RM) *.o *.vtk *.visit
 
 
 .PHONY : clean

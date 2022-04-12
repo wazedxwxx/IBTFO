@@ -1,4 +1,4 @@
-Scheme = MHM  #Lax or MUSCL or MHM （MSUCL Hancock）
+Scheme = MUSCL  #Lax or MUSCL or MHM （MSUCL Hancock）
 Riemann = StegerWarming #HLL or PVRS or StegerWarming
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = Regular #Regular or BaseGFM or SimpleBound
@@ -43,7 +43,7 @@ $(PROM) : $(OBJ)
 	$(CC) $(CFLAGS) -o $(PROM) $(GeometryFILES) $(UtilsFILES) \
 	$(BoundFILES) $(AdvanceFILES) $(CommonFILES) $(RiemannFILES)  $(TimeFILES) \
 	$(wildcard ./*.cpp) 
-	$(RM) *.o *.vtk
+	$(RM) *.o *.vtk *.visit
 
 
 .PHONY : clean

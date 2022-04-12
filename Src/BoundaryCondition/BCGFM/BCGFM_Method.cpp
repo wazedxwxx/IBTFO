@@ -49,12 +49,12 @@ void Scheme_Index(const int N_x,
 #pragma acc loop
             for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
             {
-                double dx = XYCOORD[Index_Coord(1, lower + 1, 0)] - XYCOORD[Index_Coord(0, lower + 1, 0)];
-                double dy = XYCOORD[Index_Coord(1, lower + 2, 1)] - XYCOORD[Index_Coord(1, lower + 1, 1)];
-                double delta = sqrt(dx * dx + dy * dy) / 2;
                 if (XYCOORD[Index_Coord(i, j, 5)] > 1)
                 {
 
+                    double dx = XYCOORD[Index_Coord(1, lower + 1, 0)] - XYCOORD[Index_Coord(0, lower + 1, 0)];
+                    double dy = XYCOORD[Index_Coord(1, lower + 2, 1)] - XYCOORD[Index_Coord(1, lower + 1, 1)];
+                    double delta = sqrt(dx * dx + dy * dy) / 2;
                     // Image point location
                     GFM_Index[Index_sch(i, j, 0)] = XYCOORD[Index_Coord(i, j, 0)] +
                                                     XYCOORD[Index_Coord(i, j, 3)] *
@@ -66,11 +66,11 @@ void Scheme_Index(const int N_x,
 
                     GFM_Index[Index_sch(i, j, 8)] = XYCOORD[Index_Coord(i, j, 0)] +
                                                     XYCOORD[Index_Coord(i, j, 3)] *
-                                                        (std::abs(XYCOORD[Index_Coord(i, j, 2)]) + 2.0 * delta); // x_Image = x_GFM + n_x*(Phi+Phi+0.5*norm(dx,dy))
+                                                        (std::abs(XYCOORD[Index_Coord(i, j, 2)]) + 2*delta); // x_Image = x_GFM + n_x*(Phi+Phi+0.5*norm(dx,dy))
 
                     GFM_Index[Index_sch(i, j, 9)] = XYCOORD[Index_Coord(i, j, 1)] +
                                                     XYCOORD[Index_Coord(i, j, 4)] *
-                                                        (std::abs(XYCOORD[Index_Coord(i, j, 2)]) + 2.0 * delta); // y_Image = y_GFM + n_y*(Phi+Phi+0.5*norm(dx,dy)
+                                                        (std::abs(XYCOORD[Index_Coord(i, j, 2)]) + 2*delta); // y_Image = y_GFM + n_y*(Phi+Phi+0.5*norm(dx,dy)
                 }
                 else
                 {
@@ -109,7 +109,7 @@ void Scheme_Index(const int N_x,
                     int IDX = GFM_Index[Index_sch(i, j, 2)];
                     int IDY = GFM_Index[Index_sch(i, j, 3)];
 
-                    if (XYCOORD[Index_Coord(IDX, IDY, 5)] < 1)
+                    if (XYCOORD[Index_Coord(IDX, IDY, 5)] != 1)
                     {
                         d1 = std::sqrt((XYCOORD[Index_Coord(IDX, IDY, 0)] - GFM_Index[Index_sch(i, j, 0)]) *
                                            (XYCOORD[Index_Coord(IDX, IDY, 0)] - GFM_Index[Index_sch(i, j, 0)]) +
@@ -117,7 +117,7 @@ void Scheme_Index(const int N_x,
                                            (XYCOORD[Index_Coord(IDX, IDY, 1)] - GFM_Index[Index_sch(i, j, 1)]));
                         a1 = 1 / d1;
                     }
-                    if (XYCOORD[Index_Coord(IDX, IDY + 1, 5)] < 1)
+                    if (XYCOORD[Index_Coord(IDX, IDY + 1, 5)] != 1)
                     {
                         d2 = std::sqrt((XYCOORD[Index_Coord(IDX, IDY + 1, 0)] - GFM_Index[Index_sch(i, j, 0)]) *
                                            (XYCOORD[Index_Coord(IDX, IDY + 1, 0)] - GFM_Index[Index_sch(i, j, 0)]) +
@@ -125,7 +125,7 @@ void Scheme_Index(const int N_x,
                                            (XYCOORD[Index_Coord(IDX, IDY + 1, 1)] - GFM_Index[Index_sch(i, j, 1)]));
                         a2 = 1 / d2;
                     }
-                    if (XYCOORD[Index_Coord(IDX + 1, IDY + 1, 5)] < 1)
+                    if (XYCOORD[Index_Coord(IDX + 1, IDY + 1, 5)] != 1)
                     {
                         d3 = std::sqrt((XYCOORD[Index_Coord(IDX + 1, IDY + 1, 0)] - GFM_Index[Index_sch(i, j, 0)]) *
                                            (XYCOORD[Index_Coord(IDX + 1, IDY + 1, 0)] - GFM_Index[Index_sch(i, j, 0)]) +
@@ -133,7 +133,7 @@ void Scheme_Index(const int N_x,
                                            (XYCOORD[Index_Coord(IDX + 1, IDY + 1, 1)] - GFM_Index[Index_sch(i, j, 1)]));
                         a3 = 1 / d3;
                     }
-                    if (XYCOORD[Index_Coord(IDX + 1, IDY, 5)] < 1)
+                    if (XYCOORD[Index_Coord(IDX + 1, IDY, 5)] != 1)
                     {
                         d4 = std::sqrt((XYCOORD[Index_Coord(IDX + 1, IDY, 0)] - GFM_Index[Index_sch(i, j, 0)]) *
                                            (XYCOORD[Index_Coord(IDX + 1, IDY, 0)] - GFM_Index[Index_sch(i, j, 0)]) +
@@ -169,7 +169,7 @@ void Scheme_Index(const int N_x,
                     int IDX = GFM_Index[Index_sch(i, j, 10)];
                     int IDY = GFM_Index[Index_sch(i, j, 11)];
 
-                    if (XYCOORD[Index_Coord(IDX, IDY, 5)] < 1)
+                    if (XYCOORD[Index_Coord(IDX, IDY, 5)] != 1)
                     {
                         d1 = std::sqrt((XYCOORD[Index_Coord(IDX, IDY, 0)] - GFM_Index[Index_sch(i, j, 8)]) *
                                            (XYCOORD[Index_Coord(IDX, IDY, 0)] - GFM_Index[Index_sch(i, j, 8)]) +
@@ -177,7 +177,7 @@ void Scheme_Index(const int N_x,
                                            (XYCOORD[Index_Coord(IDX, IDY, 1)] - GFM_Index[Index_sch(i, j, 9)]));
                         a1 = 1 / d1;
                     }
-                    if (XYCOORD[Index_Coord(IDX, IDY + 1, 5)] < 1)
+                    if (XYCOORD[Index_Coord(IDX, IDY + 1, 5)] != 1)
                     {
                         d2 = std::sqrt((XYCOORD[Index_Coord(IDX, IDY + 1, 0)] - GFM_Index[Index_sch(i, j, 8)]) *
                                            (XYCOORD[Index_Coord(IDX, IDY + 1, 0)] - GFM_Index[Index_sch(i, j, 8)]) +
@@ -185,7 +185,7 @@ void Scheme_Index(const int N_x,
                                            (XYCOORD[Index_Coord(IDX, IDY + 1, 1)] - GFM_Index[Index_sch(i, j, 9)]));
                         a2 = 1 / d2;
                     }
-                    if (XYCOORD[Index_Coord(IDX + 1, IDY + 1, 5)] < 1)
+                    if (XYCOORD[Index_Coord(IDX + 1, IDY + 1, 5)] != 1)
                     {
                         d3 = std::sqrt((XYCOORD[Index_Coord(IDX + 1, IDY + 1, 0)] - GFM_Index[Index_sch(i, j, 8)]) *
                                            (XYCOORD[Index_Coord(IDX + 1, IDY + 1, 0)] - GFM_Index[Index_sch(i, j, 8)]) +
@@ -193,7 +193,7 @@ void Scheme_Index(const int N_x,
                                            (XYCOORD[Index_Coord(IDX + 1, IDY + 1, 1)] - GFM_Index[Index_sch(i, j, 9)]));
                         a3 = 1 / d3;
                     }
-                    if (XYCOORD[Index_Coord(IDX + 1, IDY, 5)] < 1)
+                    if (XYCOORD[Index_Coord(IDX + 1, IDY, 5)] != 1)
                     {
                         d4 = std::sqrt((XYCOORD[Index_Coord(IDX + 1, IDY, 0)] - GFM_Index[Index_sch(i, j, 8)]) *
                                            (XYCOORD[Index_Coord(IDX + 1, IDY, 0)] - GFM_Index[Index_sch(i, j, 8)]) +

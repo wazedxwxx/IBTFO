@@ -87,13 +87,13 @@ void Boundary(const int N_x,
 #pragma acc loop
             for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
             {
-
                 if (XYCOORD[Index_Coord(i, j, 5)] > 1)
                 {
                     double dx = XYCOORD[Index_Coord(1, lower + 1, 0)] - XYCOORD[Index_Coord(0, lower + 1, 0)];
                     double dy = XYCOORD[Index_Coord(1, lower + 2, 1)] - XYCOORD[Index_Coord(1, lower + 1, 1)];
                     double delta = sqrt(dx * dx + dy * dy) / 2;
-                    double R_E = 1.0 * delta;
+
+                    double R_E = delta;
                     double R_G = std::abs(XYCOORD[Index_Coord(i, j, 2)]);
 
                     double n_x = XYCOORD[Index_Coord(i, j, 3)];
@@ -176,6 +176,66 @@ void Boundary(const int N_x,
                     U_OLD[Index(i, j, 1)] = rho_mirror * u_mirror;
                     U_OLD[Index(i, j, 2)] = rho_mirror * v_mirror;
                     U_OLD[Index(i, j, 3)] = p_mirror / (gamma - 1) + 0.5 * rho_mirror * (u_mirror * u_mirror + v_mirror * v_mirror);
+
+/*                                        std::cout << " i " << i << " j " << j
+                                              << " x " << XYCOORD[Index_Coord(i, j, 0 )]
+                                              << " y " << XYCOORD[Index_Coord(i, j, 1 )]
+                                              << " Phi " << std::abs(XYCOORD[Index_Coord(i, j, 2 )])
+                                              << " nx " << XYCOORD[Index_Coord(i, j, 3 )]
+                                              << " ny " << XYCOORD[Index_Coord(i, j, 4 )]
+                                              << " MirrorIDX_extra " << GFM_Index[Index_sch(i, j, 2 )]
+                                              << " MirrorIDY_extra " << GFM_Index[Index_sch(i, j, 3 )]
+                                              << " A1_extra " << a1_extra
+                                              << " rho1_extra " << rho1_extra
+                                              << " u1_extra " << u1_extra
+                                              << " v1_extra " << v1_extra
+                                              << " p1_extra " << p1_extra
+                                              << " A2_extra " << a2_extra
+                                              << " rho2_extra " << rho2_extra
+                                              << " u2_extra " << u2_extra
+                                              << " v2_extra " << v2_extra
+                                              << " p2_extra " << p2_extra
+                                              << " A3_extra " << a3_extra
+                                              << " rho3_extra " << rho3_extra
+                                              << " u3_extra " << u3_extra
+                                              << " v3_extra " << v3_extra
+                                              << " p3_extra " << p3_extra
+                                              << " A4_extra " << a4_extra
+                                              << " rho4_extra " << rho4_extra
+                                              << " u4_extra " << u4_extra
+                                              << " v4_extra " << v4_extra
+                                              << " p4_extra " << p4_extra
+                                              << " u_n_extra " << u_n_extra
+                                              << " u_t_extra " << u_t_extra
+                                              << " MirrorIDX_image " << GFM_Index[Index_sch(i, j, 10 )]
+                                              << " MirrorIDY_image " << GFM_Index[Index_sch(i, j, 11 )]
+                                              << " A1_image " << a1_image
+                                              << " rho1_image " << rho1_image
+                                              << " u1_image " << u1_image
+                                              << " v1_image " << v1_image
+                                              << " p1_image " << p1_image
+                                              << " A2_image " << a2_image
+                                              << " rho2_image " << rho2_image
+                                              << " u2_image " << u2_image
+                                              << " v2_image " << v2_image
+                                              << " p2_image " << p2_image
+                                              << " A3_image " << a3_image
+                                              << " rho3_image " << rho3_image
+                                              << " u3_image " << u3_image
+                                              << " v3_image " << v3_image
+                                              << " p3_image " << p3_image
+                                              << " A4_image " << a4_image
+                                              << " rho4_image " << rho4_image
+                                              << " u4_image " << u4_image
+                                              << " v4_image " << v4_image
+                                              << " p4_image " << p4_image
+                                              << " u_n_image " << u_n_image
+                                              << " u_t_image " << u_t_image
+                                              << " rhow " << rho_mirror 
+                                              << " uw " << u_mirror 
+                                              << " vw " << v_mirror 
+                                              << " pw " << p_mirror 
+                                              << " " << std::endl;   */
                 }
             }
         }

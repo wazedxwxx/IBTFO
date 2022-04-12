@@ -9,7 +9,6 @@ void WriteData(const double lo_x,
                double now_t,
                const double gamma,
                double *U_OLD,
-               double *XYCOORD);
-
-
-               
+               double *XYCOORD,
+               const int ndevices,
+               const int device);

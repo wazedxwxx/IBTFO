@@ -23,7 +23,6 @@
 #include <unistd.h>
 using namespace std;
 
-
 int main(int argc, char **argv)
 {
 
@@ -105,11 +104,12 @@ int main(int argc, char **argv)
 
     for (int device = 0; device < ndevices; device++)
     {
-        acc_set_device_num(device, acc_device_default); 
-                
+        acc_set_device_num(device, acc_device_default);
+
         ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, XYCOORD, TMP_DT, ndevices, device);
 
-        if (device+2>ndevices)  dt = *min_element(TMP_DT,TMP_DT+ndevices); 
+        if (device + 2 > ndevices)
+            dt = *min_element(TMP_DT, TMP_DT + ndevices);
     }
 
     while (now_t < Psy_time && iter < max_iter)
@@ -118,10 +118,29 @@ int main(int argc, char **argv)
         for (int device = 0; device < ndevices; device++)
         {
             acc_set_device_num(device, acc_device_default);
-#pragma acc update device(U_OLD [(M)*LOWER * num_eq:(M) * (4 * num_ghost_cell) * num_eq],                              \
+#pragma acc update device(U_OLD [(M)*LOWER * num_eq:(M) * (4 * num_ghost_cell) * num_eq],                          \
                           U_OLD [(M) * (UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell) * num_eq], \
-                          U_NEW [(M)*LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                              \
+                          U_NEW [(M)*LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                          \
                           U_NEW [(M) * (UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell) * num_eq]) async
+
+            if (plot_int == 0)
+            {
+                if (iter % plot_per == 0)
+                {
+                    cout << " ==== Writing Data Wait ====" << endl;
+                    WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD, ndevices, device);
+                }
+            }
+            else
+            {
+                if (now_t > output_int * Psy_time / plot_int || iter == 0)
+                {
+                    cout << " ==== Writing Data Wait ====" << endl;
+                    WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD, ndevices, device);
+                    if (device == ndevices - 1)
+                        output_int = output_int + 1 * (iter > 0);
+                }
+            }
 
             TimeAdvance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, U_TMP, U_NEW, XYCOORD, SCHEME_IDX, ndevices, device);
 
@@ -131,37 +150,18 @@ int main(int argc, char **argv)
 
             ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, XYCOORD, TMP_DT, ndevices, device);
 
-            if (device+2>ndevices)  dt = *min_element(TMP_DT,TMP_DT+ndevices);
+            if (device + 2 > ndevices)
+                dt = *min_element(TMP_DT, TMP_DT + ndevices);
 
-#pragma acc update self(U_OLD [(M)*REAL_LOWER * num_eq:(M) * (2 * num_ghost_cell ) * num_eq],                              \
-                        U_OLD [(M) * (REAL_UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell ) * num_eq], \
-                        U_NEW [(M)*REAL_LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                              \
-                        U_NEW [(M) * (REAL_UPPER - 2 * num_ghost_cell ) * num_eq:(M) * (2 * num_ghost_cell ) * num_eq]) async
+#pragma acc update self(U_OLD [(M)*REAL_LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                          \
+                        U_OLD [(M) * (REAL_UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell) * num_eq], \
+                        U_NEW [(M)*REAL_LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                          \
+                        U_NEW [(M) * (REAL_UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell) * num_eq]) async
         }
         acc_wait_all();
 
         now_t = now_t + dt;
         iter++;
-
-        /*
-                    if (plot_int == 0)
-                    {
-                        if (iter % plot_per == 0)
-                        {
-                            cout << " ==== Writing Data Wait ====" << endl;
-                            WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
-                        }
-                    }
-                    else
-                    {
-                        if (now_t > output_int * Psy_time / plot_int)
-                        {
-                            cout << " ==== Writing Data Wait ====" << endl;
-                            WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
-                            output_int++;
-                        }
-                    }
-         */
 
         cout.precision(6);
         cout << "iter : " << iter << ".   dt :" << dt << ".   time :" << now_t << endl;
@@ -170,14 +170,13 @@ int main(int argc, char **argv)
     for (int device = 0; device < ndevices; device++)
     {
         acc_set_device_num(device, acc_device_default);
-
+        WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD, ndevices, device);
 #pragma acc exit data copyout(U_OLD [(M)*REAL_LOWER * num_eq:(M) * (REAL_UPPER - REAL_LOWER) * num_eq],             \
                               U_NEW [(M)*REAL_LOWER * num_eq:(M) * (REAL_UPPER - REAL_LOWER) * num_eq],             \
                               U_TMP [(M)*REAL_LOWER * num_tmp_size:(M) * (REAL_UPPER - REAL_LOWER) * num_tmp_size], \
                               XYCOORD [(M)*REAL_LOWER * num_coord:(M) * (REAL_UPPER - REAL_LOWER) * num_coord],     \
                               SCHEME_IDX [(M)*REAL_LOWER * num_sch:(M) * (REAL_UPPER - REAL_LOWER) * num_sch])
     }
-    WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD, XYCOORD);
 
     return 0;
 }
