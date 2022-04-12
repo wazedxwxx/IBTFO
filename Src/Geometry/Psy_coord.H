@@ -5,6 +5,6 @@ void Psy_coord(const double lo_x,
                const int N_x,
                const int N_y,
                const int num_ghost_cell,
-               double *XYCOORD);
-
-               
+               double *XYCOORD,
+               const int ndevices,
+               const int device);

@@ -12,20 +12,23 @@ double CaculateMass(const double Psy_L,
     double mass = 0;
     double dx = Psy_L / N_x;
     double dy = Psy_H / N_y;
-#pragma acc parallel loop
-    for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
+#pragma acc data present(XYCOORD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_coord]) \
+    present(U_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])
     {
-#pragma acc loop
-        for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
+#pragma acc parallel loop
+        for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
+#pragma acc loop
+            for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
             {
+                if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
+                {
 
-                mass += U_OLD[Index(i, j, 0)] * dx * dy;
+                    mass += U_OLD[Index(i, j, 0)] * dx * dy;
+                }
             }
         }
     }
+
     return mass;
 }
-
-

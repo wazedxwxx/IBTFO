@@ -1,8 +1,10 @@
 #include "Initialize.H"
-#include <math.h>
 #include "ParamReader.H"
+#include <math.h>
 #include "EQDefine.H"
 #include "CoordDefine.H"
+#include "openacc.h"
+
 using namespace std;
 void Initialize(char *filename,
                 const double Psy_L,
@@ -13,7 +15,9 @@ void Initialize(char *filename,
                 const double gamma,
                 double *U_OLD,
                 double *U_NEW,
-                double *XYCOORD)
+                double *XYCOORD,
+                const int ndevices,
+                const int device)
 {
     ParamReader DetectParams;
     Params<double> para(DetectParams.open(filename).numbers());
@@ -27,40 +31,48 @@ void Initialize(char *filename,
     const double v_R = para.get("v_R", 0);                           // right side y-vel
     const double p_R = para.get("p_R", 0.1);                         // right side pressure
 
-#pragma acc parallel loop
-    for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
+    int lower = LOWER;
+    int upper = UPPER;
+    acc_set_device_num(device, acc_device_default);
+#pragma acc data present(U_OLD [(M)*lower * num_eq:(M) * (upper - lower) * num_eq], \
+                         U_NEW [(M)*lower * num_eq:(M) * (upper - lower) * num_eq], \
+                         XYCOORD [(M)*lower * num_coord:(M) * (upper - lower) * num_coord])
     {
-#pragma acc loop
-        for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
+#pragma acc parallel loop async
+        for (int j = lower; j < upper; j++)
         {
-            if (XYCOORD[Index_Coord(i, j, 5)] < 0.5 || XYCOORD[Index_Coord(i, j, 5)] > 1.5)
+#pragma acc loop
+            for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
             {
-                if (XYCOORD[Index_Coord(i, j, 1)] <
-                    -(1 / tan(angle)) * XYCOORD[Index_Coord(i, j, 0)] + 0.5 * (1 / tan(angle)) + 0.5)
+                if (XYCOORD[Index_Coord(i, j, 5)] < 0.5 || XYCOORD[Index_Coord(i, j, 5)] > 1.5)
                 {
-                    U_OLD[Index(i, j, 0)] = rho_L;
-                    U_OLD[Index(i, j, 1)] = rho_L * u_L;
-                    U_OLD[Index(i, j, 2)] = rho_L * v_L;
-                    U_OLD[Index(i, j, 3)] = p_L / (gamma - 1) + 0.5 * rho_L * (u_L * u_L + v_L * v_L);
+                    if (XYCOORD[Index_Coord(i, j, 1)] <
+                        -(1 / tan(angle)) * XYCOORD[Index_Coord(i, j, 0)] + 0.5 * (1 / tan(angle)) + 0.5)
+                    {
+                        U_OLD[Index(i, j, 0)] = rho_L;
+                        U_OLD[Index(i, j, 1)] = rho_L * u_L;
+                        U_OLD[Index(i, j, 2)] = rho_L * v_L;
+                        U_OLD[Index(i, j, 3)] = p_L / (gamma - 1) + 0.5 * rho_L * (u_L * u_L + v_L * v_L);
+                    }
+                    else
+                    {
+                        U_OLD[Index(i, j, 0)] = rho_R;
+                        U_OLD[Index(i, j, 1)] = rho_R * u_R;
+                        U_OLD[Index(i, j, 2)] = rho_R * v_R;
+                        U_OLD[Index(i, j, 3)] = p_R / (gamma - 1) + 0.5 * rho_R * (u_R * u_R + v_R * v_R);
+                    }
                 }
                 else
                 {
-                    U_OLD[Index(i, j, 0)] = rho_R;
-                    U_OLD[Index(i, j, 1)] = rho_R * u_R;
-                    U_OLD[Index(i, j, 2)] = rho_R * v_R;
-                    U_OLD[Index(i, j, 3)] = p_R / (gamma - 1) + 0.5 * rho_R * (u_R * u_R + v_R * v_R);
+                    U_OLD[Index(i, j, 0)] = -1;
+                    U_OLD[Index(i, j, 1)] = 0;
+                    U_OLD[Index(i, j, 2)] = 0;
+                    U_OLD[Index(i, j, 3)] = -1;
                 }
-            }
-            else
-            {
-                U_OLD[Index(i, j, 0)] = -1;
-                U_OLD[Index(i, j, 1)] = 0;
-                U_OLD[Index(i, j, 2)] = 0;
-                U_OLD[Index(i, j, 3)] = -1;
-            }
-            for (int k = 0; k < num_eq; k++)
-            {
-                U_NEW[Index(i, j, k)] = U_OLD[Index(i, j, k)];
+                for (int k = 0; k < num_eq; k++)
+                {
+                    U_NEW[Index(i, j, k)] = U_OLD[Index(i, j, k)];
+                }
             }
         }
     }

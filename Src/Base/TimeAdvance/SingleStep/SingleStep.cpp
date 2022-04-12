@@ -19,7 +19,9 @@ void TimeAdvance(const double Psy_L,
                  double *U_TMP,
                  double *U_NEW,
                  double *XYCOORD,
-                 double *SCHEME_IDX)
+                 double *SCHEME_IDX,
+                 const int ndevices,
+                 const int device)
 {
-    Advance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, U_TMP, U_NEW, XYCOORD);
+    Advance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, U_TMP, U_NEW, XYCOORD, ndevices,device);
 }

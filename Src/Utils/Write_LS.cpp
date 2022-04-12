@@ -2,7 +2,6 @@
 #include <iostream>
 #include "Write_LS.H"
 #include "CoordDefine.H"
-#define Index_sch(a, b, c, N) ((N) * (b) + (a)) * 2 + (c)
 using namespace std;
 void Write_LS(const double Psy_L,
               const double Psy_H,
@@ -25,6 +24,28 @@ void Write_LS(const double Psy_L,
     outfile << "ORIGIN " << Ori << " " << Ori << " " << Ori << endl;
     outfile << "SPACING " << Psy_L / N_x << " " << Psy_H / N_y << " " << Psy_H / N_y << " " << endl;
     outfile << "POINT_DATA " << (N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) << endl;
+
+    outfile << "SCALARS X_Coord float" << endl;
+    outfile << "LOOKUP_TABLE default" << endl;
+    for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
+    {
+        for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
+        {
+            outfile << XYCOORD[Index_Coord(i, j, 0)] << endl;
+        }
+    }
+
+    outfile << "SCALARS Y_Coord float" << endl;
+    outfile << "LOOKUP_TABLE default" << endl;
+    for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)
+    {
+        for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
+        {
+            outfile << XYCOORD[Index_Coord(i, j, 1)] << endl;
+        }
+    }
+
+
     outfile << "SCALARS Phi float" << endl;
     outfile << "LOOKUP_TABLE default" << endl;
     for (int j = 0; j < N_y + 2 * num_ghost_cell; j++)

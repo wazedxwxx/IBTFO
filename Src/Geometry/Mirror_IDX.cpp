@@ -1,32 +1,67 @@
 #include "Mirror_IDX.H"
 #include <math.h>
+#include <iostream>
 #include "CoordDefine.H"
+#include "EQDefine.H"
+#include <algorithm>
+#include "SchDefine.H"
+using namespace std;
 void Mirror_IDX(const int N_x,
                 const int N_y,
                 const int num_ghost_cell,
-                int *IDX,
-                int *IDY,
+                double *GFM_Index,
                 double *XYCOORD,
-                const double x_mirror,
-                const double y_mirror)
+                int k_point,
+                const int ndevices,
+                const int device)
 {
+    int lower = LOWER;
+    int upper = UPPER;
 // x direction search
-#pragma acc data copy(XYCOORD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_coord])
-#pragma acc parallel loop
-    for (int i = 0; i < N_x + 2 * num_ghost_cell - 1; i++)
+#pragma acc data present(XYCOORD [(M)*lower * num_coord:(M) * (upper - lower) * num_coord], GFM_Index [(M)*lower * num_sch:(M) * (upper - lower) * num_sch])
     {
-        if (x_mirror < XYCOORD[Index_Coord(i + 1, 0, 0)] && x_mirror >= XYCOORD[Index_Coord(i, 0, 0)])
+#pragma acc parallel loop async
+        for (int j = lower + num_ghost_cell; j < upper - num_ghost_cell; j++)
         {
-            *IDX = i;
+#pragma acc loop
+            for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
+            {
+                if (XYCOORD[Index_Coord(i, j, 5)] > 1)
+                {
+                    double x_mirror = GFM_Index[Index_sch(i, j, k_point)];
+#pragma acc loop
+                    for (int ii = 0; ii < N_x + 2 * num_ghost_cell - 1; ii++)
+                    {
+                        if (x_mirror < XYCOORD[Index_Coord(ii + 1, j, 0)] && x_mirror >= XYCOORD[Index_Coord(ii, j, 0)])
+                        {
+                            GFM_Index[Index_sch(i, j, k_point + 2)] = ii;
+                        }
+                    }
+                }
+            }
         }
-    }
+        
 
-#pragma acc parallel loop
-    for (int j = 0; j < N_y + 2 * num_ghost_cell - 1; j++)
-    {
-        if (y_mirror < XYCOORD[Index_Coord(0, j + 1, 1)] && y_mirror >= XYCOORD[Index_Coord(0, j, 1)])
+
+#pragma acc parallel loop async
+        for (int j = lower + num_ghost_cell; j < upper - num_ghost_cell; j++)
         {
-            *IDY = j;
+#pragma acc loop
+            for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
+            {
+                if (XYCOORD[Index_Coord(i, j, 5)] > 1)
+                {
+                    double y_mirror = GFM_Index[Index_sch(i, j, k_point + 1)];
+#pragma acc loop
+                    for (int jj = lower; jj < upper - 1; jj++)
+                    {
+                        if (y_mirror < XYCOORD[Index_Coord(0, jj + 1, 1)] && y_mirror >= XYCOORD[Index_Coord(0, jj, 1)])
+                        {
+                            GFM_Index[Index_sch(i, j, k_point + 3)] = jj;
+                        }
+                    }
+                }
+            }
         }
     }
 }

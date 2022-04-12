@@ -1,9 +1,8 @@
 void Mirror_IDX(const int N_x,
                 const int N_y,
                 const int num_ghost_cell,
-                int *IDX,
-                int *IDY,
+                double *GFM_Index,
                 double *XYCOORD,
-                const double x_mirror,
-                const double y_mirror);
-               
+                int k_point,
+                const int ndevices,
+                const int device);

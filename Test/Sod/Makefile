@@ -1,4 +1,4 @@
-Scheme = MUSCL  #Lax or MUSCL or MHM （MSUCL Hancock）
+Scheme = MHM  #Lax or MUSCL or MHM （MSUCL Hancock）
 Riemann = StegerWarming #HLL or PVRS or StegerWarming
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = Regular #Regular or BaseGFM or SimpleBound
@@ -14,7 +14,7 @@ BoundSRC=../../Src/BoundaryCondition/
 AdvanceSRC=../../Src/Base/$(Equation)/Advection/
 CommonSRC=../../Src/Base/Common/
 RiemannSRC=../../Src/Base/$(Equation)/Riemann/
-SlopelimiterSRC=../../Src/Base/Slope_limiter/
+SlopelimiterSRC=../../Src/Base/Slope_limiter/$(Limiter)
 TimeSRC=../../Src/Base/TimeAdvance/
 
 
@@ -24,7 +24,6 @@ BoundFILES = $(foreach dir,$(BoundSRC)$(Boundary),$(wildcard $(dir)/*.cpp))
 AdvanceFILES = $(foreach dir,$(AdvanceSRC)$(Scheme),$(wildcard $(dir)/*.cpp))
 CommonFILES = $(foreach dir,$(CommonSRC),$(wildcard $(dir)/*.cpp))
 RiemannFILES = $(foreach dir,$(RiemannSRC)$(Riemann),$(wildcard $(dir)/*.cpp))
-SlopelimiterFILES = $(foreach dir,$(SlopelimiterSRC)$(Limiter),$(wildcard $(dir)/*.cpp))
 TimeFILES = $(foreach dir,$(TimeSRC)$(Time),$(wildcard $(dir)/*.cpp))
 $(shell rm -f $(PROM))
 
@@ -33,7 +32,7 @@ ifeq ($(ARCH),CPU)
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
                  -I$(SlopelimiterSRC) -I$(TimeSRC) -I$(BoundSRC)$(Boundary) -I$(AdvanceSRC)$(Scheme) -lpng16
 else
-    CFLAGS = -fast -ta=tesla:managed -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
+    CFLAGS = -fast -ta=tesla:cc86 -Minfo=accel -I$(GeometrySRC) -I$(UtilsSRC) \
                 -I$(BoundSRC) -I$(AdvanceSRC) -I$(CommonSRC) -I$(RiemannSRC)\
                  -I$(SlopelimiterSRC) -I$(TimeSRC) -I$(BoundSRC)$(Boundary) -I$(AdvanceSRC)$(Scheme) -lpng16
 endif
@@ -42,8 +41,8 @@ endif
 
 $(PROM) : $(OBJ)
 	$(CC) $(CFLAGS) -o $(PROM) $(GeometryFILES) $(UtilsFILES) \
-	$(BoundFILES) $(AdvanceFILES) $(CommonFILES) $(RiemannFILES) $(SlopelimiterFILES) $(TimeFILES) \
-	$(wildcard ./*.cpp)
+	$(BoundFILES) $(AdvanceFILES) $(CommonFILES) $(RiemannFILES)  $(TimeFILES) \
+	$(wildcard ./*.cpp) 
 	$(RM) *.o *.vtk
 
 

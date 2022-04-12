@@ -5,4 +5,28 @@ void Riemann_solver(const double Psy_L,
                     const int num_ghost_cell,
                     const double gamma,
                     double *U_OLD,
-                    double *U_TMP);
+                    double *U_TMP,
+                    const int ndevices,
+                    const int device);
+
+void Riemann_solverX(const double Psy_L,
+                    const double Psy_H,
+                    const int N_x,
+                    const int N_y,
+                    const int num_ghost_cell,
+                    const double gamma,
+                    double *U_OLD,
+                    double *U_TMP,
+                    const int ndevices,
+                    const int device);
+
+void Riemann_solverY(const double Psy_L,
+                    const double Psy_H,
+                    const int N_x,
+                    const int N_y,
+                    const int num_ghost_cell,
+                    const double gamma,
+                    double *U_OLD,
+                    double *U_TMP,
+                    const int ndevices,
+                    const int device);

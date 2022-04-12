@@ -8,4 +8,6 @@ void Initialize(char *filename,
                 const double gamma,
                 double *U_OLD,
                 double *U_NEW,
-                double *XYCOORD);
+                double *XYCOORD,
+               const int ndevices,
+               const int device);
