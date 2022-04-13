@@ -53,7 +53,7 @@ The tutorial of IBTFO can be found here.
 
 
 ## Contributing
-If you want to contribute to the development of cgc, have a look at the contribution guidelines.
+If you want to contribute to the development of cgc, have a look at the contribution guidelines. We discourage the development of advanced advection schemes if not required for your immersed boundary method. We encourage the development and validation of your advanced immersed boundary methods. If your method is publicly published, we'd be happy to couple it into IBTFO. If you have any questions, you can discuss in the issue.
 
 ## License
 **IBTFO** (Copyright (c) 2020-2022) is an open-source package made available under the MIT License.
