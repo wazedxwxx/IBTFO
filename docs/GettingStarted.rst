@@ -20,7 +20,7 @@ The PeleC directory structure is as shown below:
   * VODE
   * plot1d
 
-* **Docs**   - PeleC documentation 
+* **Docs**   - IBTFO documentation 
 
   * sphinx
 
