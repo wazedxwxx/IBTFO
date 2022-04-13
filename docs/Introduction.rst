@@ -8,6 +8,9 @@ Introduction
 
 IBTFO is discrete forcing Immersed Boundary method fast Test Facility based OpenAcc. It is designed for development and validation of immersed boundary methods. IBTFO uses Built-in Euler equation solver and shared memory computation based OpenACC. The vision of IBTFO is not to provide a robust and powerful solver, but to focus on the efficient and fast development and validation of advanced immersed boundary methods!
 
+Immersed Boundary method
+------------
+The immersed boundary method (IBM) proposed by `Peskin <https://doi.org/10.1017/S0962492902000077>`_  is employed to handle elastic boundaries for simulating blood flow in the heart.  `Mittal's <10.1146/annurev.fluid.37.061903.175743>`_  review refers to this method as the ”continuous forcing method”. The forcing is incorporated into the continuous equations before discretization. This method is suitable for the case where the boundary is elastic, and the Dirac delta function used for the elastic boundary does not fit well with the rigid boundary in general. The discrete forcing approach is proposed to overcome the problem that the elastic force source term cannot be given precisely in the Navier-Stokes (NS) governing equations. The discrete forcing approach is implemented by modifying the computational stencil localized at the difference scheme boundary and imposing the boundary conditions on the immersed boundary. The discrete forcing approach can reconstruct the boundary accurately. Previous research has established two approaches to modify the computational stencil: cut-cell methods (CCM) and ghost fluid methods (GFM).
 
 
 Dependencies
