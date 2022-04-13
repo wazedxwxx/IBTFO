@@ -4,7 +4,8 @@
 
 **IBTFO** is **discrete forcing** **I**mmersed **B**oundary method fast **T**est **F**acility based **O**penAcc. It is designed for easy development and validation of immersed boundary methods. Built-in basic Euler equation solver and shared memory computation using OpenACC.
 The vision of IBTFO is not to provide a robust and powerful solver, but to focus on the efficient and fast development and validation of advanced immersed boundary methods!
-Note that IBTFO currently only supports Direct BC Imposition. Such methods include ghost fluid method (GFM) and cut cell method (CCM) and their extensions.
+
+>Note that IBTFO currently only supports Direct BC Imposition. Such methods include ghost fluid method (GFM) and cut cell method (CCM) and their extensions.
 
 ## Installation
 Even though it has as simple utilities as possible built in as a fast test facility, `IBTFO` still relies on a few libraries.
