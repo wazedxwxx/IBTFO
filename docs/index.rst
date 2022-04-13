@@ -21,7 +21,7 @@ README
 ======
 .. _README:
 
-.. include:: ../../README.rst
+.. include:: ../README.md
 
 
 Indices and tables
