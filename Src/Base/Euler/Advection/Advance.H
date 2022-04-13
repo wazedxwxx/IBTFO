@@ -1,6 +1,7 @@
 // Copyright (C) 2022 , National University of Defense Technology
 // Xinxin Wang , wxx@nudt.edu.cn
 
+#ifndef _ADVANCE_H_
 #include "Slope_limiter.H"
 #include "Riemann_solver.H"
 #include "WriteData.H"
@@ -23,3 +24,5 @@ void Advance(const double Psy_L,
              double *XYCOORD,
              const int ndevices,
              const int device);
+#define _ADVANCE_H_
+#endif

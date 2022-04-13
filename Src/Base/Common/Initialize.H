@@ -1,6 +1,7 @@
 // Copyright (C) 2022 , National University of Defense Technology
 // Xinxin Wang , wxx@nudt.edu.cn
 
+#ifndef _INITIALIZE_H_
 #include "ParamReader.H"
 #include <math.h>
 #include "EQDefine.H"
@@ -18,5 +19,8 @@ void Initialize(char *filename,
                 double *U_OLD,
                 double *U_NEW,
                 double *XYCOORD,
-               const int ndevices,
-               const int device);
+                const int ndevices,
+                const int device);
+                
+#define _INITIALIZE_H_
+#endif

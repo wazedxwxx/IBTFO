@@ -1,6 +1,7 @@
 // Copyright (C) 2022 , National University of Defense Technology
 // Xinxin Wang , wxx@nudt.edu.cn
 
+#ifndef _MIRROR_IDX_H_
 #include <math.h>
 #include <iostream>
 #include "CoordDefine.H"
@@ -16,3 +17,5 @@ void Mirror_IDX(const int N_x,
                 int k_point,
                 const int ndevices,
                 const int device);
+#define _MIRROR_IDX_H_
+#endif

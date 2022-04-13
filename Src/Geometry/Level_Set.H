@@ -1,6 +1,7 @@
 // Copyright (C) 2022 , National University of Defense Technology
 // Xinxin Wang , wxx@nudt.edu.cn
 
+#ifndef _LEVELSET_H_
 #include "Level_Set_function.H"
 #include <math.h>
 #include "EQDefine.H"
@@ -15,5 +16,6 @@ void Level_Set(char *filename,
                double *XYCOORD,
                const int ndevices,
                const int device);
-
+#define _LEVELSET_H_
+#endif
                

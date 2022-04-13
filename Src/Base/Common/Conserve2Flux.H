@@ -2,10 +2,6 @@
 // Xinxin Wang , wxx@nudt.edu.cn
 
 #ifndef _CONSERVE2FLUX_H_
-#define _CONSERVE2FLUX_H_
-#endif
-
-
 #include "EQDefine.H"
 #include "CoordDefine.H"
 #include <iostream>
@@ -48,5 +44,10 @@ void Conserve2FluxZ(const int N_x,
                     double *H,
                     const int ndevices,
                     const int device);
+#define _CONSERVE2FLUX_H_
+#endif
+
+
+
 
 

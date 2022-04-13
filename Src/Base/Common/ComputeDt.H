@@ -2,11 +2,6 @@
 // Xinxin Wang , wxx@nudt.edu.cn
 
 #ifndef _COMPUTEDT_H_
-#define _COMPUTEDT_H_
-
-#endif
-
-// declare function
 #include <algorithm>
 #include "EQDefine.H"
 #include "CoordDefine.H"
@@ -26,3 +21,9 @@ void ComputeDt(const double Psy_L,
                double *dt,
                const int ndevices,
                const int device);
+
+#define _COMPUTEDT_H_
+
+#endif
+
+// declare function

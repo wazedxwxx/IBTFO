@@ -1,6 +1,6 @@
 // Copyright (C) 2022 , National University of Defense Technology
 // Xinxin Wang , wxx@nudt.edu.cn
-
+#ifndef _BOUNDARY_H_
 #include "EQDefine.H"
 #include "CoordDefine.H"
 #include "SchDefine.H"
@@ -27,3 +27,5 @@ void Global_Boundary(const int N_x,
                      double *U_NEW,
                      const int ndevices,
                      const int device);
+#define _BOUNDARY_H_
+#endif

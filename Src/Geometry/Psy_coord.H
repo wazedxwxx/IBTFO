@@ -1,6 +1,7 @@
 // Copyright (C) 2022 , National University of Defense Technology
 // Xinxin Wang , wxx@nudt.edu.cn
 
+#ifndef _PSY_COORD_H_
 #include <algorithm>
 #include "EQDefine.H"
 #include "CoordDefine.H"
@@ -17,3 +18,5 @@ void Psy_coord(const double lo_x,
                double *XYCOORD,
                const int ndevices,
                const int device);
+#define _PSY_COORD_H_
+#endif

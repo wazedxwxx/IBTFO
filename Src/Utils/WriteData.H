@@ -1,6 +1,7 @@
 // Copyright (C) 2022 , National University of Defense Technology
 // Xinxin Wang , wxx@nudt.edu.cn
 
+#ifndef _WRITEDATA_H_
 #include "EQDefine.H"
 #include <string>
 #include "CoordDefine.H"
@@ -24,3 +25,5 @@ void WriteData(const double lo_x,
                double *XYCOORD,
                const int ndevices,
                const int device);
+#define _WRITEDATA_H_
+#endif

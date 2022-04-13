@@ -1,6 +1,7 @@
 // Copyright (C) 2022 , National University of Defense Technology
 // Xinxin Wang , wxx@nudt.edu.cn
 
+#ifndef _SCHEME_INDEX_H_
 #include "Mirror_IDX.H"
 #include <iostream>
 #include <math.h>
@@ -16,3 +17,5 @@ void Scheme_Index(const int N_x,
                   double *GFM_Index,
                   const int ndevices,
                   const int device);
+#define _SCHEME_INDEX_H_
+#endif
