@@ -1,6 +1,5 @@
 #include "Initialize.H"
 
-using namespace std;
 void Initialize(char *filename,
                 const double Psy_L,
                 const double Psy_H,

@@ -1,22 +1,31 @@
-#include "EQDefine.H"
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
 #include "CaculateMass.H"
-#include "CoordDefine.H"
-double CaculateMass(const double Psy_L,
-                    const double Psy_H,
-                    const int N_x,
-                    const int N_y,
-                    const int num_ghost_cell,
-                    double *U_OLD,
-                    double *XYCOORD)
+void CaculateMass(const double Psy_L,
+                  const double Psy_H,
+                  const int N_x,
+                  const int N_y,
+                  const int num_ghost_cell,
+                  double *U_OLD,
+                  double *XYCOORD,
+                  double *MASS_DEVICE,
+                  const int ndevices,
+                  const int device)
 {
-    double mass = 0;
-    double dx = Psy_L / N_x;
-    double dy = Psy_H / N_y;
-#pragma acc data present(XYCOORD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_coord]) \
-    present(U_OLD[:(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq])
+
+    int real_lower = REAL_LOWER;
+    int real_upper = REAL_UPPER;
+    acc_set_device_num(device, acc_device_default);
+#pragma acc data present(U_OLD [(M)*real_lower * num_eq:(M) * (real_upper - real_lower) * num_eq], \
+                         XYCOORD [(M)*real_lower * num_coord:(M) * (real_upper - real_lower) * num_coord])
     {
+        double mass = 0;
+        double dx = Psy_L / N_x;
+        double dy = Psy_H / N_y;
+#pragma acc update self(U_OLD [(M)*real_lower * num_eq:(M) * (real_upper - real_lower) * num_eq])
 #pragma acc parallel loop
-        for (int j = num_ghost_cell; j < N_y + num_ghost_cell; j++)
+        for (int j = real_lower; j < real_upper; j++)
         {
 #pragma acc loop
             for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
@@ -28,7 +37,6 @@ double CaculateMass(const double Psy_L,
                 }
             }
         }
+        MASS_DEVICE[device] = mass;
     }
-
-    return mass;
 }

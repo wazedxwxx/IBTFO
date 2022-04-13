@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     const double Psy_H = hi_y - lo_y;
 
     int ndevices = acc_get_num_devices(acc_get_device_type());
-    // double Mass_start, Mass_now, Mass_loss;
+    double Mass_start, Mass_now;
 
     double *U_OLD = new double[(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq];
     double *XYCOORD = new double[(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_coord];
@@ -70,6 +70,7 @@ int main(int argc, char **argv)
     double *U_NEW = new double[(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_eq];
     double *SCHEME_IDX = new double[(N_x + 2 * num_ghost_cell) * (N_y + 2 * num_ghost_cell) * num_sch];
     double TMP_DT[ndevices];
+    double MASS_DEVICE[ndevices];
     for (int device = 0; device < ndevices; device++)
     {
         acc_set_device_num(device, acc_device_default);
@@ -77,7 +78,7 @@ int main(int argc, char **argv)
                               U_NEW [(M)*LOWER * num_eq:(M) * (UPPER - LOWER) * num_eq],             \
                               U_TMP [(M)*LOWER * num_tmp_size:(M) * (UPPER - LOWER) * num_tmp_size], \
                               XYCOORD [(M)*LOWER * num_coord:(M) * (UPPER - LOWER) * num_coord],     \
-                              SCHEME_IDX [(M)*LOWER * num_sch:(M) * (UPPER - LOWER) * num_sch], TMP_DT [device:1])
+                              SCHEME_IDX [(M)*LOWER * num_sch:(M) * (UPPER - LOWER) * num_sch], TMP_DT [device:1], MASS_DEVICE [device:1])
     }
 
     cout << " ====  memory allocation complete ====" << endl;
@@ -103,12 +104,6 @@ int main(int argc, char **argv)
 
         Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX, ndevices, device);
 
-        // WriteData(lo_x, lo_y, Psy_L, Psy_H, N_x, N_y, num_ghost_cell, iter, now_t, gamma, U_OLD,XYCOORD);
-
-        // Write_LS(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, XYCOORD);
-        // WriteIDX2TXT(N_x, N_y, num_ghost_cell, SCHEME_IDX);
-        // Mass_start = CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD);
-        // cout << " ====  Initial Mass is " <<Mass_start <<" ===="<< endl;
 
 #pragma acc update self(U_OLD [(M)*REAL_LOWER * num_eq:(M) * (REAL_UPPER - REAL_LOWER) * num_eq],             \
                         U_NEW [(M)*REAL_LOWER * num_eq:(M) * (REAL_UPPER - REAL_LOWER) * num_eq],             \
@@ -124,11 +119,14 @@ int main(int argc, char **argv)
 
         ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, XYCOORD, TMP_DT, ndevices, device);
 
+        CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD, MASS_DEVICE, ndevices, device);
+
         if (device + 2 > ndevices)
             dt = *min_element(TMP_DT, TMP_DT + ndevices);
 
-
+        Mass_start += MASS_DEVICE[device];
     }
+    cout << " ====  Initial Mass is " << Mass_start << " ====" << endl;
 
     while (now_t < Psy_time && iter < max_iter)
     {
@@ -168,6 +166,10 @@ int main(int argc, char **argv)
 
             ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, XYCOORD, TMP_DT, ndevices, device);
 
+            CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD, MASS_DEVICE, ndevices, device);
+
+            Mass_now += MASS_DEVICE[device];
+
             if (device + 2 > ndevices)
                 dt = *min_element(TMP_DT, TMP_DT + ndevices);
 
@@ -181,12 +183,9 @@ int main(int argc, char **argv)
         now_t = now_t + dt;
         iter++;
 
-        /* Mass_now = CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD);
-       Mass_loss = abs(Mass_start - Mass_now); */
-
         cout.precision(6);
-        cout << "iter : " << iter << ".   dt :" << dt << ".   time :" << now_t << endl;
-        // cout << "iter : " << iter << ".   dt :" << dt << ".   time :" << now_t << ".   mass loss :" << Mass_loss << endl;
+        cout << "iter : " << iter << ".   dt :" << dt << ".   time :" << now_t << ".  Mass loss :" << abs(Mass_now - Mass_start) << endl;
+
     }
 
     for (int device = 0; device < ndevices; device++)

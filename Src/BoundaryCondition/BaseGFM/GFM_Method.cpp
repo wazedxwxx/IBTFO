@@ -106,7 +106,7 @@ void Scheme_Index(const int N_x,
                     GFM_Index[Index_sch(i, j, 6)] = a3;
                     GFM_Index[Index_sch(i, j, 7)] = a4;
 
-                    /*         std::cout << " i " << i << " j " << j
+/*                              std::cout << " i " << i << " j " << j
                               << " x " << XYCOORD[Index_Coord(i, j, 0 )]
                               << " y " << XYCOORD[Index_Coord(i, j, 1 )]
                               << " Phi " << std::abs(XYCOORD[Index_Coord(i, j, 2 )])
@@ -120,7 +120,7 @@ void Scheme_Index(const int N_x,
                               << " 1/D2 " << a2
                               << " 1/D3 " << a3
                               << " 1/D4 " << a4
-                              << " " << std::endl;*/
+                              << " " << std::endl; */
                 }
             }
         }

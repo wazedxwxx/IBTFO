@@ -9,6 +9,7 @@
 #include "CoordDefine.H"
 #include "SchDefine.H"
 #include "Initialize.H"
+#include "CaculateMass.H"
 #include "Psy_coord.H"
 #include "WriteData.H"
 #include "Conserve2Flux.H"
@@ -62,9 +63,11 @@ int main(int argc, char **argv)
     double *U_TMP = new double[(M) * (N)*num_tmp_size];
     double *U_NEW = new double[(M) * (N)*num_eq];
     double *SCHEME_IDX = new double[(M) * (N)*num_sch];
+    double Mass_start, Mass_now;
 
     int ndevices = acc_get_num_devices(acc_get_device_type());
     double TMP_DT[ndevices];
+    double MASS_DEVICE[ndevices];
     for (int device = 0; device < ndevices; device++)
     {
         acc_set_device_num(device, acc_device_default);
@@ -72,7 +75,7 @@ int main(int argc, char **argv)
                               U_NEW [(M)*LOWER * num_eq:(M) * (UPPER - LOWER) * num_eq],             \
                               U_TMP [(M)*LOWER * num_tmp_size:(M) * (UPPER - LOWER) * num_tmp_size], \
                               XYCOORD [(M)*LOWER * num_coord:(M) * (UPPER - LOWER) * num_coord],     \
-                              SCHEME_IDX [(M)*LOWER * num_sch:(M) * (UPPER - LOWER) * num_sch], TMP_DT [device:1])
+                              SCHEME_IDX [(M)*LOWER * num_sch:(M) * (UPPER - LOWER) * num_sch], TMP_DT [device:1], MASS_DEVICE [device:1])
     }
 
     cout << " ====  memory allocation complete ====" << endl;
@@ -102,18 +105,24 @@ int main(int argc, char **argv)
     }
     acc_wait_all();
 
+    Mass_start = 0;
     for (int device = 0; device < ndevices; device++)
     {
         acc_set_device_num(device, acc_device_default);
 
         ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, XYCOORD, TMP_DT, ndevices, device);
 
+        CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD, MASS_DEVICE, ndevices, device);
+
         if (device + 2 > ndevices)
             dt = *min_element(TMP_DT, TMP_DT + ndevices);
+
+        Mass_start += MASS_DEVICE[device];
     }
 
     while (now_t < Psy_time && iter < max_iter)
     {
+        Mass_now = 0;
         acc_wait_all();
         for (int device = 0; device < ndevices; device++)
         {
@@ -150,6 +159,10 @@ int main(int argc, char **argv)
 
             ComputeDt(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, CFL_number, U_OLD, XYCOORD, TMP_DT, ndevices, device);
 
+            CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD, MASS_DEVICE, ndevices, device);
+
+            Mass_now += MASS_DEVICE[device];
+
             if (device + 2 > ndevices)
                 dt = *min_element(TMP_DT, TMP_DT + ndevices);
 
@@ -164,7 +177,7 @@ int main(int argc, char **argv)
         iter++;
 
         cout.precision(6);
-        cout << "iter : " << iter << ".   dt :" << dt << ".   time :" << now_t << endl;
+        cout << "iter : " << iter << ".   dt :" << dt << ".   time :" << now_t << ".  Mass loss :" << abs(Mass_now - Mass_start) << endl;
     }
 
     for (int device = 0; device < ndevices; device++)

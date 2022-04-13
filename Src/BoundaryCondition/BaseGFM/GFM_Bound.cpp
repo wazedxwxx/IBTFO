@@ -105,7 +105,7 @@ void Boundary(const int N_x,
                     U_OLD[Index(i, j, 2)] = rho_weight * v_weight;
                     U_OLD[Index(i, j, 3)] = p_weight / (gamma - 1) + 0.5 * rho_weight * (u_weight * u_weight + v_weight * v_weight);
 
-                    /*                  std::cout << " i " << i << " j " << j
+/*                                       std::cout << " i " << i << " j " << j
                                               << " x " << XYCOORD[Index_Coord(i, j, 0 )]
                                               << " y " << XYCOORD[Index_Coord(i, j, 1 )]
                                               << " Phi " << std::abs(XYCOORD[Index_Coord(i, j, 2 )])
@@ -139,7 +139,8 @@ void Boundary(const int N_x,
                                               << " uw " << u_weight
                                               << " vw " << v_weight
                                               << " pw " << p_weight
-                                              << " " << std::endl;  */
+                                              << " " << std::endl;   */
+                                              
                 }
             }
         }

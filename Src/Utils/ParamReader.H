@@ -1,3 +1,10 @@
+/*
+ * ParamReader.h
+ *
+ *  Created on: Dec 14, 2017
+ *      Author: vincent
+ */
+
 #ifndef PARAMREADER_H_
 #define PARAMREADER_H_
 #include <string>
@@ -18,6 +25,7 @@ public:
 	virtual ~ParamReader();
 	ParamReader &open(const char* filename);
 	std::map<string,double> numbers();
+	std::map<string,string>strings();
 private:
 	string removeSpaces(string input);
 	//int get_value(string s);
