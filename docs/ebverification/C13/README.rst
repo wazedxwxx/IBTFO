@@ -51,7 +51,7 @@ Running study
 .. code-block:: bash
 
    paren=`pwd`
-   pelec="${paren}/PeleC3d.gnu.MPI.ex"
+   IBTFO="${paren}/IBTFO3d.gnu.MPI.ex"
    mpi_ranks=36
 
    res=( 16 32 64 128 )
@@ -62,7 +62,7 @@ Running study
        cd "${i}" || exit
        cp "${paren}/inputs_3d" .
        hiz="$((0.3575*16/i))"
-       srun -n ${mpi_ranks} "${pelec}" inputs_3d amr.n_cell="${i} ${i} 4" geometry.prob_hi="1.43 1.43 ${hiz}" > out
+       srun -n ${mpi_ranks} "${IBTFO}" inputs_3d amr.n_cell="${i} ${i} 4" geometry.prob_hi="1.43 1.43 ${hiz}" > out
        ls -1v *plt*/Header | tee movie.visit
        cd "${paren}" || exit
    done

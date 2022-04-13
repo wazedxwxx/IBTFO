@@ -9,7 +9,7 @@
 
 PelePhysics
 ===========
-`PelePhysics` is a repository of physics databases and implementation code for use with the `Pele` suite of of codes. There are several instances of shared physics between PeleC and PeleLM that are stored in PelePhysics. Specifically, equations of state and thermodynamic property evaluation, transport coefficients evaluation, and chemistry rate computation.
+`PelePhysics` is a repository of physics databases and implementation code for use with the `Pele` suite of of codes. There are several instances of shared physics between IBTFO and PeleLM that are stored in PelePhysics. Specifically, equations of state and thermodynamic property evaluation, transport coefficients evaluation, and chemistry rate computation.
 
 FUEGO
 -----
@@ -81,13 +81,13 @@ Model Generation Procedures
 
 #. Add a `Make.package` text file in that model folder that will be included by the AMReX make system.  In most case, this file will contain a single line, `cEXE_sources+=YYY.c` (see the other models for examples if there are auxiliary files in languages other than c to include in the build of this model).
 
-#. Finally, edit the `GNUmakefile` where you want to use this (in, e.g., `PeleC/Exec`) so that `Chemistry_Model` is `XXX`.  In `PeleC/Exec/Make.PeleC`, the model is expected to be in the folder `${PELE_PHYSICS_HOME}/Support/Fuego/Mechanism/Models/$(Chemistry_Model)`, and it is expected that the folder contains a `Make.package` file to include, so make sure things are where they need to be.
+#. Finally, edit the `GNUmakefile` where you want to use this (in, e.g., `IBTFO/Exec`) so that `Chemistry_Model` is `XXX`.  In `IBTFO/Exec/Make.IBTFO`, the model is expected to be in the folder `${PELE_PHYSICS_HOME}/Support/Fuego/Mechanism/Models/$(Chemistry_Model)`, and it is expected that the folder contains a `Make.package` file to include, so make sure things are where they need to be.
 
 
 Equation of State
 -----------------
 
-PeleC allows the user to use different equation of state (eos) as the constitutive equation and close the compressible Navier-Stokes system of equations. All the routines needed to fully define an eos are implemented through PelePhysics module. Available models include:
+IBTFO allows the user to use different equation of state (eos) as the constitutive equation and close the compressible Navier-Stokes system of equations. All the routines needed to fully define an eos are implemented through PelePhysics module. Available models include:
 
 * An ideal gas mixture model (similar to the CHEMKIN-II approach)
 * A simple `GammaLaw` model

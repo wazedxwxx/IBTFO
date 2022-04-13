@@ -50,7 +50,7 @@ Running study
 .. code-block:: bash
 
    paren=`pwd`
-   pelec="${paren}/PeleC3d.gnu.MPI.ex"
+   IBTFO="${paren}/IBTFO3d.gnu.MPI.ex"
    mpi_ranks=36
 
    res=( 4 8 16 32 )
@@ -62,7 +62,7 @@ Running study
        cp "${paren}/inputs_3d" .
        ny="$((i*2))"
        nx="$((i*10))"
-       srun -n ${mpi_ranks} "${pelec}" inputs_3d amr.n_cell="${nx} ${ny} ${ny}" pelec.fixed_dt=1e-5 > out
+       srun -n ${mpi_ranks} "${IBTFO}" inputs_3d amr.n_cell="${nx} ${ny} ${ny}" IBTFO.fixed_dt=1e-5 > out
        ls -1v ./*plt*/Header | tee movie.visit
        cd "${paren}" || exit
    done

@@ -6,12 +6,12 @@ Geometry initialization
 Creating an EB geometry also requires knowledge of the finest level that will be used so that geometries that 'telescope', 
 i.e., coarser volume fractions are consistent with applying the coarsening operator to the finer volumes, can be created. 
 To that end there is a global geometry creation step, facilitated by the `initialize_EB2` function, as well as a step that 
-happens when a new AMRLevel is created. The latter happens by a call to  `PeleC::initialize_eb2_structs`  through `PeleC::init_eb` 
-called from the PeleC constructor. Following construction of the geometry, the geometric information is 
+happens when a new AMRLevel is created. The latter happens by a call to  `IBTFO::initialize_eb2_structs`  through `IBTFO::init_eb` 
+called from the IBTFO constructor. Following construction of the geometry, the geometric information is 
 copied into the structures described in the previous section and the various interpolation stencils are populated. 
 
 Cartesian grid, embedded boundary (EB) methods are methods where the geometric description is formed by cutting a Cartesian 
-mesh with surface of the geometry.  AMReX's methods to handle EB geometry information, and PeleC's treatment of the
+mesh with surface of the geometry.  AMReX's methods to handle EB geometry information, and IBTFO's treatment of the
 EB aware update could use many possible sources for geometric description. The necessary information is, on a per-cell basis:
 
 * Apertures for faces intersected by cut cells,
@@ -56,7 +56,7 @@ There are several basic geometries that are available in AMReX that can be easil
 * *Cylinder* - needs center (cylinder_center), radius (cylinder_radius), height (cylinder_height), direction (cylinder_direction) and fluid inside/outside flag (cylinder_has_fluid_inside).
 * *Box*      - needs the lower corner (box_lo), upper corner (box_hi) and fluid inside/outside flag (box_has_fluid_inside). The box is aligned along coordinate directions.
 * *Spline*   - needs a vector of points to create a 2D function that is a combination of spline and line elements. Currently, this geometry does not have a user interface
-  from the inputs file, but can be used within Pelec_init_eb.cpp with hard coded points. see example in section :ref:`Complicated geometries`<complexGeom>`/ 
+  from the inputs file, but can be used within IBTFO_init_eb.cpp with hard coded points. see example in section :ref:`Complicated geometries`<complexGeom>`/ 
 
 .. code::
 
@@ -95,7 +95,7 @@ Some of the relevant transformation handles in AMReX are:
 * *Lathe*       - creates a 3D implicit function from a 2D function by revolving about the z axis (see AMReX_EB2_IF_Lathe.cpp)
 * *Extrusion*   - creates a 3D implicit function from a 2D function by translating along the z axis (see AMReX_EB2_IF_Extrusion.cpp)
 
-The user can copy the file "PeleC_init_eb.cpp" from the Source and add it to his/her test case after which a new geometry can be added in initialize_EB2 
+The user can copy the file "IBTFO_init_eb.cpp" from the Source and add it to his/her test case after which a new geometry can be added in initialize_EB2 
 function. An example of adding a piston-bowl geometry
 that uses splines, cylinder, lathe and union transform, is shown below.
 

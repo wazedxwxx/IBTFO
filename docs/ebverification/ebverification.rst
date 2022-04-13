@@ -11,10 +11,10 @@
 
 .. highlight:: rst
 
-Verification of EB PeleC
+Verification of EB IBTFO
 ------------------------
 
-Verification of the EB capability in PeleC follows several different
+Verification of the EB capability in IBTFO follows several different
 paths in order to ensure the widest coverage of scenarios. A short
 description and the source code for these test cases are included below.
 

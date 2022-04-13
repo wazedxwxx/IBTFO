@@ -14,12 +14,12 @@ Also, any entry that can be specified in the inputs file can also be specified o
 
 ::
 
-	mpirun -np 64 ./Pele2d.gnu.DEBUG.MPI.ex inputs amr.restart=sod_x_chk0030 pelec.riemann_solver=3
+	mpirun -np 64 ./Pele2d.gnu.DEBUG.MPI.ex inputs amr.restart=sod_x_chk0030 IBTFO.riemann_solver=3
 
-The available options are divided into groups: those that control primarily AMReX are prefaced with `amr.` while those that are specific to Pele are prefaced with `pelec.`.
+The available options are divided into groups: those that control primarily AMReX are prefaced with `amr.` while those that are specific to Pele are prefaced with `IBTFO.`.
 
-A typical input file looks something like the example below; a full list of Pele-specific input parameters are in `PeleC/Source/_cpp_parameters`. 
-These parameters, once read, are available in the `PeleC` object for use from c++.
+A typical input file looks something like the example below; a full list of Pele-specific input parameters are in `IBTFO/Source/_cpp_parameters`. 
+These parameters, once read, are available in the `IBTFO` object for use from c++.
 
 ::
 
@@ -52,45 +52,45 @@ These parameters, once read, are available in the `PeleC` object for use from c+
     # ---------------------------------------------------------------
 
     # ---------------------------------------------------------------
-    PeleC specific inputs
+    IBTFO specific inputs
     # ---------------------------------------------------------------
 
     # 0: Collela, Glaz and Ferguson (default)
     # 1: Collela and Glaz  
     # 2: HLLC
-    pelec.riemann_solver    = 0     
+    IBTFO.riemann_solver    = 0     
 
     # >>>>>>>>>>>>>  BC KEYWORDS <<<<<<<<<<<<<<<<<<<<<<
     # Interior, UserBC, Symmetry, SlipWall, NoSlipWall
     # >>>>>>>>>>>>>  BC KEYWORDS <<<<<<<<<<<<<<<<<<<<<<
 
     #boundary condition at the lower face of each coordinate direction
-    pelec.lo_bc       =  "Interior"  "UserBC"  "SlipWall"        
+    IBTFO.lo_bc       =  "Interior"  "UserBC"  "SlipWall"        
     
     #boundary condition at the upper face of each coordinate direction
-    pelec.hi_bc       =  "Interior"  "UserBC"  "SlipWall"          
+    IBTFO.hi_bc       =  "Interior"  "UserBC"  "SlipWall"          
     
     #------------------------
     # TIME STEP CONTROL
     #------------------------
 
-    pelec.cfl            = 0.5     # cfl number for hyperbolic system
-    pelec.init_shrink    = 0.3     # first timestep is scaled by this factor
-    pelec.change_max     = 1.1     # maximum factor by which timestep can increase
-    pelec.dt_cutoff      = 5.e-20  # level 0 timestep below which we halt
+    IBTFO.cfl            = 0.5     # cfl number for hyperbolic system
+    IBTFO.init_shrink    = 0.3     # first timestep is scaled by this factor
+    IBTFO.change_max     = 1.1     # maximum factor by which timestep can increase
+    IBTFO.dt_cutoff      = 5.e-20  # level 0 timestep below which we halt
 
     #------------------------
     # WHICH PHYSICS
     #------------------------
     
-    pelec.do_hydro = 1               # enable hyperbolic term
-    pelec.do_mol = 1                 # use method of lines (MOL)
-    pelec.do_react = 0               # enable chemical reactions
-    pelec.ppm_type = 2               # piecewise parabolic reconstruction type
-    pelec.allow_negative_energy = 0  # flag to allow negative internal energy
-    pelec.diffuse_temp = 0           # enable thermal diffusion
-    pelec.diffuse_vel  = 0           # enable viscous diffusion
-    pelec.diffuse_spec = 0           # enable species diffusion
+    IBTFO.do_hydro = 1               # enable hyperbolic term
+    IBTFO.do_mol = 1                 # use method of lines (MOL)
+    IBTFO.do_react = 0               # enable chemical reactions
+    IBTFO.ppm_type = 2               # piecewise parabolic reconstruction type
+    IBTFO.allow_negative_energy = 0  # flag to allow negative internal energy
+    IBTFO.diffuse_temp = 0           # enable thermal diffusion
+    IBTFO.diffuse_vel  = 0           # enable viscous diffusion
+    IBTFO.diffuse_spec = 0           # enable species diffusion
     
     #------------------------
     # DIAGNOSTICS & VERBOSITY
@@ -99,9 +99,9 @@ These parameters, once read, are available in the `PeleC` object for use from c+
     # coarse time steps between computing integral of 
     # conserved variables in the  domain
     # these values should stabilize at steady state
-    pelec.sum_interval = 1       
+    IBTFO.sum_interval = 1       
 
-    pelec.v            = 1        # verbosity in PeleC cpp files
+    IBTFO.v            = 1        # verbosity in IBTFO cpp files
     amr.v              = 1        # verbosity in Amr.cpp
     #amr.grid_log       = grdlog  # name of grid logging file
     # ---------------------------------------------------------------
@@ -122,7 +122,7 @@ These parameters, once read, are available in the `PeleC` object for use from c+
     
     #specify species name as flame tracer for 
     #refinement purposes
-    pelec.flame_trac_name = HO2
+    IBTFO.flame_trac_name = HO2
 
 
     #------------------------
@@ -158,8 +158,8 @@ These parameters, once read, are available in the `PeleC` object for use from c+
     Embedded boundary (EB) inputs
     # ---------------------------------------------------------------
 
-    pelec.eb_isothermal = 1     # isothermal wall at EB
-    pelec.eb_boundary_T = 300.  # EB wall temperature    
+    IBTFO.eb_isothermal = 1     # isothermal wall at EB
+    IBTFO.eb_boundary_T = 300.  # EB wall temperature    
     eb_verbosity = 1            # verbosity of EB data
 
     
@@ -191,11 +191,11 @@ Tagging criteria are used to inform the refinement of flow features. They are ad
 
 The default values for tagging are defined in :code:`struct TaggingParm` in the `Tagging.H` file. Currently, the code supports tagging on density, pressure, velocity, vorticity, temperature, and volume fraction.
 
-Additionally, tagging is supported for a user-specified species which can function as a "flame tracer" using the keyword `ftrac` and selecting the species with `pelec.flame_trac_name`. For example, the following text in the input file would tag cells for refinement where the HO2 mass fraction exceeded :math:`150 \times 10^{-6}` up to a maximum of 4 levels of refinement:
+Additionally, tagging is supported for a user-specified species which can function as a "flame tracer" using the keyword `ftrac` and selecting the species with `IBTFO.flame_trac_name`. For example, the following text in the input file would tag cells for refinement where the HO2 mass fraction exceeded :math:`150 \times 10^{-6}` up to a maximum of 4 levels of refinement:
 
 ::
 
-   pelec.flame_trac_name= HO2
+   IBTFO.flame_trac_name= HO2
    tagging.max_ftracerr_lev = 4
    tagging.ftracerr = 150.e-6
 
@@ -204,6 +204,6 @@ Users can specify their own tagging criteria in the `prob.H` of their case. An e
 Diagnostic Output
 ~~~~~~~~~~~~~~~~~
 
-The verbosity flags `pelec.v` and `amr.v` control the extent of output related to the reacting flow solver and AMR grid printed during the simulation. When `pelec.v >= 1`, additional controls allow for fine tuning of the diagnostic output. The input flags `pelec.sum_interval` (number of coarse steps) and `pelec.sum_per` (simulation time) control how often integrals of conserved state quantities over the domain are computed and output. Additionally, if the `pelec.track_extrema` flag is set, the minima and maxima of several important derived quantities will be output whenever the integrals are output. By default, this includes the minimum and maximum across all massfractions, indicated by `massfrac`, but the `pelec.extrema_spec_name` can be set to `ALL` or an individual species name if this diagnostic for indiviudal species is of interest.
+The verbosity flags `IBTFO.v` and `amr.v` control the extent of output related to the reacting flow solver and AMR grid printed during the simulation. When `IBTFO.v >= 1`, additional controls allow for fine tuning of the diagnostic output. The input flags `IBTFO.sum_interval` (number of coarse steps) and `IBTFO.sum_per` (simulation time) control how often integrals of conserved state quantities over the domain are computed and output. Additionally, if the `IBTFO.track_extrema` flag is set, the minima and maxima of several important derived quantities will be output whenever the integrals are output. By default, this includes the minimum and maximum across all massfractions, indicated by `massfrac`, but the `IBTFO.extrema_spec_name` can be set to `ALL` or an individual species name if this diagnostic for indiviudal species is of interest.
 
 To aid in the analysis of the diagnostic data, it can also be saved to log files. To do this, set `amr.data_log = datlog extremalog`, which will save the integrated values to `datlog` and the extrema to `extremalog`, if they are being computed based on the values of the flags described above. Additional problem-specific logs can also be created. Gridding information can also be recorded to a file specified with the `amr.grid_log` option. 

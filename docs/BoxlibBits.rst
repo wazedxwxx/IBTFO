@@ -1,10 +1,10 @@
 Development Reference
 =====================
 
-#Function Listing for PeleC
+#Function Listing for IBTFO
 #--------------------------
 #
-#When built, the full doxygen documentation for PeleC can be found 
+#When built, the full doxygen documentation for IBTFO can be found 
 #`here <../../../doxygen_output/html/index.html>`_.
 
 
@@ -12,7 +12,7 @@ Development Reference
 AMReX functions useful for Pele development
 -------------------------------------------
 
-Pele is built on AMReX (available at `https://github.com/AMReX-Codes/amrex <https://github.com/AMReX-Codes/amrex>`_), an adaptive mesh refinement software framework, which provides the underlying software infrastructure for block structured AMR operations. Below is a quick reference list with links to many of the AMReX tools used to build up PeleC. The full AMReX documentation can be found `here <https://amrex-codes.github.io/AMReXUsersGuide.pdf>`_. 
+Pele is built on AMReX (available at `https://github.com/AMReX-Codes/amrex <https://github.com/AMReX-Codes/amrex>`_), an adaptive mesh refinement software framework, which provides the underlying software infrastructure for block structured AMR operations. Below is a quick reference list with links to many of the AMReX tools used to build up IBTFO. The full AMReX documentation can be found `here <https://amrex-codes.github.io/AMReXUsersGuide.pdf>`_. 
 
 
 Solution environment
@@ -58,7 +58,7 @@ Data structures
    * amrex::MultiFab::Saxpy
    * amrex::RealBox
 
-PeleC Implementation 
+IBTFO Implementation 
 ~~~~~~~~~~~~~~~~~~~~
 
 * `amrex::AmrLevel <https://amrex-codes.github.io/amrex/docs_html/AmrLevel.html#amrlevel-class>`_
@@ -77,13 +77,13 @@ Multilevel tools
  
 
 
-Contributing to PeleC
+Contributing to IBTFO
 ---------------------
 
 Development Model
 ~~~~~~~~~~~~~~~~~
 
-To add a new feature to PeleC, the procedure is:
+To add a new feature to IBTFO, the procedure is:
 
 1. Create a branch for the new feature (locally) ::
 
@@ -97,13 +97,13 @@ To add a new feature to PeleC, the procedure is:
     git checkout AmazingNewFeature
     git merge development        [fix any identified conflicts between "development" and "AmazingNewFeature"]
 
-3. Push feature branch to PeleC repository ::
+3. Push feature branch to IBTFO repository ::
 
     git push -u origin AmazingNewFeature [Note: -u option required only for the first push of new branch]
 
     Check that Travis CI build passed. Currently to reduce load on the CI framework this is just a test that one of the regression tests will compile.
 
-4.  Submit a merge request through git@github.com:AMReX-Combustion/PeleC.git - be sure you are requesting to merge your branch to the development branch.
+4.  Submit a merge request through git@github.com:AMReX-Combustion/IBTFO.git - be sure you are requesting to merge your branch to the development branch.
 
 
 
@@ -113,22 +113,22 @@ Building Regression Test Suite Locally
 
 .. LocalTesting:
 
-It is possibly---and desirable---to create the regression testing framework locally and ensure that all tests pass successfully. This is also a good way to ensure all is properly installed on a new machine to be used for PeleC calculations. The initial setup is somewhat tedious but is worth the effort. What needs to be done is: (1) make a scratch area on the local machine where you manually run the regression tests.  As part of the process, a set of "gold" solutions will be generated using code from the current versions of PeleC, PelePhysics and amrex.  Regression tests afterwards will compare to those solutions and indicate binary compatibility. (2) Clone the required repositories into this area and set required environment variables that point to where everything is. (3) Run the tests to generate the "gold" benchmark data.
+It is possibly---and desirable---to create the regression testing framework locally and ensure that all tests pass successfully. This is also a good way to ensure all is properly installed on a new machine to be used for IBTFO calculations. The initial setup is somewhat tedious but is worth the effort. What needs to be done is: (1) make a scratch area on the local machine where you manually run the regression tests.  As part of the process, a set of "gold" solutions will be generated using code from the current versions of IBTFO, PelePhysics and amrex.  Regression tests afterwards will compare to those solutions and indicate binary compatibility. (2) Clone the required repositories into this area and set required environment variables that point to where everything is. (3) Run the tests to generate the "gold" benchmark data.
 
 
 1. Make scratch area ::
 
      mkdir ~/REG_TEST_AREA; cd ~/REG_TEST_AREA
    
-2. Clone repositories (amrex, PeleC, PelePhysics, regression_testing (AMReX's driver scripts) and PeleRegressionTesting (Pele-specific stuff)) ::
+2. Clone repositories (amrex, IBTFO, PelePhysics, regression_testing (AMReX's driver scripts) and PeleRegressionTesting (Pele-specific stuff)) ::
 
      git clone git@github.com:AMReX-Combustion/PeleRegressionTesting.git
      cd PeleRegressionTesting; git checkout development
-     mkdir -p TestData/PeleC  # this is where the test results will be written
+     mkdir -p TestData/IBTFO  # this is where the test results will be written
      mkdir Repositories   # this is where the src code to be tested is put
      cd Repositories
-     export PELEC_HOME=`pwd`/PeleC; git clone git@github.com:AMReX-Combustion/PeleC.git $PELEC_HOME
-     cd $PELEC_HOME; git checkout development; cd ..
+     export IBTFO_HOME=`pwd`/IBTFO; git clone git@github.com:AMReX-Combustion/IBTFO.git $IBTFO_HOME
+     cd $IBTFO_HOME; git checkout development; cd ..
      export PELE_PHYSICS_HOME=`pwd`/PelePhysics; git clone git@github.com:AMReX-Combustion/PelePhysics.git $PELE_PHYSICS_HOME
      cd $PELE_PHYSICS_HOME; git checkout development; cd ..
      export AMREX_HOME=`pwd`/amrex; git clone git@github.com:AMReX-Codes/amrex.git $AMREX_HOME
@@ -136,7 +136,7 @@ It is possibly---and desirable---to create the regression testing framework loca
      export AMREX_REGTEST_HOME=`pwd`/regression_testing; git clone git@github.com:AMReX-Codes/regression_testing.git $AMREX_REGTEST_HOME
      cd ..
 
-3. Run the script to execute the tests to generate benchmarks. After it finishes building and running (12 as of March 2019) tests, it will archive the pltfiles that result from each into a folder in the TestData/PeleC folder in the PeleRegressionTesting folder.  Once the benchmarks exist, any changes to the repositories in the PeleRegressionTesting/Repositories can be tested to diff clean against these benchmarks by running the script (again from within the PeleRegressionTesting folder) ::
+3. Run the script to execute the tests to generate benchmarks. After it finishes building and running (12 as of March 2019) tests, it will archive the pltfiles that result from each into a folder in the TestData/IBTFO folder in the PeleRegressionTesting folder.  Once the benchmarks exist, any changes to the repositories in the PeleRegressionTesting/Repositories can be tested to diff clean against these benchmarks by running the script (again from within the PeleRegressionTesting folder) ::
 
      ./Scripts/genbenchPC.sh
 

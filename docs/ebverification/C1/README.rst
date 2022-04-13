@@ -6,7 +6,7 @@ C1. Method of manufactured solutions for EB
 Case description
 ################
 
-This is a similar test case problem as performed for PeleC
+This is a similar test case problem as performed for IBTFO
 verification using MASA to construct a manufactured solution. The MMS
 is performed around a sphere at a Re number and Mach number of 1.
 
@@ -39,7 +39,7 @@ Running study
 .. code-block:: bash
 
    paren=`pwd`
-   pelec="${paren}/PeleC3d.gnu.MPI.ex"
+   IBTFO="${paren}/IBTFO3d.gnu.MPI.ex"
    mpi_ranks=36
 
    res=( 8 16 32 64 )
@@ -49,7 +49,7 @@ Running study
        mkdir "${i}"
        cd "${i}" || exit
        cp "${paren}/inputs_3d" .
-       srun -n ${mpi_ranks} "${pelec}" inputs_3d amr.n_cell="${i} ${i} ${i}" > out
+       srun -n ${mpi_ranks} "${IBTFO}" inputs_3d amr.n_cell="${i} ${i} ${i}" > out
        ls -1v *plt*/Header | tee movie.visit
        cd "${paren}" || exit
    done
