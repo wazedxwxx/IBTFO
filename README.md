@@ -62,4 +62,4 @@ If you want to contribute to the development of IBTFO, have a look at the contri
 All new contributions must be made underthe MIT license.
 
 ## Credits
-The code has been developed developed by [Science and Technology on Scramjet Laboratory](https://english.nudt.edu.cn).
+The code has been developed by [Science and Technology on Scramjet Laboratory](https://english.nudt.edu.cn).
