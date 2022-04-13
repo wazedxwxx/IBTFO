@@ -51,7 +51,7 @@ make
 >This will only call GPU 0 for computation, otherwise all GPUs will be used.
 
 ## Tutorial
-The tutorial of IBTFO can be found here.
+The tutorial of IBTFO can be found [here](ibtfo.readthedocs.io/en/latest/).
 
 
 ## Contributing
