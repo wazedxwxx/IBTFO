@@ -2,8 +2,10 @@
 [![License](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/wazedxwxx/IBTFO/)
 [![License](https://img.shields.io/github/license/wazedxwxx/IBTFO)](https://opensource.org/licenses/MIT)
 
-**IBTFO** is **I**mmersed **B**oundary method fast **T**est **F**acility based **O**penAcc. It is designed for easy development and validation of immersed boundary methods. Built-in basic Euler equation solver and shared memory computation using OpenACC.
+**IBTFO** is **discrete forcing** **I**mmersed **B**oundary method fast **T**est **F**acility based **O**penAcc. It is designed for easy development and validation of immersed boundary methods. Built-in basic Euler equation solver and shared memory computation using OpenACC.
 The vision of IBTFO is not to provide a robust and powerful solver, but to focus on the efficient and fast development and validation of advanced immersed boundary methods!
+
+>Note that IBTFO currently only supports Direct BC Imposition. Such methods include ghost fluid method (GFM) and cut cell method (CCM) and their extensions.
 
 ## Installation
 Even though it has as simple utilities as possible built in as a fast test facility, `IBTFO` still relies on a few libraries.
@@ -53,7 +55,7 @@ The tutorial of IBTFO can be found here.
 
 
 ## Contributing
-If you want to contribute to the development of cgc, have a look at the contribution guidelines.
+If you want to contribute to the development of IBTFO, have a look at the contribution guidelines. We discourage the development of advanced advection schemes if not required for your immersed boundary method. We encourage the development and validation of your advanced immersed boundary methods. If your method is publicly published, we'd be happy to couple it into IBTFO. If you have any questions, you can discuss in the issue.
 
 ## License
 **IBTFO** (Copyright (c) 2020-2022) is an open-source package made available under the MIT License.
