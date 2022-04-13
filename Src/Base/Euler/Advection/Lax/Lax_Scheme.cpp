@@ -1,11 +1,4 @@
 #include "Advance.H"
-#include "Conserve2Flux.H"
-#include "WriteData.H"
-#include <iostream>
-#include <algorithm>
-#include "EQDefine.H"
-#include "CoordDefine.H"
-using namespace std;
 void Advance(const double Psy_L,
              const double Psy_H,
              const int N_x,

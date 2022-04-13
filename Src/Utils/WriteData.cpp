@@ -1,13 +1,7 @@
-#include <math.h>
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
 #include "WriteData.H"
-#include "EQDefine.H"
-#include <string>
-#include "CoordDefine.H"
-#include <iostream>
-#include <stdio.h>
-#include <string>
-#include "openacc.h"
-using namespace std;
 void WriteData(const double lo_x,
                const double lo_y,
                const double Psy_L,

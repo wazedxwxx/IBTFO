@@ -1,12 +1,6 @@
-#include <math.h>
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
 #include "ComputeDt.H"
-#include <algorithm>
-#include "EQDefine.H"
-#include "CoordDefine.H"
-#include <iostream>
-
-using namespace std;
-
 void ComputeDt(const double Psy_L,
                const double Psy_H,
                const int N_x,

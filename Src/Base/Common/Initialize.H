@@ -1,3 +1,12 @@
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
+#include "ParamReader.H"
+#include <math.h>
+#include "EQDefine.H"
+#include "CoordDefine.H"
+#include "openacc.h"
+using namespace std;
 
 void Initialize(char *filename,
                 const double Psy_L,

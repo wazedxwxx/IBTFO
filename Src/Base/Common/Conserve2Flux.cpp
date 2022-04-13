@@ -1,9 +1,5 @@
 #include "Conserve2Flux.H"
-#include "EQDefine.H"
-#include "CoordDefine.H"
-#include <iostream>
-#include <algorithm>
-using namespace std;
+
 void Conserve2Flux(const int N_x,
                    const int N_y,
                    const int num_ghost_cell,

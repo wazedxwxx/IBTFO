@@ -1,3 +1,13 @@
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
+#include "EQDefine.H"
+#include "CoordDefine.H"
+#include "SchDefine.H"
+#include <iostream>
+#include <math.h>
+#include <algorithm>
+using namespace std;
 void Boundary(const int N_x,
               const int N_y,
               const int num_ghost_cell,

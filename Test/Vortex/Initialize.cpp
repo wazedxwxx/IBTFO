@@ -1,10 +1,5 @@
 #include "Initialize.H"
-#include <math.h>
-#include "ParamReader.H"
-#include <iostream>
-#include "EQDefine.H"
-#include "CoordDefine.H"
-using namespace std;
+
 void Initialize(char *filename,
                 const double Psy_L,
                 const double Psy_H,

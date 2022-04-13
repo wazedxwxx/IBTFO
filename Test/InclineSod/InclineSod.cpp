@@ -127,6 +127,7 @@ int main(int argc, char **argv)
         if (device + 2 > ndevices)
             dt = *min_element(TMP_DT, TMP_DT + ndevices);
 
+
     }
 
     while (now_t < Psy_time && iter < max_iter)

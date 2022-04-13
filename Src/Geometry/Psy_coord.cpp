@@ -1,11 +1,7 @@
-#include "Psy_coord.H"
-#include <algorithm>
-#include "EQDefine.H"
-#include "CoordDefine.H"
-#include "openacc.h"
-#include <algorithm>
-using namespace std;
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
 
+#include "Psy_coord.H"
 void Psy_coord(const double lo_x,
                const double lo_y,
                const double Psy_L,

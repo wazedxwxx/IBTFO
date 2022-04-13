@@ -1,10 +1,7 @@
-#include <math.h>
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
 #include "Level_Set.H"
-#include "EQDefine.H"
-#include "CoordDefine.H"
-#include <iostream>
-#include "openacc.h"
-using namespace std;
 // 0 x_coord 1 y_coord 2 phi 3 n_x 4 n_y 5 cell type
 void Level_Set(char *filename,
                const int N_x,

@@ -1,5 +1,13 @@
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
 #include <math.h>
 #include "ParamReader.H"
+#include "EQDefine.H"
+#include "CoordDefine.H"
+#include <iostream>
+using namespace std;
+
 void Level_Set_function(char *filename,
                           const int N_x,
                           const int N_y,

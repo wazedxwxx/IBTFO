@@ -1,3 +1,13 @@
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
+#include "Conserve2Flux.H"
+#include <math.h>
+#include "EQDefine.H"
+#include "CoordDefine.H"
+#include <algorithm>
+using namespace std;
+
 void Riemann_solver(const double Psy_L,
                     const double Psy_H,
                     const int N_x,

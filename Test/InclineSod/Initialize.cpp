@@ -1,9 +1,5 @@
 #include "Initialize.H"
-#include "ParamReader.H"
-#include <math.h>
-#include "EQDefine.H"
-#include "CoordDefine.H"
-#include "openacc.h"
+
 
 using namespace std;
 void Initialize(char *filename,

@@ -1,3 +1,6 @@
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
 #define num_eq 4
 #define num_tmp_hight 7
 #define num_tmp_size num_eq *num_tmp_hight

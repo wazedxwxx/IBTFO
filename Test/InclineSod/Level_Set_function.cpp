@@ -1,9 +1,8 @@
-#include <math.h>
+// Copyright (C) 2022 , National University of Defense Technology
+// Xinxin Wang , wxx@nudt.edu.cn
+
 #include "Level_Set_function.H"
-#include "EQDefine.H"
-#include "CoordDefine.H"
-#include <iostream>
-using namespace std;
+
 
 #pragma acc routine worker
 inline double line(double x, double y, double k, double b, int dir) // dist for y= k x + b
