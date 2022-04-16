@@ -24,7 +24,7 @@ IBTFO advances the following set of 2D Euler equations for the conserved state v
 
 \mathbf{F} = (\rho u, \rho u^2 + p, \rho u v,u ( E + p)),
 
- mathbf{G} = (\rho v, \rho u v, \rho v^2 + p ,v ( E + p).
+\mathbf{G} = (\rho v, \rho u v, \rho v^2 + p ,v ( E + p).
   
 
 
