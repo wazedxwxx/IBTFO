@@ -16,13 +16,15 @@ Equations
 Euler Equations
 -------------------
 
-IBTFO advances the following set of 2D Euler equations for the conserved state vector: :math:`\mathbf{U} = (\rho, \rho u, \rho v,\rho E):`
+IBTFO advances the following set of 2D Euler equations for the conserved state vector: :math:`\mathbf{U} = (\rho, \rho u, \rho v,\rho E)`
 
 .. math::
 
-\mathbf{U}_t+\mathbf{F}_x+\mathbf{G}_y = 0
-\mathbf{F} = (\rho u, \rho u^2 + p, \rho u v,u ( E + p))
- mathbf{G} = (\rho v, \rho u v, \rho v^2 + p ,v ( E + p)
+\mathbf{U}_t+\mathbf{F}_x+\mathbf{G}_y = 0,
+
+\mathbf{F} = (\rho u, \rho u^2 + p, \rho u v,u ( E + p)),
+
+ mathbf{G} = (\rho v, \rho u v, \rho v^2 + p ,v ( E + p).
   
 
 
