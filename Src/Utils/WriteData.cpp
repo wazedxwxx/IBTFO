@@ -21,14 +21,14 @@ void WriteData(const double lo_x,
     header = fopen("result.visit", "a");
     if (iter == 0 && device == 0)
     {
-        fprintf(header, "!NBLOCKS %d\n",ndevices);
+        fprintf(header, "!NBLOCKS %d\n", ndevices);
     }
-        fprintf(header, "dat_%d_%d.vtk\n",device,iter);
+    fprintf(header, "dat_%d_%d.vtk\n", device, iter);
     fclose(header);
 
     int real_lower = REAL_LOWER;
     int real_upper = REAL_UPPER;
-acc_set_device_num(device, acc_device_default);
+    acc_set_device_num(device, acc_device_default);
 #pragma acc data present(U_OLD [(M)*real_lower * num_eq:(M) * (real_upper - real_lower) * num_eq], \
                          XYCOORD [(M)*real_lower * num_coord:(M) * (real_upper - real_lower) * num_coord])
     {
@@ -40,14 +40,14 @@ acc_set_device_num(device, acc_device_default);
         fprintf(out, "Volume example \n");
         fprintf(out, "ASCII \n");
         fprintf(out, "DATASET STRUCTURED_POINTS \n");
-        fprintf(out, "DIMENSIONS %d %d %d  \n", N_x, min(real_upper + 1, N_x + num_ghost_cell) - max(real_lower, num_ghost_cell), 1);
+        fprintf(out, "DIMENSIONS %d %d %d  \n", N_x, min(real_upper + 1, N_y + num_ghost_cell) - max(real_lower, num_ghost_cell), 1);
         fprintf(out, "ASPECT_RATIO 1 1 1 \n");
         fprintf(out, "ORIGIN %f %f %f \n", lo_x + Psy_L / N_x / 2, lo_y + Psy_H / N_y / 2 + (max(real_lower, num_ghost_cell) - num_ghost_cell) * Psy_H / N_y, 0.0);
         fprintf(out, "SPACING %f %f %f \n", Psy_L / N_x, Psy_H / N_y, Psy_H / N_y);
         fprintf(out, "FIELD FieldData 1  \n");
         fprintf(out, "TIME 1 1 double  \n");
         fprintf(out, "%f  \n", now_t);
-        fprintf(out, "POINT_DATA  %d\n", N_x * (min(real_upper + 1, N_x + num_ghost_cell) - max(real_lower, num_ghost_cell)));
+        fprintf(out, "POINT_DATA  %d\n", N_x * (min(real_upper + 1, N_y + num_ghost_cell) - max(real_lower, num_ghost_cell)));
         fprintf(out, "SCALARS density float  \n");
         fprintf(out, "LOOKUP_TABLE default  \n");
 
@@ -116,6 +116,55 @@ acc_set_device_num(device, acc_device_default);
                     double v = U_OLD[Index(i, j, 2)] / U_OLD[Index(i, j, 0)];
                     double p = (gamma - 1) * (U_OLD[Index(i, j, 3)] - 0.5 * rho * (u * u + v * v));
                     fprintf(out, "%f  \n", p);
+                }
+                else
+                {
+                    fprintf(out, "%f  \n", -1.0);
+                }
+            }
+        }
+
+        fprintf(out, "SCALARS Energy float  \n");
+        fprintf(out, "LOOKUP_TABLE default  \n");
+
+#pragma acc loop seq
+        for (int j = max(real_lower, num_ghost_cell); j < min(real_upper + 1, N_y + num_ghost_cell); j++)
+        {
+#pragma acc loop
+            for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
+            {
+                if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
+                {
+                    double E = U_OLD[Index(i, j, 3)];
+
+                    fprintf(out, "%f  \n", E);
+                }
+                else
+                {
+                    fprintf(out, "%f  \n", -1.0);
+                }
+            }
+        }
+
+        fprintf(out, "SCALARS Mach_Number float  \n");
+        fprintf(out, "LOOKUP_TABLE default  \n");
+
+#pragma acc loop seq
+        for (int j = max(real_lower, num_ghost_cell); j < min(real_upper + 1, N_y + num_ghost_cell); j++)
+        {
+#pragma acc loop
+            for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
+            {
+                if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
+                {
+                    double rho = U_OLD[Index(i, j, 0)];
+                    double u = U_OLD[Index(i, j, 1)] / U_OLD[Index(i, j, 0)];
+                    double v = U_OLD[Index(i, j, 2)] / U_OLD[Index(i, j, 0)];
+                    double p = (gamma - 1) * (U_OLD[Index(i, j, 3)] - 0.5 * rho * (u * u + v * v));
+                    double a = pow((gamma * p / rho), 0.5);
+                    double Mach = sqrt(u * u + v * v) / a;
+
+                    fprintf(out, "%f  \n", Mach);
                 }
                 else
                 {
