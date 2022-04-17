@@ -112,7 +112,7 @@ void Level_Set(char *filename,
 #pragma acc loop
             for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
             {
-                if (j < num_ghost_cell || j >= N_x + num_ghost_cell)
+                if (j < num_ghost_cell || j >= N_y + num_ghost_cell)
                 {
                     XYCOORD[Index_Coord(i, j, 5)] = 2; // ghost cell
                 }
