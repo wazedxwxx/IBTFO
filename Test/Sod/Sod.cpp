@@ -127,7 +127,7 @@ int main(int argc, char **argv)
         for (int device = 0; device < ndevices; device++)
         {
             acc_set_device_num(device, acc_device_default);
-#pragma acc update device(U_OLD [(M)*LOWER * num_eq:(M) * (4 * num_ghost_cell) * num_eq],                          \
+#pragma acc update device(U_OLD [(M)*LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                          \
                           U_OLD [(M) * (UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell) * num_eq], \
                           U_NEW [(M)*LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                          \
                           U_NEW [(M) * (UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell) * num_eq]) async
