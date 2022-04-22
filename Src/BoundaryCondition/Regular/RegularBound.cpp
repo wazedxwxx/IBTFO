@@ -14,11 +14,13 @@ void Boundary(const int N_x,
               const int ndevices,
               const int device)
 {
-#pragma acc data present(U_OLD[(M) * LOWER * num_eq:(M) * (UPPER-LOWER) * num_eq]) \
-                 present(U_NEW[(M) * LOWER * num_eq:(M) * (UPPER-LOWER) * num_eq])
+    int lower = LOWER;
+    int upper = UPPER;
+#pragma acc data present(U_OLD [(M)*lower * num_eq:(M) * (upper - lower) * num_eq]) \
+    present(U_NEW [(M)*lower * num_eq:(M) * (upper - lower) * num_eq])
     {
 #pragma acc parallel loop async
-        for (int j = LOWER + num_ghost_cell; j < UPPER - num_ghost_cell; j++)
+        for (int j = lower + num_ghost_cell; j < upper - num_ghost_cell; j++)
         {
 #pragma acc loop
             for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
