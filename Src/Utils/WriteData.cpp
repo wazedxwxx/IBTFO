@@ -173,6 +173,30 @@ void WriteData(const double lo_x,
             }
         }
 
+        fprintf(out, "SCALARS velocity float  \n");
+        fprintf(out, "LOOKUP_TABLE default  \n");
+
+#pragma acc loop seq
+        for (int j = max(real_lower, num_ghost_cell); j < min(real_upper + 1, N_y + num_ghost_cell); j++)
+        {
+#pragma acc loop
+            for (int i = num_ghost_cell; i < N_x + num_ghost_cell; i++)
+            {
+                if (XYCOORD[Index_Coord(i, j, 5)] < 0.5)
+                {
+                    double u = U_OLD[Index(i, j, 1)] / U_OLD[Index(i, j, 0)];
+                    double v = U_OLD[Index(i, j, 2)] / U_OLD[Index(i, j, 0)];
+                    double vel = sqrt(u * u + v * v);
+
+                    fprintf(out, "%f  \n", vel);
+                }
+                else
+                {
+                    fprintf(out, "%f  \n", -1.0);
+                }
+            }
+        }
+
         fclose(out);
     }
 
