@@ -33,7 +33,8 @@ void Level_Set_function(char *filename,
     ParamReader DetectParams;
     Params<double> para(DetectParams.open(filename).numbers());
     double angle = 3.1415926535 * para.get("angle", 30) / 180;
-    double AxisD = para.get("AxisD", 0.4);
+    double Axisd = para.get("AxisD", 0.4);
+    double AxisD = Axisd / cos(angle);
 
 #pragma acc data present(XYCOORD [(M)*lower * num_coord:(M) * (upper - lower) * num_coord])
     {
@@ -44,7 +45,7 @@ void Level_Set_function(char *filename,
             for (int i = 0; i < N_x + 2 * num_ghost_cell; i++)
             {
                 double phi, phi1, phi2;
-                phi1 = line(XYCOORD[Index_Coord(i, j, 0)], XYCOORD[Index_Coord(i, j, 1)], tan(angle), 0, 1);
+                phi1 = line(XYCOORD[Index_Coord(i, j, 0)], XYCOORD[Index_Coord(i, j, 1)], tan(angle), 0.05, 1);
                 phi2 = line(XYCOORD[Index_Coord(i, j, 0)], XYCOORD[Index_Coord(i, j, 1)], tan(angle), AxisD, -1);
 
                 phi = ((phi1 < phi2) ? phi1 : phi2);
