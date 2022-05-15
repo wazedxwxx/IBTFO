@@ -1,7 +1,7 @@
-Scheme = MUSCL #Lax or MUSCL or MHM
+Scheme = MUSCL #Lax or MUSCL or MHM or Godunov
 Riemann = HLL #HLL or PVRS or StegerWarming
 Limiter = minmod #minmod or VanLeer or VanAlbada
-Boundary = RiemannBaseGFM #Regular or BaseGFM or SimpleBound or BCGFM or HBCGFM
+Boundary = OIDWBaseGFM #Regular or BaseGFM or SimpleBound or BCGFM or HBCGFM
 Time = SingleStep #SingleStep or RK2
 Equation = Euler
 ARCH = GPU

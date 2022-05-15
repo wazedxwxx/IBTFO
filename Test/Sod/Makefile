@@ -1,5 +1,5 @@
-Scheme = MUSCL  #Lax or MUSCL or MHM （MSUCL Hancock）
-Riemann = StegerWarming #HLL or PVRS or StegerWarming
+Scheme = MUSCL  #Lax or MUSCL or MHM （MSUCL Hancock）Godunov
+Riemann = HLL #HLL or PVRS or StegerWarming
 Limiter = minmod #minmod or VanLeer or VanAlbada
 Boundary = Regular #Regular or BaseGFM or SimpleBound
 Time = SingleStep #SingleStep or RK2
