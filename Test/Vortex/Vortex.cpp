@@ -127,12 +127,12 @@ int main(int argc, char **argv)
 
     while (now_t < Psy_time && iter < max_iter)
     {
-        Mass_now = 0;
+
         acc_wait_all();
         for (int device = 0; device < ndevices; device++)
         {
             acc_set_device_num(device, acc_device_default);
-#pragma acc update device(U_OLD [(M)*LOWER * num_eq:(M) * (4 * num_ghost_cell) * num_eq],                          \
+#pragma acc update device(U_OLD [(M)*LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                          \
                           U_OLD [(M) * (UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell) * num_eq], \
                           U_NEW [(M)*LOWER * num_eq:(M) * (2 * num_ghost_cell) * num_eq],                          \
                           U_NEW [(M) * (UPPER - 2 * num_ghost_cell) * num_eq:(M) * (2 * num_ghost_cell) * num_eq]) async
@@ -155,7 +155,6 @@ int main(int argc, char **argv)
                         output_int = output_int + 1 * (iter > 0);
                 }
             }
-
             TimeAdvance(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, gamma, dt, U_OLD, U_TMP, U_NEW, XYCOORD, SCHEME_IDX, ndevices, device);
 
             Boundary(N_x, N_y, num_ghost_cell, gamma, U_OLD, U_NEW, XYCOORD, SCHEME_IDX, ndevices, device);
@@ -167,7 +166,6 @@ int main(int argc, char **argv)
             CaculateMass(Psy_L, Psy_H, N_x, N_y, num_ghost_cell, U_OLD, XYCOORD, MASS_DEVICE, ndevices, device);
 
             Mass_now += MASS_DEVICE[device];
-
             if (device + 2 > ndevices)
                 dt = *min_element(TMP_DT, TMP_DT + ndevices);
 
@@ -180,9 +178,9 @@ int main(int argc, char **argv)
 
         now_t = now_t + dt;
         iter++;
-
         cout.precision(6);
         cout << "iter : " << iter << ".   dt :" << dt << ".   time :" << now_t << ".  Mass loss :" << abs(Mass_now - Mass_start) << endl;
+        Mass_now = 0;
     }
 
     for (int device = 0; device < ndevices; device++)
